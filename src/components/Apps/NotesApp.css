@@ -1,0 +1,32 @@
+.notes {
+    padding: 8px;
+}
+
+.notes h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    opacity: 0.95;
+}
+
+.notes ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notes li {
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
+    border-left: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+.notes li:hover {
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 1;
+}

@@ -1,0 +1,17 @@
+.terminal {
+  background: #0a0e14;
+  padding: 16px;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #c9d1d9;
+  border-radius: 4px;
+}
+
+.terminal p {
+  margin: 4px 0;
+}
+
+.prompt {
+  color: #58a6ff;
+}

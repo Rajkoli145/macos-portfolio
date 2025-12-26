@@ -1,0 +1,31 @@
+.finder {
+  display: flex;
+  height: 260px;
+}
+
+.finder-sidebar {
+  width: 140px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px;
+}
+
+.finder-item {
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.finder-item.active {
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 1;
+}
+
+.finder-content {
+  flex: 1;
+  padding: 12px;
+}
+
+.finder-content h2 {
+  margin-bottom: 8px;
+}

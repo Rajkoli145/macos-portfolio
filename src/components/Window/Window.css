@@ -1,0 +1,87 @@
+.window {
+  width: 480px;
+  background: #161b22;
+  border-radius: 14px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  /* Genie Effect Transitions */
+  transition:
+    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    width 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.3s ease,
+    border-radius 0.2s ease,
+    visibility 0.4s;
+}
+
+.window.maximized {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0;
+  transform: none !important;
+}
+
+.window.minimized {
+  transform: translate(calc(var(--dock-x, 50vw) - 50%), 100vh) scale(0) !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.window-titlebar {
+  height: 36px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  position: relative;
+  cursor: default;
+}
+
+.window-controls {
+  display: flex;
+  gap: 8px;
+  cursor: default;
+}
+
+.control {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.control.close {
+  background: #ff5f56;
+}
+
+.control.minimize {
+  background: #ffbd2e;
+}
+
+.control.maximize {
+  background: #27c93f;
+}
+
+.window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.window-content {
+  padding: 16px;
+  font-size: 14px;
+  height: calc(100% - 36px);
+  overflow: auto;
+}
