@@ -1,17 +1,44 @@
-.terminal {
-  background: #0a0e14;
-  padding: 16px;
-  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-  font-size: 13px;
-  line-height: 1.6;
-  color: #c9d1d9;
-  border-radius: 4px;
+.terminal-container {
+  height: 100%;
+  background: #1c1c1e;
+  padding: 15px;
+  color: #34c759;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-y: auto;
 }
 
-.terminal p {
-  margin: 4px 0;
+.terminal-body {
+  width: 100%;
 }
 
-.prompt {
-  color: #58a6ff;
+.terminal-body p {
+  margin: 0;
+}
+
+.cursor-line {
+  white-space: pre;
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.cursor-line::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background: #34c759;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
 }

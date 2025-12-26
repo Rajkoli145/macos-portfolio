@@ -1,0 +1,143 @@
+.safari {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #ffffff;
+    color: #1d1d1f;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.safari-toolbar {
+    height: 44px;
+    background: #f5f5f7;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 100px;
+}
+
+.safari-address-bar {
+    background: #e1e1e3;
+    width: 100%;
+    max-width: 600px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #1d1d1f;
+    gap: 6px;
+}
+
+.lock-icon {
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.safari-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    background: #ffffff;
+}
+
+.projects-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.projects-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.projects-header p {
+    color: #86868b;
+    margin-top: 8px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.project-card {
+    background: #fbfbfd;
+    border: 1px solid #d2d2d7;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.project-accent {
+    height: 4px;
+    width: 100%;
+}
+
+.project-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.project-body h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.project-body p {
+    font-size: 14px;
+    color: #424245;
+    margin: 10px 0 20px 0;
+    line-height: 1.5;
+}
+
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.tech-tag {
+    background: #f5f5f7;
+    color: #86868b;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.project-link {
+    margin-top: auto;
+    color: #0066cc;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.project-link:hover {
+    text-decoration: underline;
+}
+
+.arrow {
+    font-size: 12px;
+}

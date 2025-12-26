@@ -4,6 +4,7 @@ import Window from "../Window/Window";
 import FinderApp from "../Apps/FinderApp";
 import TerminalApp from "../Apps/TerminalApp";
 import NotesApp from "../Apps/NotesApp";
+import SafariApp from "../Apps/SafariApp";
 import { useWindowManager } from "../../hooks/useWindowManager";
 import "./Desktop.css";
 
@@ -11,8 +12,8 @@ const APP_COMPONENTS = {
   finder: FinderApp,
   terminal: TerminalApp,
   notes: NotesApp,
+  safari: SafariApp,
   settings: FinderApp,
-  safari: FinderApp, // Placeholder
   mail: NotesApp,    // Placeholder
   vscode: TerminalApp // Placeholder
 };

@@ -1,32 +1,100 @@
-.notes {
-    padding: 8px;
+.notes-app {
+    display: flex;
+    height: 100%;
+    background: #ffffff;
+    color: #1d1d1f;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.notes h3 {
-    font-size: 16px;
-    margin-bottom: 12px;
-    font-weight: 600;
-    opacity: 0.95;
+.notes-sidebar {
+    width: 200px;
+    background: #f5f5f7;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px;
 }
 
-.notes ul {
-    list-style: none;
-    padding: 0;
+.notes-list-item {
+    padding: 12px;
+    border-radius: 8px;
+    cursor: default;
+}
+
+.notes-list-item.active {
+    background: #ffcc00;
+    color: #000000;
+}
+
+.note-title {
+    font-weight: 700;
+    font-size: 14px;
     margin: 0;
 }
 
-.notes li {
-    padding: 8px 12px;
-    margin-bottom: 6px;
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 6px;
-    border-left: 3px solid rgba(255, 255, 255, 0.2);
-    font-size: 14px;
-    line-height: 1.5;
-    opacity: 0.9;
+.note-date {
+    font-size: 11px;
+    opacity: 0.7;
+    margin: 4px 0;
 }
 
-.notes li:hover {
-    background: rgba(255, 255, 255, 0.06);
-    opacity: 1;
+.note-preview {
+    font-size: 12px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.notes-editor {
+    flex: 1;
+    background: #ffffff;
+    padding: 30px 40px;
+    overflow-y: auto;
+}
+
+.editor-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.editor-date {
+    font-size: 12px;
+    color: #86868b;
+    text-transform: uppercase;
+}
+
+.editor-body h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.philosophy-section {
+    margin-bottom: 30px;
+}
+
+.philosophy-section h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ff9500;
+    margin-bottom: 12px;
+}
+
+.philosophy-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.philosophy-section li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.philosophy-section li strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.philosophy-section p {
+    line-height: 1.6;
+    font-size: 15px;
 }
