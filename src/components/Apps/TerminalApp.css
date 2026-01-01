@@ -1,44 +1,201 @@
-.terminal-container {
+.terminal-app {
   height: 100%;
   background: #1c1c1e;
-  padding: 15px;
-  color: #34c759;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
-  font-size: 14px;
-  line-height: 1.5;
+  color: #e4e4e6;
+  font-family: "SF Mono", "Fira Code", "Menlo", "Monaco", "Consolas", monospace;
+  padding: 32px;
   overflow-y: auto;
+  line-height: 1.6;
 }
 
-.terminal-body {
-  width: 100%;
+.terminal-session {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* Slightly tighter for interactive feel */
 }
 
-.terminal-body p {
-  margin: 0;
+.terminal-line-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.cursor-line {
+.terminal-prompt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  letter-spacing: -0.2px;
+}
+
+/* Font Sizes */
+.terminal-app.text-sm {
+  font-size: 13px;
+}
+
+.terminal-app.text-md {
+  font-size: 15px;
+}
+
+.terminal-app.text-lg {
+  font-size: 18px;
+}
+
+/* Prompt Styles */
+.terminal-prompt-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terminal-prompt-wrapper.classic {
+  gap: 8px;
+}
+
+/* Minimal Prompt */
+.terminal-prompt-wrapper.minimal .prompt-symbol.purple {
+  color: #c084fc;
+  font-weight: 700;
+}
+
+/* Powerline Prompt */
+.terminal-prompt-wrapper.powerline {
+  gap: 0;
+  font-family: "Menlo", "Meslo LG M", monospace;
+  margin-right: 8px;
+}
+
+.pl-segment {
+  padding: 2px 8px;
+  color: #000;
+  position: relative;
+  font-weight: 600;
+}
+
+.pl-segment.user {
+  background: #007aff;
+  color: #fff;
+  border-radius: 4px 0 0 4px;
+}
+
+.pl-segment.path {
+  background: #34c759;
+  color: #fff;
+}
+
+.pl-segment.symbol {
+  background: transparent;
+  color: #34c759;
+  padding: 0 0 0 4px;
+}
+
+/* Base Terminal Colors */
+.prompt-user {
+  color: #3b82f6;
+  /* Blue-500 */
+  font-weight: 700;
+}
+
+.prompt-path {
+  color: #10b981;
+  /* Emerald-500 */
+  font-weight: 700;
+}
+
+.prompt-symbol {
+  color: #a8a29e;
+  /* Stone-400 */
+}
+
+/* Input Area */
+.terminal-prompt-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.terminal-prompt-line.active {
+  margin-top: 4px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.input-mirror {
+  color: #ffffff;
+  font-size: 15px;
   white-space: pre;
 }
 
-@keyframes blink {
+.terminal-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: transparent;
+  /* Text is shown by mirror */
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  caret-color: transparent;
+}
 
-  0%,
-  100% {
-    opacity: 1;
+.terminal-cursor {
+  width: 9px;
+  height: 17px;
+  background: #f8f8f2;
+  display: inline-block;
+  margin-left: 0px;
+  animation: terminal-blink 1.2s step-end infinite;
+}
+
+.terminal-output {
+  margin: 0;
+  padding-left: 2px;
+  color: #9ca3af;
+  font-size: 14px;
+  white-space: pre-wrap;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+@keyframes terminal-blink {
+
+  from,
+  to {
+    opacity: 0;
   }
 
   50% {
-    opacity: 0;
+    opacity: 1;
   }
 }
 
-.cursor-line::after {
-  content: "";
-  display: inline-block;
+.terminal-app ::selection {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.terminal-app::-webkit-scrollbar {
   width: 8px;
-  height: 15px;
-  background: #34c759;
-  margin-left: 2px;
-  animation: blink 1s step-end infinite;
+}
+
+.terminal-app::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-app::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
 }

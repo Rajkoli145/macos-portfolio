@@ -1,29 +1,71 @@
 .dock-wrapper {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 8px;
   pointer-events: none;
   z-index: 1000;
 }
 
+.dock-wrapper.bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.dock-wrapper.left {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 8px;
+}
+
+.dock-wrapper.right {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding-right: 8px;
+}
+
 .dock-separator {
-  width: 100%;
-  height: 1px;
   background: linear-gradient(90deg,
       transparent 0%,
       rgba(255, 255, 255, 0.1) 50%,
       transparent 100%);
+}
+
+.dock-wrapper.bottom .dock-separator {
+  width: 100%;
+  height: 1px;
   margin-bottom: 8px;
+}
+
+.dock-wrapper.left .dock-separator,
+.dock-wrapper.right .dock-separator {
+  height: 100%;
+  width: 1px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%);
+}
+
+.dock-wrapper.left .dock-separator {
+  margin-right: 8px;
+}
+
+.dock-wrapper.right .dock-separator {
+  margin-left: 8px;
 }
 
 .dock {
   display: flex;
-  align-items: flex-end;
   gap: 8px;
   padding: 8px 12px;
 
@@ -43,6 +85,26 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.dock-wrapper.bottom .dock {
+  align-items: flex-end;
+}
+
+.dock-wrapper.left .dock,
+.dock-wrapper.right .dock {
+  flex-direction: column;
+  align-items: center;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Hide scrollbar */
+  scrollbar-width: none;
+}
+
+.dock-wrapper.left .dock::-webkit-scrollbar,
+.dock-wrapper.right .dock::-webkit-scrollbar {
+  display: none;
+}
+
 .dock:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.22);
@@ -54,7 +116,6 @@
   justify-content: center;
   position: relative;
   transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  /* Smooth macOS-like spring transition */
   will-change: transform, width, opacity;
 }
 
@@ -78,7 +139,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  /* Removed fixed width/height to allow JS control */
   transform-origin: bottom center;
   will-change: transform, width;
 
@@ -98,8 +158,8 @@
 }
 
 .dock-icon-image {
-  width: 56px;
-  height: 56px;
+  width: 100%;
+  height: 100%;
   position: relative;
   z-index: 1;
   user-select: none;
@@ -111,25 +171,9 @@
   outline: none;
 }
 
-/* Fix active indicator dot position so it doesn't lift with the icon */
-.dock-active-indicator {
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
-}
-
 /* Tooltip on hover */
 .dock-tooltip {
   position: absolute;
-  top: -45px;
-  left: 50%;
-  transform: translateX(-50%);
   background: rgba(45, 45, 45, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -146,6 +190,58 @@
   animation: fadeIn 0.1s ease-out;
 }
 
+.dock-wrapper.bottom .dock-tooltip {
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dock-wrapper.left .dock-tooltip {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 12px;
+}
+
+.dock-wrapper.right .dock-tooltip {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 12px;
+}
+
+/* Active Indicator */
+.dock-active-indicator {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+.dock-wrapper.bottom .dock-active-indicator {
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+}
+
+.dock-wrapper.left .dock-active-indicator {
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+}
+
+.dock-wrapper.right .dock-active-indicator {
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -158,29 +254,14 @@
   }
 }
 
-/* Smooth transitions for magnification */
-.dock-icon {
-  will-change: transform;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .dock {
     gap: 6px;
     padding: 6px 10px;
   }
 
-  .dock-icon {
-    width: 48px;
-    height: 48px;
-  }
-
-  .dock-icon-emoji {
-    font-size: 28px;
-  }
-
   .dock-icon-image {
-    width: 48px;
-    height: 48px;
+    width: 100%;
+    height: 100%;
   }
 }

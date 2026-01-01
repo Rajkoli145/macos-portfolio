@@ -1,0 +1,218 @@
+.mail-compose-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #1e1e1e;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+/* Compose Header */
+.mail-compose-header {
+    height: 52px;
+    background: rgba(45, 45, 45, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.compose-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ccc;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.mail-error-banner {
+    background: rgba(255, 69, 58, 0.15);
+    border-bottom: 1px solid rgba(255, 69, 58, 0.2);
+    color: #ff453a;
+    padding: 8px 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.mail-send-btn {
+    background: #007aff;
+    border: none;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 90px;
+    justify-content: center;
+}
+
+.mail-send-btn:hover:not(:disabled) {
+    background: #0063cc;
+}
+
+.mail-send-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.spin-icon {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Fields Area */
+.mail-compose-fields {
+    padding: 0 20px;
+}
+
+.compose-field {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 12px;
+}
+
+.compose-field label {
+    width: 60px;
+    font-size: 13px;
+    color: #777;
+    font-weight: 500;
+}
+
+.field-value-readonly {
+    flex: 1;
+}
+
+.recipient-chip {
+    background: #323232;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #eee;
+}
+
+.compose-field input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.compose-field input::placeholder {
+    color: #444;
+}
+
+.compose-field input:disabled {
+    opacity: 0.5;
+}
+
+/* Message Area */
+.mail-message-area {
+    flex: 1;
+    padding: 20px;
+}
+
+.mail-message-area textarea {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: #ddd;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+}
+
+.mail-message-area textarea:disabled {
+    opacity: 0.5;
+}
+
+/* Success State */
+.mail-sent-state {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #1e1e1e;
+    padding: 40px;
+}
+
+.success-icon {
+    color: #d1d1d6;
+    /* Subtle macOS light gray */
+    margin-bottom: 24px;
+    opacity: 0.2;
+}
+
+.mail-sent-state h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.mail-sent-state p {
+    color: #666;
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 300px;
+    margin-bottom: 32px;
+}
+
+.reset-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 8px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.reset-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Scrollbar */
+.mail-message-area textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mail-message-area textarea::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}

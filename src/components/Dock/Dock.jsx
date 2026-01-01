@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Dock.css";
+import { useSettings } from "../../context/SettingsContext";
 
 // Import icon assets
 import finderIcon from "../../assets/finder.png";
@@ -12,6 +13,7 @@ import vscodeIcon from "../../assets/vscode.png";
 import settingsIcon from "../../assets/settings.png";
 
 function Dock({ onOpenApp, openWindows = [] }) {
+  const { settings } = useSettings();
   const [mouseX, setMouseX] = useState(null);
   const [activeApp, setActiveApp] = useState(null);
   const [draggedAppIndex, setDraggedAppIndex] = useState(null);
@@ -29,7 +31,8 @@ function Dock({ onOpenApp, openWindows = [] }) {
   const handleMouseMove = (e) => {
     const dock = e.currentTarget;
     const rect = dock.getBoundingClientRect();
-    setMouseX(e.clientX - rect.left);
+    const x = settings.dock.position === 'bottom' ? e.clientX - rect.left : e.clientY - rect.top;
+    setMouseX(x);
   };
 
   const handleMouseLeave = () => {
@@ -37,28 +40,28 @@ function Dock({ onOpenApp, openWindows = [] }) {
   };
 
   const getIconTransform = (index) => {
-    if (mouseX === null) return { scale: 1, translateY: 0 };
+    if (mouseX === null || !settings.dock.magnification) return { scale: 1, translateY: 0 };
 
-    const iconWidth = 56;
+    const iconSize = settings.dock.iconSize;
     const gap = 8;
-    const iconCenter = index * (iconWidth + gap) + iconWidth / 2;
-
+    const iconCenter = index * (iconSize + gap) + iconSize / 2;
     const distance = Math.abs(mouseX - iconCenter);
 
-    const maxScale = 1.7;
+    const maxScale = 1.6;
     const minScale = 1;
     const range = 150;
 
-    let scale;
+    let scale = minScale;
     if (distance < range) {
       const normalizedDistance = distance / range;
       const smoothFactor = Math.cos(normalizedDistance * Math.PI / 2);
       scale = minScale + (maxScale - minScale) * smoothFactor;
-    } else {
-      scale = minScale;
     }
 
-    const translateY = scale > 1 ? -12 * Math.pow(scale - 1, 1.2) : 0;
+    // Only translate Y if dock is at bottom
+    const translateY = (settings.dock.position === 'bottom' && scale > 1)
+      ? -10 * (scale - 1)
+      : 0;
 
     return { scale, translateY };
   };
@@ -105,17 +108,28 @@ function Dock({ onOpenApp, openWindows = [] }) {
   };
 
   return (
-    <div className="dock-wrapper">
+    <div className={`dock-wrapper ${settings.dock.position}`}>
       <div className="dock-separator" />
       <div
         className="dock"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onDrop={handleDrop}
+        style={{
+          gap: '8px',
+          padding: '8px'
+        }}
       >
         {apps.map((app, index) => {
+          if (app.id === 'settings' && !openWindows.some(w => w.id === 'settings')) {
+            // Optional: Hide settings if not pinned? No, keep it.
+          }
+          if (app.id === 'finder' && !settings.dock.showRecents) {
+            // Logic for recents could go here, but for now we keep static list
+          }
+
           const { scale, translateY } = getIconTransform(index);
-          const baseWidth = 56;
+          const baseSize = settings.dock.iconSize;
           const isOpen = app.id === 'finder' || openWindows.some(win => win.id === app.id);
           const isDragging = draggedAppIndex === index;
           const isPinned = app.id === 'finder' || app.isTrash;
@@ -128,8 +142,8 @@ function Dock({ onOpenApp, openWindows = [] }) {
               onDragStart={(e) => handleDragStart(e, index)}
               onDragOver={(e) => handleDragOver(e, index)}
               style={{
-                width: `${baseWidth * scale}px`,
-                height: `${baseWidth}px`,
+                width: `${baseSize * scale}px`,
+                height: `${baseSize}px`,
                 transition: mouseX === null && !isDragging ? 'all 0.35s cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
                 opacity: isDragging ? 0.3 : 1
               }}
@@ -139,10 +153,10 @@ function Dock({ onOpenApp, openWindows = [] }) {
               <div
                 className="dock-icon"
                 style={{
-                  width: `${baseWidth}px`,
-                  height: `${baseWidth}px`,
+                  width: `${baseSize}px`,
+                  height: `${baseSize}px`,
                   transform: `scale(${scale}) translateY(${translateY}px)`,
-                  transformOrigin: 'bottom center'
+                  transformOrigin: settings.dock.position === 'bottom' ? 'bottom center' : 'center center'
                 }}
                 onMouseEnter={() => setActiveApp(app.name)}
                 onMouseLeave={() => setActiveApp(null)}

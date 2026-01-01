@@ -1,0 +1,305 @@
+.vscode-container {
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #cccccc;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* Activity Bar (Very Narrow Left Strip) */
+.vscode-activity-bar {
+    width: 48px;
+    background: #333333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+}
+
+.activity-icon {
+    margin-bottom: 20px;
+    color: #858585;
+    cursor: pointer;
+    transition: color 0.1s;
+}
+
+.activity-icon:hover,
+.activity-icon.active {
+    color: #ffffff;
+}
+
+.activity-icon.active {
+    border-left: 2px solid #ffffff;
+    padding-left: 4px;
+}
+
+/* Sidebar / Explorer */
+.vscode-sidebar {
+    width: 200px;
+    background: #252526;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    height: 35px;
+    padding: 10px 20px;
+    font-size: 11px;
+    font-weight: 400;
+    color: #bbbbbb;
+    letter-spacing: 0.5px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+}
+
+.explorer-tree {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 4px;
+}
+
+.explorer-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    font-size: 13px;
+    color: #cccccc;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.explorer-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.explorer-item.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.folder {
+    font-weight: 600;
+    color: #bbbbbb;
+}
+
+.folder svg {
+    color: #858585;
+}
+
+.file svg {
+    color: #519aba;
+    /* Default icon color */
+}
+
+/* Main Editor Area */
+.vscode-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+}
+
+/* Tabs */
+.editor-tabs {
+    height: 35px;
+    background: #252526;
+    display: flex;
+    overflow-x: auto;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    min-width: 120px;
+    max-width: 200px;
+    background: #2d2d2d;
+    border-right: 1px solid #1e1e1e;
+    font-size: 13px;
+    color: #969696;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab:hover {
+    color: #cccccc;
+}
+
+.tab.active {
+    background: #1e1e1e;
+    color: #ffffff;
+}
+
+.tab.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #007aff;
+}
+
+.close-tab {
+    margin-left: auto;
+    font-size: 16px;
+    opacity: 0;
+}
+
+.tab:hover .close-tab {
+    opacity: 0.6;
+}
+
+.close-tab:hover {
+    opacity: 1 !important;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+/* Editor View */
+.editor-view {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    font-family: "SF Mono", "Monaco", "Consolas", monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.code-renderer {
+    counter-reset: line;
+}
+
+.editor-line {
+    display: flex;
+    gap: 20px;
+}
+
+.line-number {
+    min-width: 30px;
+    text-align: right;
+    color: #858585;
+    user-select: none;
+}
+
+.line-content {
+    white-space: pre;
+}
+
+/* Syntax Highlighting (Dark+ Mimic) */
+.hl-keyword {
+    color: #569cd6;
+}
+
+/* Blue */
+.hl-type {
+    color: #4ec9b0;
+}
+
+/* Teal */
+.hl-string {
+    color: #ce9178;
+}
+
+/* Orange/Red */
+.hl-comment {
+    color: #6a9955;
+    font-style: italic;
+}
+
+/* Green */
+.hl-number {
+    color: #b5cea8;
+}
+
+/* Light Green */
+.hl-component {
+    color: #dcdcaa;
+}
+
+/* Soft Yellow */
+.hl-header {
+    color: #569cd6;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.hl-bullet {
+    color: #4ec9b0;
+    margin-left: 10px;
+}
+
+.hl-text {
+    color: #cccccc;
+}
+
+/* Status Bar */
+.editor-status-bar {
+    height: 22px;
+    background: #007acc;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 11px;
+}
+
+.status-left,
+.status-right {
+    display: flex;
+    gap: 12px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.status-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.editor-empty {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vscode-logo-watermark {
+    color: #ffffff;
+}
+
+/* Custom Scrollbar for VS Code feel */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.1);
+}

@@ -35,6 +35,7 @@ export const useWindowManager = () => {
                 Component: Component,
                 zIndex: newZ,
                 position: { x: 100 + prev.length * 30, y: 50 + prev.length * 30 },
+                size: { width: 1100, height: 700 },
                 isMinimized: false,
                 isMaximized: false,
                 prevPosition: null // For restoring from maximized
@@ -71,6 +72,12 @@ export const useWindowManager = () => {
         );
     }, []);
 
+    const updateWindowSize = useCallback((appId, newSize) => {
+        setOpenWindows((prev) =>
+            prev.map((w) => (w.id === appId && !w.isMaximized ? { ...w, size: newSize } : w))
+        );
+    }, []);
+
     return {
         openWindows,
         openApp,
@@ -78,6 +85,7 @@ export const useWindowManager = () => {
         focusWindow,
         minimizeWindow,
         toggleMaximize,
-        updateWindowPosition
+        updateWindowPosition,
+        updateWindowSize
     };
 };

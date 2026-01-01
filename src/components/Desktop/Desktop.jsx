@@ -5,22 +5,31 @@ import FinderApp from "../Apps/FinderApp";
 import TerminalApp from "../Apps/TerminalApp";
 import NotesApp from "../Apps/NotesApp";
 import SafariApp from "../Apps/SafariApp";
+import MailApp from "../Apps/MailApp";
+import VSCodeApp from "../Apps/VSCodeApp";
+import SettingsApp from "../Apps/SettingsApp";
+import { useSettings } from "../../context/SettingsContext";
 import { useWindowManager } from "../../hooks/useWindowManager";
 import "./Desktop.css";
+
+// Wallpaper Assets
+import defaultWallpaper from "../../assets/mac-wallpaper.jpg";
+import peakWallpaper from "../../assets/macos-sierra-mountain-peak-sunset-evening-stock-5k-5120x3684-3987.jpg";
 
 const APP_COMPONENTS = {
   finder: FinderApp,
   terminal: TerminalApp,
   notes: NotesApp,
   safari: SafariApp,
-  settings: FinderApp,
-  mail: NotesApp,    // Placeholder
-  vscode: TerminalApp // Placeholder
+  settings: SettingsApp,
+  mail: MailApp,
+  vscode: VSCodeApp
 };
 
 const APP_DOCK_ORDER = ['finder', 'terminal', 'notes', 'safari', 'mail', 'vscode', 'settings', 'trash'];
 
 function Desktop() {
+  const { settings } = useSettings();
   const {
     openWindows,
     openApp,
@@ -28,8 +37,26 @@ function Desktop() {
     focusWindow,
     minimizeWindow,
     toggleMaximize,
-    updateWindowPosition
+    updateWindowPosition,
+    updateWindowSize
   } = useWindowManager();
+
+  const getWallpaperStyle = () => {
+    switch (settings.desktop.wallpaper) {
+      case "peak": return { backgroundImage: `url(${peakWallpaper})` };
+      case "ocean": return { background: "linear-gradient(135deg, #00c6fb 0%, #005bea 100%)" };
+      case "minimal": return { background: "#121212" };
+      case "default":
+      default: return { backgroundImage: `url(${defaultWallpaper})` };
+    }
+  };
+
+  const getDesktopAreaStyle = () => {
+    const pos = settings.dock.position;
+    if (pos === 'left') return { paddingLeft: '100px', paddingBottom: '40px' };
+    if (pos === 'right') return { paddingRight: '100px', paddingBottom: '40px' };
+    return { paddingBottom: '100px' }; // Default bottom
+  };
 
   const handleOpenApp = (appId, appName) => {
     const AppComponent = APP_COMPONENTS[appId];
@@ -39,43 +66,32 @@ function Desktop() {
   };
 
   const getDockX = (appId) => {
-    const index = APP_DOCK_ORDER.indexOf(appId);
-    if (index === -1) return '50vw';
-
-    // Approximate calculation: Dock is centered, each icon is ~64px (56+8 gap)
-    const iconWidth = 64;
-    const totalDockWidth = APP_DOCK_ORDER.length * iconWidth;
-    const leftOffset = (index * iconWidth) + (iconWidth / 2);
-    return `calc(50vw - (${totalDockWidth / 2}px) + ${leftOffset}px)`;
+    // Basic centering logic, Dock itself handles detailed layout
+    // This prop helps the Genie effect know where to minimize to
+    // For now we default to center as capturing exact dock item position is complex without refs
+    return '50vw';
   };
 
   return (
-    <div className="desktop">
+    <div className="desktop" style={getWallpaperStyle()}>
       <MenuBar onOpenApp={handleOpenApp} />
 
-      <div className="desktop-area">
-        {openWindows.map((win) => {
-          const AppContent = win.Component;
-          return (
-            <Window
-              key={win.id}
-              id={win.id}
-              title={win.name}
-              position={win.position}
-              zIndex={win.zIndex}
-              isMinimized={win.isMinimized}
-              isMaximized={win.isMaximized}
-              onClose={closeWindow}
-              onFocus={focusWindow}
-              onMinimize={minimizeWindow}
-              onMaximize={toggleMaximize}
-              onDrag={updateWindowPosition}
-              dockX={getDockX(win.id)}
-            >
-              <AppContent />
-            </Window>
-          );
-        })}
+      <div className="desktop-area" style={getDesktopAreaStyle()}>
+        {openWindows.map((window) => (
+          <Window
+            key={window.id}
+            {...window}
+            onClose={closeWindow}
+            onFocus={focusWindow}
+            onMinimize={minimizeWindow}
+            onMaximize={toggleMaximize}
+            onDrag={updateWindowPosition}
+            onResize={updateWindowSize}
+            dockX={getDockX(window.id)}
+          >
+            {window.Component && <window.Component />}
+          </Window>
+        ))}
       </div>
 
       <Dock onOpenApp={handleOpenApp} openWindows={openWindows} />
