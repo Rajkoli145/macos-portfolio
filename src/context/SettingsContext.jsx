@@ -46,6 +46,15 @@ export const SettingsProvider = ({ children }) => {
                 method: "emailjs",
                 autoReply: false,
                 sound: true,
+            },
+            availability: {
+                freelance: true,
+                fullTime: false,
+                remote: true,
+            },
+            contact: {
+                autoReply: false,
+                responseTime: "Within 24 hours",
             }
         };
     });

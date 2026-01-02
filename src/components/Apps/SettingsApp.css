@@ -82,7 +82,9 @@
 
 .profile-info .subtitle {
     font-size: 11px;
-    color: #888;
+    color: #007aff;
+    /* Blue like Apple ID detail */
+    font-weight: 500;
 }
 
 .sidebar-scrollable {
@@ -409,4 +411,161 @@
 .main-scrollable::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
     background-clip: content-box;
+}
+
+/* Portfolio Specific UI Components */
+.item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.mac-btn {
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: background 0.2s;
+}
+
+.mac-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.mac-btn.primary {
+    background: #007aff;
+}
+
+.mac-btn.primary:hover {
+    background: #0063ce;
+}
+
+.settings-value-text {
+    font-size: 13px;
+    color: #888;
+}
+
+.settings-row-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Progress Bar Styling */
+.settings-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 4px 0;
+}
+
+.settings-progress-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #eee;
+}
+
+.progress-track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Terminal Preview Styling */
+.terminal-preview-box {
+    background: #000;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    font-family: "JetBrains Mono", "SF Mono", Menlo, monospace;
+    margin-top: 10px;
+}
+
+.term-header {
+    background: #252525;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.term-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.term-dot.red {
+    background: #ff5f56;
+}
+
+.term-dot.yellow {
+    background: #ffbd2e;
+}
+
+.term-dot.green {
+    background: #27c93f;
+}
+
+.term-title {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    margin-right: 30px;
+}
+
+.term-body {
+    padding: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.term-line {
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.term-prompt {
+    color: #34c759;
+    font-weight: bold;
+}
+
+.term-out {
+    color: #aaa;
+    margin-bottom: 12px;
+    padding-left: 2px;
+}
+
+.term-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: #fff;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
 }
