@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./NotesApp.css";
-import { useSettings } from "../../context/SettingsContext"; // Import context
+import { useSettings } from "../../context/SettingsContext";
 import {
   FileText,
   ChevronRight,
@@ -13,24 +13,86 @@ import {
   Plus
 } from "lucide-react";
 
-// ... (Constants DEVELOPER_NOTES and DEVELOPER_DRAFTS remain unchanged)
+const DEVELOPER_NOTES = [
+  {
+    id: "phil",
+    title: "Coding Philosophy",
+    modified: "Jan 1, 2026",
+    content: "## How I Think\nSimple > Clever: Maintainable code is always better than a complex one-liner. Ship > Polish: Impact comes from software that is actually in users' hands. Readability Matters: Write code for the humans who will read it later. Data First: Decouple your logic from your data structures for maximum flexibility."
+  },
+  {
+    id: "rules",
+    title: "Engineering Rules",
+    modified: "Dec 30, 2025",
+    content: "## Rules for Success\n1. Measure twice, cut once. 2. Automate the boring stuff. 3. Test your edge cases. 4. Documentation is a feature."
+  }
+];
+
+const folders = [
+  { id: "all", label: "All Notes", icon: List },
+  { id: "visitor", label: "Visitor Notes", icon: Folder },
+  { id: "trash", label: "Recently Deleted", icon: Trash2 },
+];
 
 function NotesApp() {
-  const { settings } = useSettings(); // Use settings
+  const { settings } = useSettings();
   const [activeFolder, setActiveFolder] = useState("all");
   const [activeNoteId, setActiveNoteId] = useState("phil");
-  // ... (State initialization remains same)
+  const [visitorNotes, setVisitorNotes] = useState(() => {
+    const saved = localStorage.getItem("visitor_notes");
+    return saved ? JSON.parse(saved) : [
+      { id: "welcome", title: "Welcome Note", content: "Feel free to leave a note here! It stays in your browser.", modified: "Jan 2, 2026" }
+    ];
+  });
 
-  // ... (Helper functions remain same)
+  useEffect(() => {
+    localStorage.setItem("visitor_notes", JSON.stringify(visitorNotes));
+  }, [visitorNotes]);
+
+  const currentNotes = activeFolder === "all" ? DEVELOPER_NOTES : (activeFolder === "visitor" ? visitorNotes : []);
+  const activeNote = currentNotes.find(n => n.id === activeNoteId) || currentNotes[0];
+
+  const handleUpdateVisitorNote = (field, value) => {
+    if (activeFolder !== "visitor") return;
+    setVisitorNotes(prev => prev.map(n =>
+      n.id === activeNoteId ? { ...n, [field]: value, modified: new Date().toLocaleDateString() } : n
+    ));
+  };
+
+  const handleAddVisitorNote = () => {
+    const newNote = {
+      id: Date.now().toString(),
+      title: "New Note",
+      content: "",
+      modified: new Date().toLocaleDateString()
+    };
+    setVisitorNotes([newNote, ...visitorNotes]);
+    setActiveNoteId(newNote.id);
+  };
+
+  const handleDeleteNote = (id) => {
+    if (activeFolder !== "visitor") return;
+    setVisitorNotes(prev => prev.filter(n => n.id !== id));
+    if (activeNoteId === id) setActiveNoteId(null);
+  };
 
   const getWordCount = (text) => {
     if (!text) return 0;
     return text.trim().split(/\s+/).filter(w => w.length > 0).length;
   };
 
+  const renderMarkdown = (text) => {
+    if (!text) return null;
+    return text.split('\n').map((line, i) => {
+      if (line.startsWith('## ')) return <h2 key={i} className="md-h2">{line.replace('## ', '')}</h2>;
+      if (line.match(/^\d+\. /)) return <li key={i} className="md-li"><strong>{line.split('. ')[0]}.</strong> {line.split('. ')[1]}</li>;
+      if (line.startsWith('* ')) return <li key={i} className="md-li">{line.replace('* ', '')}</li>;
+      return <p key={i} className="md-p">{line}</p>;
+    });
+  };
+
   return (
     <div className="notes-container">
-      {/* Sidebar (unchanged) */}
       <aside className="notes-sidebar-nav">
         <div className="nav-section">
           {folders.map(folder => (
@@ -39,7 +101,6 @@ function NotesApp() {
               className={`nav-link ${activeFolder === folder.id ? 'active' : ''}`}
               onClick={() => {
                 setActiveFolder(folder.id);
-                // logic unchanged
                 const firstNote = folder.id === 'all' ? DEVELOPER_NOTES[0] : (folder.id === 'visitor' ? visitorNotes[0] : null);
                 if (firstNote) setActiveNoteId(firstNote.id);
                 else setActiveNoteId(null);
@@ -53,9 +114,7 @@ function NotesApp() {
       </aside>
 
       <div className="notes-main-area">
-        {/* Toolbar (unchanged) */}
         <header className="notes-toolbar-alt">
-          {/* ... toolbar content ... */}
           <div className="toolbar-left-group">
             <span className="folder-name-label">
               {folders.find(f => f.id === activeFolder)?.label}
@@ -81,7 +140,6 @@ function NotesApp() {
 
         <div className="notes-content-split">
           <div className="notes-list-pane">
-            {/* Table Logic Unchanged */}
             <table className="list-table">
               <thead>
                 <tr>

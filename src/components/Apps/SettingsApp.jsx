@@ -3,7 +3,6 @@ import "./SettingsApp.css";
 import { useSettings } from "../../context/SettingsContext";
 import {
     Monitor,
-    Layers,
     Navigation,
     Terminal as TerminalIcon,
     Folder,
@@ -13,12 +12,67 @@ import {
     ChevronRight,
     Sun,
     Moon,
-    ToggleLeft,
-    ToggleRight
+    Wifi,
+    Bluetooth,
+    Globe,
+    Shield,
+    Battery,
+    Search,
+    User,
+    Settings as SettingsIcon,
+    Accessibility,
+    Palette,
+    Wallpaper as WallpaperIcon,
+    Speaker,
+    Bell,
+    Clock,
+    Skull,
+    History,
+    HardDrive,
+    BadgeCheck,
+    RefreshCw,
+    LogIn,
+    Share2,
+    ChevronLeft,
+    ArrowRightLeft
 } from "lucide-react";
 
+/** constants outside to avoid re-creation but within the same file scope **/
+const SIDEBAR_GROUPS = [
+    {
+        id: "networking",
+        items: [
+            { id: "wifi", label: "Wi-Fi", icon: Wifi, color: "#007aff" },
+            { id: "bluetooth", label: "Bluetooth", icon: Bluetooth, color: "#007aff" },
+            { id: "network", label: "Network", icon: Globe, color: "#007aff" },
+            { id: "vpn", label: "VPN", icon: Shield, color: "#007aff" },
+            { id: "battery", label: "Battery", icon: Battery, color: "#34c759" },
+        ]
+    },
+    {
+        id: "system",
+        items: [
+            { id: "general", label: "General", icon: SettingsIcon, color: "#8e8e93" },
+            { id: "accessibility", label: "Accessibility", icon: Accessibility, color: "#007aff" },
+            { id: "appearance", label: "Appearance", icon: Palette, color: "#34c759" },
+            { id: "wallpaper", label: "Wallpaper", icon: WallpaperIcon, color: "#00a2ff" },
+            { id: "displays", label: "Displays", icon: Monitor, color: "#007aff" },
+            { id: "dock", label: "Desktop & Dock", icon: Navigation, color: "#5856d6" },
+        ]
+    },
+    {
+        id: "personal",
+        items: [
+            { id: "notifications", label: "Notifications", icon: Bell, color: "#ff3b30" },
+            { id: "sound", label: "Sound", icon: Speaker, color: "#ff3b30" },
+            { id: "focus", label: "Focus", icon: Moon, color: "#5856d6" },
+            { id: "screentime", label: "Screen Time", icon: Clock, color: "#5856d6" },
+        ]
+    }
+];
+
 const SETTINGS_SECTIONS = [
-    { id: "appearance", label: "Appearance", icon: Layers },
+    { id: "appearance", label: "Appearance", icon: Palette },
     { id: "desktop", label: "Desktop", icon: Monitor },
     { id: "dock", label: "Dock", icon: Navigation },
     { id: "terminal", label: "Terminal", icon: TerminalIcon },
@@ -38,216 +92,203 @@ const Toggle = ({ enabled, onToggle }) => (
 );
 
 const SettingsApp = () => {
-    const [activeSection, setActiveSection] = useState("appearance");
+    const [activeSection, setActiveSection] = useState("general");
+    const [searchQuery, setSearchQuery] = useState("");
     const { settings, updateSetting } = useSettings();
+
+    const renderHeader = (title, icon, description) => {
+        const Icon = icon;
+        return (
+            <div className="section-header">
+                <div className="section-header-icon">
+                    <Icon size={40} />
+                </div>
+                <div className="section-header-text">
+                    <h1>{title}</h1>
+                    <p>{description}</p>
+                </div>
+            </div>
+        );
+    };
+
+    const renderListItem = (label, icon, onClick) => {
+        const Icon = icon;
+        return (
+            <div className="settings-list-item" onClick={onClick}>
+                <div className="item-left">
+                    {Icon && <div className="item-icon"><Icon size={16} /></div>}
+                    <span>{label}</span>
+                </div>
+                <ChevronRight size={14} className="chevron" />
+            </div>
+        );
+    };
 
     const renderSection = () => {
         switch (activeSection) {
-            case "appearance":
+            case "general":
                 return (
                     <div className="settings-content">
-                        <h2>Appearance</h2>
-                        <div className="settings-group">
-                            <label>Theme</label>
-                            <div className="segmented-control">
-                                <button
-                                    className={settings.appearance.theme === "light" ? "active" : ""}
-                                    onClick={() => updateSetting("appearance", "theme", "light")}
-                                >
-                                    <Sun size={14} /> Light
-                                </button>
-                                <button
-                                    className={settings.appearance.theme === "dark" ? "active" : ""}
-                                    onClick={() => updateSetting("appearance", "theme", "dark")}
-                                >
-                                    <Moon size={14} /> Dark
-                                </button>
-                            </div>
+                        {renderHeader("General", SettingsIcon, "Manage your overall setup and preferences for Mac, such as software updates, device language, AirDrop, and more.")}
+
+                        <div className="settings-list-box">
+                            {renderListItem("About", Info)}
+                            {renderListItem("Software Update", RefreshCw)}
+                            {renderListItem("Storage", HardDrive)}
                         </div>
-                        <div className="settings-group">
-                            <label>Accent Color</label>
-                            <div className="color-grid">
-                                {["blue", "purple", "green", "orange"].map(color => (
-                                    <button
-                                        key={color}
-                                        className={`color-btn ${color} ${settings.appearance.accentColor === color ? "active" : ""}`}
-                                        onClick={() => updateSetting("appearance", "accentColor", color)}
-                                    />
-                                ))}
-                            </div>
+
+                        <div className="settings-list-box">
+                            {renderListItem("AppleCare & Warranty", BadgeCheck)}
                         </div>
-                        <div className="settings-group">
-                            <label>Window Transparency</label>
-                            <div className="slider-box">
-                                <input
-                                    type="range"
-                                    min="20" max="100"
-                                    value={settings.appearance.transparency}
-                                    onChange={(e) => updateSetting("appearance", "transparency", parseInt(e.target.value))}
-                                />
-                                <span>{settings.appearance.transparency}%</span>
-                            </div>
+
+                        <div className="settings-list-box">
+                            {renderListItem("AirDrop & Handoff", Navigation)}
+                            {renderListItem("AutoFill & Passwords", Shield)}
+                            {renderListItem("Date & Time", Clock)}
+                            {renderListItem("Language & Region", Globe)}
+                            {renderListItem("Login Items & Extensions", LogIn)}
                         </div>
-                        <div className="settings-group row">
-                            <label>Reduce Motion</label>
-                            <Toggle
-                                enabled={settings.appearance.reduceMotion}
-                                onToggle={(val) => updateSetting("appearance", "reduceMotion", val)}
-                            />
+
+                        <div className="settings-list-box">
+                            {renderListItem("Sharing", Share2)}
+                            {renderListItem("Startup Disk", HardDrive)}
+                            {renderListItem("Time Machine", History)}
+                        </div>
+
+                        <div className="settings-list-box">
+                            {renderListItem("Device Management", Shield)}
+                        </div>
+
+                        <div className="settings-list-box">
+                            {renderListItem("Transfer or Reset", ArrowRightLeft)}
                         </div>
                     </div>
                 );
-            case "desktop":
+            case "appearance":
                 return (
                     <div className="settings-content">
-                        <h2>Desktop</h2>
-                        <div className="settings-group">
-                            <label>Wallpaper</label>
-                            <div className="wallpaper-grid">
-                                {["default", "peak", "ocean", "minimal"].map(wp => (
-                                    <div
-                                        key={wp}
-                                        className={`wallpaper-thumb ${wp} ${settings.desktop.wallpaper === wp ? "active" : ""}`}
-                                        onClick={() => updateSetting("desktop", "wallpaper", wp)}
-                                    />
-                                ))}
+                        {renderHeader("Appearance", Palette, "Customize how your desktop looks and behaves.")}
+                        <div className="settings-group-card">
+                            <label>Appearance</label>
+                            <div className="theme-selector">
+                                <div
+                                    className={`theme-option ${settings.appearance.theme === "light" ? "active" : ""}`}
+                                    onClick={() => updateSetting("appearance", "theme", "light")}
+                                >
+                                    <div className="theme-preview light">
+                                        <div className="p-top"></div>
+                                        <div className="p-side"></div>
+                                    </div>
+                                    <span>Light</span>
+                                </div>
+                                <div
+                                    className={`theme-option ${settings.appearance.theme === "dark" ? "active" : ""}`}
+                                    onClick={() => updateSetting("appearance", "theme", "dark")}
+                                >
+                                    <div className="theme-preview dark">
+                                        <div className="p-top"></div>
+                                        <div className="p-side"></div>
+                                    </div>
+                                    <span>Dark</span>
+                                </div>
                             </div>
                         </div>
-                        <div className="settings-group row">
-                            <label>Show Desktop Icons</label>
-                            <Toggle
-                                enabled={settings.desktop.showIcons}
-                                onToggle={(val) => updateSetting("desktop", "showIcons", val)}
-                            />
+
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <label>Accent Color</label>
+                                <div className="accent-colors">
+                                    {["blue", "purple", "green", "orange"].map(color => (
+                                        <div
+                                            key={color}
+                                            className={`accent-circle ${color} ${settings.appearance.accentColor === color ? "active" : ""}`}
+                                            onClick={() => updateSetting("appearance", "accentColor", color)}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
                         </div>
-                        <div className="settings-group">
-                            <label>Clock Format</label>
-                            <select
-                                value={settings.desktop.clockFormat}
-                                onChange={(e) => updateSetting("desktop", "clockFormat", e.target.value)}
-                            >
-                                <option value="12h">12-hour</option>
-                                <option value="24h">24-hour</option>
-                            </select>
+
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <label>Reduce Motion</label>
+                                <Toggle
+                                    enabled={settings.appearance.reduceMotion}
+                                    onToggle={(val) => updateSetting("appearance", "reduceMotion", val)}
+                                />
+                            </div>
                         </div>
                     </div>
                 );
             case "dock":
                 return (
                     <div className="settings-content">
-                        <h2>Dock</h2>
-                        <div className="settings-group">
-                            <label>Position</label>
-                            <select
-                                value={settings.dock.position}
-                                onChange={(e) => updateSetting("dock", "position", e.target.value)}
-                            >
-                                <option value="bottom">Bottom</option>
-                                <option value="left">Left</option>
-                                <option value="right">Right</option>
-                            </select>
-                        </div>
-                        <div className="settings-group">
-                            <label>Icon Size</label>
-                            <div className="slider-box">
-                                <input
-                                    type="range"
-                                    min="40" max="80"
-                                    value={settings.dock.iconSize}
-                                    onChange={(e) => updateSetting("dock", "iconSize", parseInt(e.target.value))}
-                                />
-                                <span>{settings.dock.iconSize}px</span>
+                        {renderHeader("Desktop & Dock", Navigation, "Manage settings for your Dock and desktop environment.")}
+
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <label>Position on screen</label>
+                                <select
+                                    value={settings.dock.position}
+                                    onChange={(e) => updateSetting("dock", "position", e.target.value)}
+                                >
+                                    <option value="bottom">Bottom</option>
+                                    <option value="left">Left</option>
+                                    <option value="right">Right</option>
+                                </select>
                             </div>
                         </div>
-                        <div className="settings-group row">
-                            <label>Magnification</label>
-                            <Toggle
-                                enabled={settings.dock.magnification}
-                                onToggle={(val) => updateSetting("dock", "magnification", val)}
-                            />
-                        </div>
-                        <div className="settings-group row">
-                            <label>Show Recent Apps</label>
-                            <Toggle
-                                enabled={settings.dock.showRecents}
-                                onToggle={(val) => updateSetting("dock", "showRecents", val)}
-                            />
-                        </div>
-                    </div>
-                );
-            case "terminal":
-                return (
-                    <div className="settings-content">
-                        <h2>Terminal</h2>
-                        <div className="settings-group">
-                            <label>Font Size</label>
-                            <select
-                                value={settings.terminal.fontSize}
-                                onChange={(e) => updateSetting("terminal", "fontSize", e.target.value)}
-                            >
-                                <option value="small">Small</option>
-                                <option value="medium">Medium</option>
-                                <option value="large">Large</option>
-                            </select>
-                        </div>
-                        <div className="settings-group">
-                            <label>Prompt Style</label>
-                            <select
-                                value={settings.terminal.promptStyle}
-                                onChange={(e) => updateSetting("terminal", "promptStyle", e.target.value)}
-                            >
-                                <option value="minimal">Minimal ($)</option>
-                                <option value="powerline">Powerline</option>
-                                <option value="classic">Classic (user@host)</option>
-                            </select>
-                        </div>
-                        <div className="settings-group">
-                            <label>Typing Speed</label>
+
+                        <div className="settings-group-card">
+                            <label>Size</label>
                             <input
                                 type="range"
-                                min="10" max="100"
-                                value={settings.terminal.typingSpeed}
-                                onChange={(e) => updateSetting("terminal", "typingSpeed", parseInt(e.target.value))}
+                                min="32" max="80"
+                                value={settings.dock.iconSize}
+                                onChange={(e) => updateSetting("dock", "iconSize", parseInt(e.target.value))}
                             />
                         </div>
-                        <div className="settings-group row">
-                            <label>Clear on Close</label>
-                            <Toggle
-                                enabled={settings.terminal.clearOnClose}
-                                onToggle={(val) => updateSetting("terminal", "clearOnClose", val)}
-                            />
+
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <label>Magnification</label>
+                                <Toggle
+                                    enabled={settings.dock.magnification}
+                                    onToggle={(val) => updateSetting("dock", "magnification", val)}
+                                />
+                            </div>
                         </div>
                     </div>
                 );
-            case "about":
+            case "wallpaper":
                 return (
-                    <div className="settings-content about-section">
-                        <div className="about-header">
-                            <div className="system-logo"></div>
-                            <h2>macOS Web Edition</h2>
-                            <p>Version 1.0.0 (Portfolio Build)</p>
-                        </div>
-                        <div className="details-list">
-                            <div className="detail-item">
-                                <span className="label">Developer</span>
-                                <span className="value">Raj Koli</span>
-                            </div>
-                            <div className="detail-item">
-                                <span className="label">Stack</span>
-                                <span className="value">React, Lucide, CSS Modules</span>
-                            </div>
-                            <div className="detail-item">
-                                <span className="label">Build Date</span>
-                                <span className="value">January 2026</span>
-                            </div>
+                    <div className="settings-content">
+                        {renderHeader("Wallpaper", WallpaperIcon, "Choose a desktop picture or solid color.")}
+                        <div className="wallpaper-grid-large">
+                            {["default", "peak", "ocean", "minimal"].map(wp => (
+                                <div
+                                    key={wp}
+                                    className={`wallpaper-card ${wp} ${settings.desktop.wallpaper === wp ? "active" : ""}`}
+                                    onClick={() => updateSetting("desktop", "wallpaper", wp)}
+                                >
+                                    <div className="wp-thumb" />
+                                    <span>{wp.charAt(0).toUpperCase() + wp.slice(1)}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 );
             default:
                 return (
-                    <div className="settings-content">
-                        <h2>{activeSection.charAt(0).toUpperCase() + activeSection.slice(1)} Settings</h2>
-                        <p className="placeholder-text">This section contains settings for {activeSection}. Future version will include more toggles.</p>
+                    <div className="settings-content placeholder">
+                        {renderHeader(
+                            activeSection.charAt(0).toUpperCase() + activeSection.slice(1),
+                            SettingsIcon,
+                            "Configuration options for this section."
+                        )}
+                        <div className="settings-list-box">
+                            <p className="placeholder-text">This section is currently under development.</p>
+                        </div>
                     </div>
                 );
         }
@@ -256,23 +297,74 @@ const SettingsApp = () => {
     return (
         <div className="settings-app">
             <aside className="settings-sidebar">
-                <div className="sidebar-list">
-                    {SETTINGS_SECTIONS.map(section => (
-                        <div
-                            key={section.id}
-                            className={`sidebar-item ${activeSection === section.id ? "active" : ""}`}
-                            onClick={() => setActiveSection(section.id)}
-                        >
-                            <div className={`icon-box ${section.id}`}>
-                                <section.icon size={16} />
-                            </div>
-                            <span>{section.label}</span>
+                <div className="sidebar-top">
+                    <div className="sidebar-search">
+                        <Search size={14} className="search-icon" />
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="sidebar-profile">
+                        <div className="avatar">
+                            <Skull size={32} />
+                        </div>
+                        <div className="profile-info">
+                            <span className="name">Raj Koli</span>
+                            <span className="subtitle">Apple Account</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="sidebar-scrollable">
+                    {SIDEBAR_GROUPS.map((group, gIdx) => (
+                        <div key={group.id} className="sidebar-group">
+                            {group.items.map(item => (
+                                <div
+                                    key={item.id}
+                                    className={`sidebar-item ${activeSection === item.id ? "active" : ""}`}
+                                    onClick={() => setActiveSection(item.id)}
+                                >
+                                    <div className="item-icon-wrapper" style={{ backgroundColor: item.color }}>
+                                        <item.icon size={14} />
+                                    </div>
+                                    <span>{item.label}</span>
+                                </div>
+                            ))}
+                            {gIdx < SIDEBAR_GROUPS.length - 1 && <div className="sidebar-separator" />}
                         </div>
                     ))}
+
+                    <div className="sidebar-separator" />
+                    <div className="sidebar-group">
+                        {SETTINGS_SECTIONS.filter(s => !SIDEBAR_GROUPS.some(g => g.items.some(i => i.id === s.id))).map(section => (
+                            <div
+                                key={section.id}
+                                className={`sidebar-item ${activeSection === section.id ? "active" : ""}`}
+                                onClick={() => setActiveSection(section.id)}
+                            >
+                                <div className="item-icon-wrapper grey">
+                                    <section.icon size={14} />
+                                </div>
+                                <span>{section.label}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </aside>
             <main className="settings-main">
-                {renderSection()}
+                <nav className="settings-nav">
+                    <div className="nav-buttons">
+                        <button className="nav-btn"><ChevronLeft size={18} /></button>
+                        <button className="nav-btn disabled"><ChevronRight size={18} /></button>
+                    </div>
+                </nav>
+                <div className="main-scrollable">
+                    {renderSection()}
+                </div>
             </main>
         </div>
     );

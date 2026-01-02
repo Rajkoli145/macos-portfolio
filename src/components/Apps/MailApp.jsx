@@ -16,6 +16,7 @@ const EMAILJS_PUBLIC_KEY = "iZ9X6AvWF4KE1fWnd";
 
 function MailApp() {
     const [formData, setFormData] = useState({
+        name: "",
         from_email: "",
         subject: "",
         message: ""
@@ -39,10 +40,18 @@ function MailApp() {
         setError(null);
 
         const templateParams = {
+            // Sending multiple variations to ensure template matching
+            from_name: formData.name,
+            name: formData.name,
+            user_name: formData.name,
+
             from_email: formData.from_email,
-            to_email: developerEmail,
+            email: formData.from_email,
+            user_email: formData.from_email,
+
             subject: formData.subject,
             message: formData.message,
+            to_email: developerEmail,
         };
 
         emailjs.send(
@@ -63,7 +72,7 @@ function MailApp() {
     };
 
     const handleReset = () => {
-        setFormData({ from_email: "", subject: "", message: "" });
+        setFormData({ name: "", from_email: "", subject: "", message: "" });
         setIsSent(false);
         setError(null);
     };
@@ -109,6 +118,18 @@ function MailApp() {
                             <span>Raj Koli &lt;{developerEmail}&gt;</span>
                         </div>
                     </div>
+                </div>
+
+                <div className="compose-field">
+                    <label>Name:</label>
+                    <input
+                        type="text"
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        spellCheck="false"
+                        disabled={isSending}
+                    />
                 </div>
 
                 <div className="compose-field">
