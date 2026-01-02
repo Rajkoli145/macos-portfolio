@@ -22,52 +22,56 @@
 }
 
 .sidebar-search {
-    position: relative;
-    margin-bottom: 24px;
+    padding: 12px 12px 8px 12px;
 }
 
-.search-icon {
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon-inside {
     position: absolute;
     left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #7a7a7a;
+    color: #888;
+    z-index: 1;
 }
 
 .sidebar-search input {
     width: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    border: none;
+    background: rgba(255, 255, 255, 0.08);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
-    padding: 4px 10px 4px 28px;
+    padding: 5px 8px 5px 28px;
     color: #fff;
     font-size: 13px;
     outline: none;
+    transition: all 0.2s;
+}
+
+.sidebar-search input:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #007aff;
 }
 
 .sidebar-profile {
+    padding: 0 16px 20px 16px;
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.1s;
 }
 
-.sidebar-profile:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.avatar {
-    width: 44px;
-    height: 44px;
-    background: #444;
+.profile-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #1d1d1f, #3a3a3c);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #eee;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .profile-info {
@@ -75,16 +79,18 @@
     flex-direction: column;
 }
 
-.profile-info .name {
+.profile-info .title {
+    display: block;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    color: #fff;
 }
 
 .profile-info .subtitle {
+    display: block;
     font-size: 11px;
-    color: #007aff;
-    /* Blue like Apple ID detail */
-    font-weight: 500;
+    color: #aaa;
+    margin-top: 1px;
 }
 
 .sidebar-scrollable {
@@ -96,15 +102,15 @@
 .sidebar-group {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    padding: 0 8px;
 }
 
 .sidebar-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 4px 8px;
-    border-radius: 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
     font-size: 13px;
     font-weight: 400;
     cursor: pointer;
@@ -136,10 +142,18 @@
     background: #8e8e93;
 }
 
-.sidebar-separator {
-    height: 0.5px;
-    background: rgba(255, 255, 255, 0.05);
-    margin: 4px 8px;
+.sidebar-group-container {
+    margin-bottom: 24px;
+    /* Large gap for clear visual separation */
+}
+
+.sidebar-group-container.minimalist {
+    margin-bottom: 24px;
+}
+
+.sidebar-group-label {
+    display: none;
+    /* Hide text as requested */
 }
 
 /* Main Content Styling - Matching macOS 1:1 */
@@ -195,57 +209,64 @@
     margin: 0 auto;
 }
 
-.section-header {
+.render-header-container {
+    padding: 48px 0 32px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 10px 0 30px 0;
 }
 
-.section-header-icon {
-    width: 64px;
-    height: 64px;
-    background: #1e1e1e;
-    border-radius: 14px;
+.header-icon-wrapper {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(180deg, #3a3a3c 0%, #2c2c2e 100%);
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-bottom: 16px;
     color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
 }
 
-.section-header-text h1 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 4px;
+.header-icon-wrapper svg {
+    stroke-width: 2.5px;
 }
 
-.section-header-text p {
-    font-size: 11.5px;
-    color: #8e8e8e;
-    max-width: 480px;
+.header-text-content h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.header-subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-top: 6px;
+    font-weight: 400;
     line-height: 1.4;
 }
 
 /* List Boxes Matching macOS System Settings */
 .settings-list-box {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(45, 45, 48, 0.6);
+    border: 0.5px solid rgba(255, 255, 255, 0.05);
     border-radius: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     overflow: hidden;
-    border: 0.5px solid rgba(255, 255, 255, 0.03);
 }
 
 .settings-list-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 12px;
-    cursor: pointer;
+    padding: 10px 16px;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
     transition: background 0.1s;
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.03);
 }
 
 .settings-list-item:last-child {
@@ -285,24 +306,36 @@
 
 /* Group Cards Styling */
 .settings-group-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(45, 45, 48, 0.6);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 14px;
-    border: 0.5px solid rgba(255, 255, 255, 0.03);
+    padding: 0;
+    margin-bottom: 24px;
+    overflow: hidden;
 }
 
-.settings-group-card label {
+/* Specific labels above cards */
+.settings-group-label {
     display: block;
-    font-size: 13.5px;
-    font-weight: 500;
-    margin-bottom: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    padding-left: 12px;
 }
 
 .settings-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
+}
+
+.settings-row:last-child {
+    border-bottom: none;
 }
 
 .settings-row label {
@@ -338,6 +371,66 @@
 
 .mac-toggle.enabled .toggle-handle {
     transform: translateX(14px);
+}
+
+/* Appearance Theme Thumbnails */
+.theme-selector {
+    display: flex;
+    gap: 20px;
+    padding: 16px;
+}
+
+.theme-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.theme-preview {
+    width: 80px;
+    height: 60px;
+    border-radius: 6px;
+    border: 3px solid transparent;
+    overflow: hidden;
+    position: relative;
+    transition: border-color 0.2s;
+    background: #444;
+}
+
+.theme-preview.light {
+    background: #fff;
+}
+
+.theme-preview.dark {
+    background: #1e1e1e;
+}
+
+.theme-preview::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 25px;
+    height: 100%;
+}
+
+.theme-preview.light::after {
+    background: #f1f1f1;
+}
+
+.theme-preview.dark::after {
+    background: #333;
+}
+
+.theme-option.active .theme-preview {
+    border-color: #007aff;
+}
+
+.theme-option span {
+    font-size: 12px;
+    color: #eee;
 }
 
 /* Wallpaper Thumbnails */
@@ -436,10 +529,12 @@
 
 .mac-btn.primary {
     background: #007aff;
+    color: #fff;
+    border: none;
 }
 
 .mac-btn.primary:hover {
-    background: #0063ce;
+    background: #006ce6;
 }
 
 .settings-value-text {
@@ -458,7 +553,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 4px 0;
+    padding: 8px 0;
 }
 
 .settings-progress-row {
@@ -568,4 +663,212 @@
     50% {
         opacity: 0;
     }
+}
+
+.settings-list-item-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 0;
+}
+
+.stacked-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bold {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.small-text {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.4;
+}
+
+.section-description-text {
+    font-size: 13px;
+    color: #eee;
+    line-height: 1.5;
+    padding: 8px 0;
+}
+
+/* UI Controls Styling */
+.accent-color-grid {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+}
+
+.accent-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.accent-dot:hover {
+    transform: scale(1.1);
+}
+
+.accent-dot.active {
+    border-color: #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.accent-dot.blue {
+    background: #007aff;
+}
+
+.accent-dot.purple {
+    background: #af52de;
+}
+
+.accent-dot.green {
+    background: #34c759;
+}
+
+.accent-dot.orange {
+    background: #ff9500;
+}
+
+.mac-select,
+.mac-select-wide {
+    background: rgba(255, 255, 255, 0.1);
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: #fff;
+    padding: 2px 8px;
+    font-size: 13px;
+    outline: none;
+}
+
+.mac-select-wide {
+    width: 100%;
+    margin-top: 8px;
+    padding: 6px;
+}
+
+/* Range Slider macOS Style */
+.mac-range-container {
+    padding: 12px 0;
+}
+
+.mac-range {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+    margin: 16px 0 8px 0;
+}
+
+.mac-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    border: 0.5px solid rgba(0, 0, 0, 0.2);
+}
+
+.range-hints {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4px;
+}
+
+.range-hints span {
+    font-size: 11px;
+    color: #888;
+}
+
+/* Mail Compose UI in Settings */
+.mail-compose-mini {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.mail-field {
+    display: flex;
+    padding: 8px 12px;
+    align-items: center;
+    gap: 10px;
+}
+
+.mail-field label {
+    font-size: 13px;
+    color: #888;
+    min-width: 60px;
+    margin-bottom: 0;
+}
+
+.mail-val {
+    font-size: 13px;
+    color: #007aff;
+}
+
+.mail-input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    flex: 1;
+    outline: none;
+}
+
+.mail-body-mini {
+    padding: 12px;
+    min-height: 120px;
+}
+
+.mail-textarea-mini {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    resize: none;
+    outline: none;
+    min-height: 100px;
+}
+
+.border-top {
+    border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.item-actions.center {
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.mac-btn.large {
+    padding: 8px 24px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.settings-row-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
 }

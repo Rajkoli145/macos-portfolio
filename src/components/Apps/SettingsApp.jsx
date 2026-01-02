@@ -4,6 +4,7 @@ import { useSettings } from "../../context/SettingsContext";
 import {
     Monitor,
     Navigation,
+    Compass,
     Terminal as TerminalIcon,
     Folder,
     FileText,
@@ -48,31 +49,31 @@ import {
 /** constants outside to avoid re-creation but within the same file scope **/
 const SIDEBAR_GROUPS = [
     {
-        id: "networking",
-        items: [
-            { id: "wifi", label: "Wi-Fi", icon: Wifi, color: "#007aff" },
-            { id: "bluetooth", label: "Bluetooth", icon: Bluetooth, color: "#007aff" },
-            { id: "network", label: "Network", icon: Globe, color: "#007aff" },
-            { id: "battery", label: "Battery", icon: Battery, color: "#34c759" },
-        ]
-    },
-    {
-        id: "system",
+        id: "apple-section",
         items: [
             { id: "general", label: "General", icon: SettingsIcon, color: "#8e8e93" },
             { id: "appearance", label: "Appearance", icon: Palette, color: "#34c759" },
-            { id: "wallpaper", label: "Wallpaper", icon: WallpaperIcon, color: "#00a2ff" },
             { id: "dock", label: "Desktop & Dock", icon: Navigation, color: "#5856d6" },
         ]
     },
     {
-        id: "personal",
+        id: "preferences-section",
         items: [
             { id: "notifications", label: "Notifications", icon: Bell, color: "#ff3b30" },
-            { id: "sound", label: "Sound", icon: Speaker, color: "#ff3b30" },
-            { id: "focus", label: "Focus", icon: Moon, color: "#5856d6" },
-            { id: "screentime", label: "Screen Time", icon: Clock, color: "#5856d6" },
-            { id: "terminal", label: "Terminal", icon: TerminalIcon, color: "#8e8e93" },
+            { id: "terminal", label: "Terminal", icon: TerminalIcon, color: "#1c1c1e" },
+        ]
+    },
+    {
+        id: "apps-section",
+        items: [
+            { id: "notes", label: "Notes", icon: FileText, color: "#ffcc00" },
+            { id: "mail", label: "Mail", icon: Mail, color: "#007aff" },
+        ]
+    },
+    {
+        id: "info-section",
+        items: [
+            { id: "about_portfolio", label: "About Portfolio", icon: Info, color: "#8e8e93" },
         ]
     }
 ];
@@ -117,20 +118,17 @@ const SettingsApp = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const { settings, updateSetting } = useSettings();
 
-    const renderHeader = (title, icon, description) => {
-        const Icon = icon;
-        return (
-            <div className="section-header">
-                <div className="section-header-icon">
-                    <Icon size={40} />
-                </div>
-                <div className="section-header-text">
-                    <h1>{title}</h1>
-                    <p>{description}</p>
-                </div>
+    const renderHeader = (title, icon, subtitle) => (
+        <div className="render-header-container">
+            <div className="header-icon-wrapper">
+                {React.createElement(icon, { size: 32 })}
             </div>
-        );
-    };
+            <div className="header-text-content">
+                <h1>{title}</h1>
+                <p className="header-subtitle">{subtitle}</p>
+            </div>
+        </div>
+    );
 
     const renderListItem = (label, icon, onClick) => {
         const Icon = icon;
@@ -150,71 +148,61 @@ const SettingsApp = () => {
             case "general":
                 return (
                     <div className="settings-content">
-                        {renderHeader("General", SettingsIcon, "Configure Raj Koli's profile, skills, and professional preferences.")}
+                        {renderHeader("General", SettingsIcon, "Professional profile and configurations.")}
 
-                        <div className="settings-list-box">
-                            {renderListItem("About Me", Info)}
-                            {renderListItem("Skills & Tech Stack", Code)}
-                            {renderListItem("Experience", Briefcase)}
+                        <div className="settings-group-label">About Me</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row" style={{ padding: '0 16px 12px 16px' }}>
+                                <p className="section-description-text">
+                                    I am a passionate Frontend Developer with a focus on building immersive web experiences.
+                                    I love working with React, modern CSS, and exploring the boundaries of UI/UX design.
+                                </p>
+                            </div>
                         </div>
 
+                        <div className="settings-group-label">Professional Info</div>
                         <div className="settings-list-box">
+                            {renderListItem("Skills & Tech Stack", Code)}
+                            {renderListItem("Experience", Briefcase)}
                             {renderListItem("View Featured Projects", Folder)}
+                        </div>
+
+                        <div className="settings-group-label">Resume</div>
+                        <div className="settings-group-card">
                             <div className="settings-list-item">
                                 <div className="item-left">
                                     <div className="item-icon"><FileText size={16} /></div>
-                                    <span>Resume</span>
+                                    <span>Download Latest Resume</span>
                                 </div>
                                 <div className="item-actions">
-                                    <button className="mac-btn small primary">View</button>
-                                    <button className="mac-btn small">Download</button>
+                                    <button className="mac-btn primary">View</button>
+                                    <button className="mac-btn">Download</button>
                                 </div>
                             </div>
                         </div>
 
+                        <div className="settings-group-label">Availability</div>
                         <div className="settings-group-card">
-                            <label>Availability</label>
-                            <div className="settings-row-stack">
-                                <div className="settings-row">
-                                    <span>Available for Freelance</span>
-                                    <Toggle
-                                        enabled={settings.availability?.freelance}
-                                        onToggle={(val) => updateSetting("availability", "freelance", val)}
-                                    />
-                                </div>
-                                <div className="settings-row">
-                                    <span>Open to Full-Time Roles</span>
-                                    <Toggle
-                                        enabled={settings.availability?.fullTime}
-                                        onToggle={(val) => updateSetting("availability", "fullTime", val)}
-                                    />
-                                </div>
-                                <div className="settings-row">
-                                    <span>Remote Friendly</span>
-                                    <Toggle
-                                        enabled={settings.availability?.remote}
-                                        onToggle={(val) => updateSetting("availability", "remote", val)}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="settings-group-card">
-                            <label>Contact Preferences</label>
                             <div className="settings-row">
-                                <span>Preferred Email</span>
-                                <span className="settings-value-text">2024.rajk@isu.ac.in</span>
-                            </div>
-                            <div className="settings-row">
-                                <span>Auto-reply enabled</span>
+                                <span>Available for Freelance</span>
                                 <Toggle
-                                    enabled={settings.contact?.autoReply}
-                                    onToggle={(val) => updateSetting("contact", "autoReply", val)}
+                                    enabled={settings.availability?.freelance}
+                                    onToggle={(val) => updateSetting("availability", "freelance", val)}
                                 />
                             </div>
                             <div className="settings-row">
-                                <span>Typical Response Time</span>
-                                <span className="settings-value-text">{settings.contact?.responseTime}</span>
+                                <span>Open to Full-Time Roles</span>
+                                <Toggle
+                                    enabled={settings.availability?.fullTime}
+                                    onToggle={(val) => updateSetting("availability", "fullTime", val)}
+                                />
+                            </div>
+                            <div className="settings-row">
+                                <span>Remote Friendly</span>
+                                <Toggle
+                                    enabled={settings.availability?.remote}
+                                    onToggle={(val) => updateSetting("availability", "remote", val)}
+                                />
                             </div>
                         </div>
                     </div>
@@ -223,50 +211,49 @@ const SettingsApp = () => {
                 return (
                     <div className="settings-content">
                         {renderHeader("Appearance", Palette, "Customize how your desktop looks and behaves.")}
+                        <div className="settings-group-label">Appearance Theme</div>
                         <div className="settings-group-card">
-                            <label>Appearance</label>
                             <div className="theme-selector">
                                 <div
                                     className={`theme-option ${settings.appearance.theme === "light" ? "active" : ""}`}
                                     onClick={() => updateSetting("appearance", "theme", "light")}
                                 >
-                                    <div className="theme-preview light">
-                                        <div className="p-top"></div>
-                                        <div className="p-side"></div>
-                                    </div>
+                                    <div className="theme-preview light" />
                                     <span>Light</span>
                                 </div>
                                 <div
                                     className={`theme-option ${settings.appearance.theme === "dark" ? "active" : ""}`}
                                     onClick={() => updateSetting("appearance", "theme", "dark")}
                                 >
-                                    <div className="theme-preview dark">
-                                        <div className="p-top"></div>
-                                        <div className="p-side"></div>
-                                    </div>
+                                    <div className="theme-preview dark" />
                                     <span>Dark</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="settings-group-card">
-                            <div className="settings-row">
-                                <label>Accent Color</label>
-                                <div className="accent-colors">
-                                    {["blue", "purple", "green", "orange"].map(color => (
-                                        <div
-                                            key={color}
-                                            className={`accent-circle ${color} ${settings.appearance.accentColor === color ? "active" : ""}`}
-                                            onClick={() => updateSetting("appearance", "accentColor", color)}
-                                        />
-                                    ))}
-                                </div>
+                        <div className="settings-group-label">Accent Color</div>
+                        <div className="settings-group-card" style={{ padding: '4px 12px' }}>
+                            <div className="accent-color-grid">
+                                {["blue", "purple", "green", "orange"].map(color => (
+                                    <div
+                                        key={color}
+                                        className={`accent-dot ${color} ${settings.appearance.accentColor === color ? "active" : ""}`}
+                                        onClick={() => updateSetting("appearance", "accentColor", color)}
+                                    />
+                                ))}
                             </div>
                         </div>
 
                         <div className="settings-group-card">
                             <div className="settings-row">
-                                <label>Reduce Motion</label>
+                                <span>Window Transparency</span>
+                                <Toggle
+                                    enabled={settings.appearance.transparency > 0}
+                                    onToggle={(val) => updateSetting("appearance", "transparency", val ? 80 : 0)}
+                                />
+                            </div>
+                            <div className="settings-row">
+                                <span>Reduce Motion</span>
                                 <Toggle
                                     enabled={settings.appearance.reduceMotion}
                                     onToggle={(val) => updateSetting("appearance", "reduceMotion", val)}
@@ -278,14 +265,16 @@ const SettingsApp = () => {
             case "dock":
                 return (
                     <div className="settings-content">
-                        {renderHeader("Desktop & Dock", Navigation, "Manage settings for your Dock and desktop environment.")}
+                        {renderHeader("Desktop & Dock", Compass, "Manage settings for your Dock and desktop environment.")}
 
+                        <div className="settings-group-label">Dock Position</div>
                         <div className="settings-group-card">
                             <div className="settings-row">
-                                <label>Position on screen</label>
+                                <span>Position on screen</span>
                                 <select
                                     value={settings.dock.position}
                                     onChange={(e) => updateSetting("dock", "position", e.target.value)}
+                                    className="mac-select"
                                 >
                                     <option value="bottom">Bottom</option>
                                     <option value="left">Left</option>
@@ -294,22 +283,45 @@ const SettingsApp = () => {
                             </div>
                         </div>
 
-                        <div className="settings-group-card">
-                            <label>Size</label>
-                            <input
-                                type="range"
-                                min="32" max="80"
-                                value={settings.dock.iconSize}
-                                onChange={(e) => updateSetting("dock", "iconSize", parseInt(e.target.value))}
-                            />
+                        <div className="settings-group-label">Icon Size</div>
+                        <div className="settings-group-card" style={{ padding: '4px 16px 16px 16px' }}>
+                            <div className="mac-range-container">
+                                <input
+                                    type="range"
+                                    min="32"
+                                    max="80"
+                                    value={settings.dock.iconSize}
+                                    onChange={(e) => updateSetting("dock", "iconSize", parseInt(e.target.value))}
+                                    className="mac-range"
+                                />
+                                <div className="range-hints">
+                                    <span>Small</span>
+                                    <span>Large</span>
+                                </div>
+                            </div>
                         </div>
 
+                        <div className="settings-group-label">Dock Features</div>
                         <div className="settings-group-card">
                             <div className="settings-row">
-                                <label>Magnification</label>
+                                <span>Auto-hide dock</span>
+                                <Toggle
+                                    enabled={settings.dock.autoHide}
+                                    onToggle={(val) => updateSetting("dock", "autoHide", val)}
+                                />
+                            </div>
+                            <div className="settings-row">
+                                <span>Magnification Animation</span>
                                 <Toggle
                                     enabled={settings.dock.magnification}
                                     onToggle={(val) => updateSetting("dock", "magnification", val)}
+                                />
+                            </div>
+                            <div className="settings-row">
+                                <span>App icon animation</span>
+                                <Toggle
+                                    enabled={settings.dock.appAnimation}
+                                    onToggle={(val) => updateSetting("dock", "appAnimation", val)}
                                 />
                             </div>
                         </div>
@@ -359,39 +371,95 @@ const SettingsApp = () => {
                         </div>
                     </div>
                 );
-            case "terminal":
+            case "notifications":
                 return (
                     <div className="settings-content">
-                        {renderHeader("Terminal", TerminalIcon, "Simulate developer commands to explore the profile via CLI.")}
+                        {renderHeader("Notifications", Bell, "Control how and when you receive updates.")}
 
-                        <div className="terminal-preview-box">
-                            <div className="term-header">
-                                <div className="term-dot red" />
-                                <div className="term-dot yellow" />
-                                <div className="term-dot green" />
-                                <span className="term-title">rajkoli — -zsh</span>
+                        <div className="settings-group-label">Global Settings</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <span>Allow Notifications</span>
+                                <Toggle
+                                    enabled={settings.notifications?.enabled}
+                                    onToggle={(val) => updateSetting("notifications", "enabled", val)}
+                                />
                             </div>
-                            <div className="term-body">
-                                <div className="term-line"><span className="term-prompt">~</span> whoami</div>
-                                <div className="term-out">Raj Koli | Frontend Developer | UI/UX Enthusiast</div>
-                                <div className="term-line"><span className="term-prompt">~</span> skills</div>
-                                <div className="term-out">React, Next.js, JavaScript, CSS, Node.js, AI Prompting</div>
-                                <div className="term-line"><span className="term-prompt">~</span> projects --featured</div>
-                                <div className="term-out">1. macOS Portfolio (Running)</div>
-                                <div className="term-out">2. RealityCheck SaaS</div>
-                                <div className="term-out">3. Spotify Clone Pro</div>
-                                <div className="term-line"><span className="term-prompt">~</span> <span className="term-cursor">_</span></div>
+                            <div className="settings-row">
+                                <span>Show Previews</span>
+                                <select
+                                    className="mac-select"
+                                    value={settings.notifications?.style}
+                                    onChange={(e) => updateSetting("notifications", "style", e.target.value)}
+                                >
+                                    <option value="banners">When Unlocked</option>
+                                    <option value="always">Always</option>
+                                    <option value="never">Never</option>
+                                </select>
                             </div>
                         </div>
 
+                        <div className="settings-group-label">App Notifications</div>
+                        <div className="settings-list-box">
+                            <div className="settings-row">
+                                <span>Finder</span>
+                                <Toggle enabled={true} onToggle={() => { }} />
+                            </div>
+                            <div className="settings-row">
+                                <span>Mail</span>
+                                <Toggle
+                                    enabled={settings.notifications?.appToggles.mail}
+                                    onToggle={(val) => updateSetting("notifications", "appToggles", { ...settings.notifications.appToggles, mail: val })}
+                                />
+                            </div>
+                            <div className="settings-row">
+                                <span>Terminal</span>
+                                <Toggle
+                                    enabled={settings.notifications?.appToggles.terminal}
+                                    onToggle={(val) => updateSetting("notifications", "appToggles", { ...settings.notifications.appToggles, terminal: val })}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                );
+            case "about_portfolio":
+                return (
+                    <div className="settings-content">
+                        {renderHeader("About Portfolio", Info, "Technical details and credits for this project.")}
                         <div className="settings-group-card">
                             <div className="settings-row">
-                                <label>Prompt Theme</label>
-                                <select value={settings.terminal.promptStyle} onChange={(e) => updateSetting("terminal", "promptStyle", e.target.value)}>
-                                    <option value="minimal">Minimal</option>
-                                    <option value="powerline">Powerline</option>
-                                    <option value="classic">Classic</option>
-                                </select>
+                                <span>Portfolio Version</span>
+                                <span className="settings-value-text">2.1.0</span>
+                            </div>
+                            <div className="settings-row">
+                                <span>Last Updated</span>
+                                <span className="settings-value-text">Jan 2026</span>
+                            </div>
+                        </div>
+                        <div className="settings-group-card">
+                            <label>Tech Stack</label>
+                            <div className="settings-row">
+                                <span>Core</span>
+                                <span className="settings-value-text">React, Vite</span>
+                            </div>
+                            <div className="settings-row">
+                                <span>Styling</span>
+                                <span className="settings-value-text">Vanilla CSS, Lucide</span>
+                            </div>
+                            <div className="settings-row">
+                                <span>Deployment</span>
+                                <span className="settings-value-text">Vercel</span>
+                            </div>
+                        </div>
+                        <div className="settings-group-card">
+                            <div className="settings-list-item">
+                                <div className="item-left">
+                                    <div className="item-icon"><Code size={16} /></div>
+                                    <span>View Source Code</span>
+                                </div>
+                                <div className="item-actions">
+                                    <button className="mac-btn">GitHub Repo</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -427,50 +495,35 @@ const SettingsApp = () => {
                     </div>
 
                     <div className="sidebar-profile">
-                        <div className="avatar">
-                            <Skull size={32} />
+                        <div className="profile-icon">
+                            <User size={28} />
                         </div>
                         <div className="profile-info">
-                            <span className="name">Raj Koli</span>
+                            <span className="title">Raj Koli</span>
                             <span className="subtitle">Frontend Developer</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="sidebar-scrollable">
-                    {SIDEBAR_GROUPS.map((group, gIdx) => (
-                        <div key={group.id} className="sidebar-group">
-                            {group.items.map(item => (
-                                <div
-                                    key={item.id}
-                                    className={`sidebar-item ${activeSection === item.id ? "active" : ""}`}
-                                    onClick={() => setActiveSection(item.id)}
-                                >
-                                    <div className="item-icon-wrapper" style={{ backgroundColor: item.color }}>
-                                        <item.icon size={14} />
+                    {SIDEBAR_GROUPS.map(group => (
+                        <div key={group.id} className="sidebar-group-container minimalist">
+                            <div className="sidebar-group">
+                                {group.items.map(item => (
+                                    <div
+                                        key={item.id}
+                                        className={`sidebar-item ${activeSection === item.id ? "active" : ""}`}
+                                        onClick={() => setActiveSection(item.id)}
+                                    >
+                                        <div className="item-icon-wrapper" style={{ backgroundColor: item.color }}>
+                                            <item.icon size={14} />
+                                        </div>
+                                        <span>{item.label}</span>
                                     </div>
-                                    <span>{item.label}</span>
-                                </div>
-                            ))}
-                            {gIdx < SIDEBAR_GROUPS.length - 1 && <div className="sidebar-separator" />}
+                                ))}
+                            </div>
                         </div>
                     ))}
-
-                    <div className="sidebar-separator" />
-                    <div className="sidebar-group">
-                        {SETTINGS_SECTIONS.filter(s => !SIDEBAR_GROUPS.some(g => g.items.some(i => i.id === s.id))).map(section => (
-                            <div
-                                key={section.id}
-                                className={`sidebar-item ${activeSection === section.id ? "active" : ""}`}
-                                onClick={() => setActiveSection(section.id)}
-                            >
-                                <div className="item-icon-wrapper grey">
-                                    <section.icon size={14} />
-                                </div>
-                                <span>{section.label}</span>
-                            </div>
-                        ))}
-                    </div>
                 </div>
             </aside>
             <main className="settings-main">

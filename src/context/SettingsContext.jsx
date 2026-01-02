@@ -24,6 +24,17 @@ export const SettingsProvider = ({ children }) => {
                 iconSize: 56,
                 magnification: true,
                 showRecents: true,
+                autoHide: false,
+                appAnimation: true,
+            },
+            notifications: {
+                enabled: true,
+                style: "banners",
+                appToggles: {
+                    terminal: true,
+                    mail: true,
+                    notes: true
+                }
             },
             terminal: {
                 fontSize: "medium",

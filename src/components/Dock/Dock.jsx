@@ -17,6 +17,8 @@ function Dock({ onOpenApp, openWindows = [] }) {
   const [mouseX, setMouseX] = useState(null);
   const [activeApp, setActiveApp] = useState(null);
   const [draggedAppIndex, setDraggedAppIndex] = useState(null);
+  const [isRevealed, setIsRevealed] = useState(false);
+  const [bouncingApp, setBouncingApp] = useState(null);
   const [apps, setApps] = useState([
     { id: "finder", name: "Finder", icon: finderIcon },
     { id: "terminal", name: "Terminal", icon: terminalIcon },
@@ -31,8 +33,9 @@ function Dock({ onOpenApp, openWindows = [] }) {
   const handleMouseMove = (e) => {
     const dock = e.currentTarget;
     const rect = dock.getBoundingClientRect();
-    const x = settings.dock.position === 'bottom' ? e.clientX - rect.left : e.clientY - rect.top;
-    setMouseX(x);
+    const isVertical = settings.dock.position !== 'bottom';
+    const mousePos = isVertical ? e.clientY - rect.top : e.clientX - rect.left;
+    setMouseX(mousePos);
   };
 
   const handleMouseLeave = () => {
@@ -40,7 +43,7 @@ function Dock({ onOpenApp, openWindows = [] }) {
   };
 
   const getIconTransform = (index) => {
-    if (mouseX === null || !settings.dock.magnification) return { scale: 1, translateY: 0 };
+    if (mouseX === null || !settings.dock.magnification) return { scale: 1, translateX: 0, translateY: 0 };
 
     const iconSize = settings.dock.iconSize;
     const gap = 8;
@@ -58,15 +61,29 @@ function Dock({ onOpenApp, openWindows = [] }) {
       scale = minScale + (maxScale - minScale) * smoothFactor;
     }
 
-    // Only translate Y if dock is at bottom
-    const translateY = (settings.dock.position === 'bottom' && scale > 1)
-      ? -10 * (scale - 1)
-      : 0;
+    let translateX = 0;
+    let translateY = 0;
 
-    return { scale, translateY };
+    if (scale > 1) {
+      const offset = (scale - 1) * 10;
+      if (settings.dock.position === 'bottom') {
+        translateY = -offset;
+      } else if (settings.dock.position === 'left') {
+        translateX = offset;
+      } else if (settings.dock.position === 'right') {
+        translateX = -offset;
+      }
+    }
+
+    return { scale, translateX, translateY };
   };
 
   const handleAppClick = (appId, appName) => {
+    if (settings.dock.appAnimation) {
+      setBouncingApp(appId);
+      setTimeout(() => setBouncingApp(null), 1000); // 1s bounce
+    }
+
     if (onOpenApp) {
       onOpenApp(appId, appName);
     }
@@ -107,56 +124,90 @@ function Dock({ onOpenApp, openWindows = [] }) {
     setDraggedAppIndex(null);
   };
 
+  // Create a list that includes a divider before the Trash
+  const dockItems = [];
+  apps.forEach(app => {
+    if (app.isTrash) {
+      dockItems.push({ id: 'divider', isDivider: true });
+    }
+    dockItems.push(app);
+  });
+
+  const trashIndex = apps.findIndex(a => a.isTrash);
+
   return (
-    <div className={`dock-wrapper ${settings.dock.position}`}>
-      <div className="dock-separator" />
+    <div
+      className={`dock-wrapper ${settings.dock.position} ${settings.dock.autoHide ? 'auto-hide' : ''} ${isRevealed ? 'revealed' : ''}`}
+      onMouseEnter={() => setIsRevealed(true)}
+      onMouseLeave={() => {
+        setIsRevealed(false);
+        handleMouseLeave();
+      }}
+    >
       <div
         className="dock"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onDrop={handleDrop}
-        style={{
-          gap: '8px',
-          padding: '8px'
-        }}
       >
-        {apps.map((app, index) => {
-          if (app.id === 'settings' && !openWindows.some(w => w.id === 'settings')) {
-            // Optional: Hide settings if not pinned? No, keep it.
-          }
-          if (app.id === 'finder' && !settings.dock.showRecents) {
-            // Logic for recents could go here, but for now we keep static list
+        {dockItems.map((item, index) => {
+          const { scale, translateX, translateY } = getIconTransform(index);
+          const baseSize = settings.dock.iconSize;
+          const isVertical = settings.dock.position !== 'bottom';
+
+          if (item.isDivider) {
+            return (
+              <div
+                key="dock-divider"
+                className="dock-divider-wrapper"
+                style={{
+                  width: isVertical ? `${baseSize}px` : `${(baseSize / 4) * scale}px`,
+                  height: isVertical ? `${(baseSize / 4) * scale}px` : `${baseSize}px`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <div
+                  className="dock-divider"
+                  style={{
+                    transform: `scale(${scale}) translate(${translateX}px, ${translateY}px)`,
+                    transformOrigin: settings.dock.position === 'bottom' ? 'bottom center' :
+                      settings.dock.position === 'left' ? 'center left' : 'center right'
+                  }}
+                />
+              </div>
+            );
           }
 
-          const { scale, translateY } = getIconTransform(index);
-          const baseSize = settings.dock.iconSize;
+          const app = item;
           const isOpen = app.id === 'finder' || openWindows.some(win => win.id === app.id);
-          const isDragging = draggedAppIndex === index;
+          const isDragging = draggedAppIndex === (index > (trashIndex + 1) ? index - 1 : index);
           const isPinned = app.id === 'finder' || app.isTrash;
 
           return (
             <div
               key={app.id}
-              className={`dock-item-wrapper ${isDragging ? 'dragging' : ''} ${isPinned ? 'pinned' : ''}`}
+              className={`dock-item-wrapper ${isDragging ? 'dragging' : ''} ${isPinned ? 'pinned' : ''} ${bouncingApp === app.id ? 'bouncing' : ''}`}
               draggable={!isPinned}
               onDragStart={(e) => handleDragStart(e, index)}
               onDragOver={(e) => handleDragOver(e, index)}
               style={{
-                width: `${baseSize * scale}px`,
-                height: `${baseSize}px`,
+                width: isVertical ? `${baseSize}px` : `${baseSize * scale}px`,
+                height: isVertical ? `${baseSize * scale}px` : `${baseSize}px`,
                 transition: mouseX === null && !isDragging ? 'all 0.35s cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
                 opacity: isDragging ? 0.3 : 1
               }}
               onClick={() => handleAppClick(app.id, app.name)}
             >
-              {app.isTrash && <div className="dock-divider" />}
               <div
                 className="dock-icon"
                 style={{
                   width: `${baseSize}px`,
                   height: `${baseSize}px`,
-                  transform: `scale(${scale}) translateY(${translateY}px)`,
-                  transformOrigin: settings.dock.position === 'bottom' ? 'bottom center' : 'center center'
+                  transform: `scale(${scale}) translate(${translateX}px, ${translateY}px)`,
+                  transformOrigin: settings.dock.position === 'bottom' ? 'bottom center' :
+                    settings.dock.position === 'left' ? 'center left' : 'center right'
                 }}
                 onMouseEnter={() => setActiveApp(app.name)}
                 onMouseLeave={() => setActiveApp(null)}

@@ -3,6 +3,7 @@
   display: flex;
   pointer-events: none;
   z-index: 1000;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .dock-wrapper.bottom {
@@ -30,6 +31,22 @@
   flex-direction: row-reverse;
   align-items: center;
   padding-right: 8px;
+}
+
+.dock-wrapper.bottom.auto-hide {
+  transform: translateY(calc(100% + 10px));
+}
+
+.dock-wrapper.left.auto-hide {
+  transform: translateX(calc(-100% - 10px));
+}
+
+.dock-wrapper.right.auto-hide {
+  transform: translateX(calc(100% + 10px));
+}
+
+.dock-wrapper.auto-hide.revealed {
+  transform: none !important;
 }
 
 .dock-separator {
@@ -64,10 +81,18 @@
   margin-left: 8px;
 }
 
+.dock-wrapper.left .dock::-webkit-scrollbar,
+.dock-wrapper.right .dock::-webkit-scrollbar {
+  display: none;
+}
+
 .dock {
   display: flex;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 10px 14px;
+  /* More generous default padding */
+  overflow: visible;
+  /* Essential for magnification */
 
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(30px) saturate(180%);
@@ -93,16 +118,11 @@
 .dock-wrapper.right .dock {
   flex-direction: column;
   align-items: center;
-  max-height: 90vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  /* Hide scrollbar */
+  max-height: 95vh;
+  overflow: visible;
+  padding: 14px 10px;
+  /* Swap padding for vertical mode: 14px at ends */
   scrollbar-width: none;
-}
-
-.dock-wrapper.left .dock::-webkit-scrollbar,
-.dock-wrapper.right .dock::-webkit-scrollbar {
-  display: none;
 }
 
 .dock:hover {
@@ -112,11 +132,26 @@
 
 .dock-item-wrapper {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   position: relative;
   transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: transform, width, opacity;
+  will-change: transform, width, height, opacity;
+}
+
+.dock-wrapper.bottom .dock-item-wrapper {
+  align-items: flex-end;
+}
+
+.dock-wrapper.bottom .dock-item-wrapper {
+  align-items: flex-end;
+}
+
+.dock-wrapper.left .dock-item-wrapper,
+.dock-wrapper.right .dock-item-wrapper {
+  flex-direction: column;
+  align-items: center;
+  /* Ensure items are centered for side docks */
 }
 
 .dock-item-wrapper.dragging {
@@ -124,13 +159,24 @@
   transform: scale(0.9);
 }
 
+.dock-divider-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .dock-divider {
-  width: 1px;
-  height: 48px;
   background: rgba(255, 255, 255, 0.2);
+  width: 1px;
+  height: 60%;
   border-radius: 1px;
-  margin: 0 4px;
-  align-self: center;
+}
+
+.dock-wrapper.left .dock-divider,
+.dock-wrapper.right .dock-divider {
+  width: 60%;
+  height: 1px;
 }
 
 .dock-icon {
@@ -264,4 +310,53 @@
     width: 100%;
     height: 100%;
   }
+}
+
+/* Launch Bounce Animation */
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+
+  50% {
+    transform: scale(1) translateY(-40px);
+  }
+}
+
+@keyframes bounce-left {
+
+  0%,
+  100% {
+    transform: scale(1) translateX(0);
+  }
+
+  50% {
+    transform: scale(1) translateX(40px);
+  }
+}
+
+@keyframes bounce-right {
+
+  0%,
+  100% {
+    transform: scale(1) translateX(0);
+  }
+
+  50% {
+    transform: scale(1) translateX(-40px);
+  }
+}
+
+.dock-item-wrapper.bouncing .dock-icon {
+  animation: bounce 0.6s cubic-bezier(0.28, 0.84, 0.42, 1);
+}
+
+.dock-wrapper.left .dock-item-wrapper.bouncing .dock-icon {
+  animation: bounce-left 0.6s cubic-bezier(0.28, 0.84, 0.42, 1);
+}
+
+.dock-wrapper.right .dock-item-wrapper.bouncing .dock-icon {
+  animation: bounce-right 0.6s cubic-bezier(0.28, 0.84, 0.42, 1);
 }
