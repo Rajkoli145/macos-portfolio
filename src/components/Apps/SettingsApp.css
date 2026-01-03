@@ -322,7 +322,7 @@
     border-radius: 10px;
     padding: 0;
     margin-bottom: 24px;
-    overflow: hidden;
+    /* overflow: visible to show relative hints */
 }
 
 /* Specific labels above cards */
@@ -769,7 +769,8 @@
 .slider-group-row {
     display: flex;
     gap: 40px;
-    padding: 10px 0;
+    padding: 16px 20px 32px 20px;
+    /* Extra bottom padding to prevent labels from being cut off */
 }
 
 .slider-column {
@@ -781,8 +782,10 @@
 .slider-label {
     font-size: 13px;
     font-weight: 500;
-    color: #fff;
-    margin-bottom: -4px;
+    color: #ccced1;
+    /* Slightly softer white for labels */
+    margin-bottom: 8px;
+    /* More space between label and slider */
 }
 
 .mac-range-container {
@@ -816,8 +819,8 @@
 
 .range-hints {
     position: relative;
-    height: 16px;
-    margin-top: 10px;
+    height: 12px;
+    margin-top: 6px;
     width: 100%;
 }
 
@@ -834,7 +837,7 @@
 .range-hints::before {
     content: '';
     position: absolute;
-    top: -10px;
+    top: -8px;
     left: 10px;
     /* Adjusted for thumb center */
     right: 10px;
