@@ -43,14 +43,15 @@ function Dock({ onOpenApp, openWindows = [] }) {
   };
 
   const getIconTransform = (index) => {
-    if (mouseX === null || !settings.dock.magnification) return { scale: 1, translateX: 0, translateY: 0 };
+    if (mouseX === null || settings.dock.magnification === 0) return { scale: 1, translateX: 0, translateY: 0 };
 
     const iconSize = settings.dock.iconSize;
     const gap = 8;
     const iconCenter = index * (iconSize + gap) + iconSize / 2;
     const distance = Math.abs(mouseX - iconCenter);
 
-    const maxScale = 1.6;
+    const magValue = settings.dock.magnification; // 0 to 100
+    const maxScale = 1.0 + (magValue / 100) * 0.8; // Max magnification 1.8
     const minScale = 1;
     const range = 150;
 

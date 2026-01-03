@@ -766,8 +766,28 @@
 }
 
 /* Range Slider macOS Style */
+.slider-group-row {
+    display: flex;
+    gap: 40px;
+    padding: 10px 0;
+}
+
+.slider-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.slider-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: -4px;
+}
+
 .mac-range-container {
-    padding: 12px 0;
+    padding: 8px 0;
+    position: relative;
 }
 
 .mac-range {
@@ -778,7 +798,8 @@
     background: rgba(255, 255, 255, 0.1);
     border-radius: 2px;
     outline: none;
-    margin: 16px 0 8px 0;
+    margin: 14px 0 8px 0;
+    cursor: pointer;
 }
 
 .mac-range::-webkit-slider-thumb {
@@ -789,19 +810,55 @@
     background: #fff;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-    border: 0.5px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 
 .range-hints {
     display: flex;
     justify-content: space-between;
     padding: 0 4px;
+    margin-top: 4px;
+    position: relative;
+    height: 14px;
+}
+
+/* Dots helper */
+.slider-column .range-hints::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background-image: radial-gradient(circle, #444 1px, transparent 1px);
+    background-size: calc(100%) 2px;
+    background-repeat: no-repeat;
+    background-position: 0 0, 100% 0;
+}
+
+/* Magnification specific dots (Off, Small, Large) */
+.slider-column:last-child .range-hints::before {
+    background-image:
+        radial-gradient(circle, #444 1px, transparent 1px),
+        radial-gradient(circle, #444 1px, transparent 1px),
+        radial-gradient(circle, #444 1px, transparent 1px);
+    background-position: 0 0, 28% 0, 100% 0;
+    background-size: 2px 2px;
 }
 
 .range-hints span {
     font-size: 11px;
     color: #888;
+    line-height: 1;
+}
+
+.magnification-hints {
+    justify-content: space-between;
+}
+
+.range-hints .hint-off {
+    flex: 0 0 33%;
 }
 
 /* Mail Compose UI in Settings */

@@ -22,7 +22,7 @@ export const SettingsProvider = ({ children }) => {
             dock: {
                 position: "bottom",
                 iconSize: 56,
-                magnification: true,
+                magnification: 60,
                 showRecents: true,
                 autoHide: false,
                 appAnimation: true,

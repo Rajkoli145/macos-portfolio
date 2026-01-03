@@ -267,10 +267,57 @@ const SettingsApp = () => {
                     <div className="settings-content">
                         {renderHeader("Desktop & Dock", Compass, "Manage settings for your Dock and desktop environment.")}
 
-                        <div className="settings-group-label">Dock Position</div>
+                        <div className="settings-group-label">Dock</div>
+                        <div className="settings-group-card">
+                            <div className="slider-group-row">
+                                <div className="slider-column">
+                                    <span className="slider-label">Size</span>
+                                    <div className="mac-range-container">
+                                        <input
+                                            type="range"
+                                            min="32"
+                                            max="80"
+                                            value={settings.dock.iconSize}
+                                            onChange={(e) => updateSetting("dock", "iconSize", parseInt(e.target.value))}
+                                            className="mac-range"
+                                            style={{
+                                                background: `linear-gradient(to right, #007aff 0%, #007aff ${(settings.dock.iconSize - 32) / (80 - 32) * 100}%, rgba(255,255,255,0.1) ${(settings.dock.iconSize - 32) / (80 - 32) * 100}%, rgba(255,255,255,0.1) 100%)`
+                                            }}
+                                        />
+                                        <div className="range-hints">
+                                            <span>Small</span>
+                                            <span>Large</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="slider-column">
+                                    <span className="slider-label">Magnification</span>
+                                    <div className="mac-range-container">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            value={settings.dock.magnification}
+                                            onChange={(e) => updateSetting("dock", "magnification", parseInt(e.target.value))}
+                                            className="mac-range"
+                                            style={{
+                                                background: `linear-gradient(to right, #007aff 0%, #007aff ${settings.dock.magnification}%, rgba(255,255,255,0.1) ${settings.dock.magnification}%, rgba(255,255,255,0.1) 100%)`
+                                            }}
+                                        />
+                                        <div className="range-hints magnification-hints">
+                                            <span className="hint-off">Off</span>
+                                            <span>Small</span>
+                                            <span>Large</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="settings-group-label">Position on screen</div>
                         <div className="settings-group-card">
                             <div className="settings-row">
-                                <span>Position on screen</span>
+                                <span>Position</span>
                                 <select
                                     value={settings.dock.position}
                                     onChange={(e) => updateSetting("dock", "position", e.target.value)}
@@ -283,24 +330,6 @@ const SettingsApp = () => {
                             </div>
                         </div>
 
-                        <div className="settings-group-label">Icon Size</div>
-                        <div className="settings-group-card" style={{ padding: '4px 16px 16px 16px' }}>
-                            <div className="mac-range-container">
-                                <input
-                                    type="range"
-                                    min="32"
-                                    max="80"
-                                    value={settings.dock.iconSize}
-                                    onChange={(e) => updateSetting("dock", "iconSize", parseInt(e.target.value))}
-                                    className="mac-range"
-                                />
-                                <div className="range-hints">
-                                    <span>Small</span>
-                                    <span>Large</span>
-                                </div>
-                            </div>
-                        </div>
-
                         <div className="settings-group-label">Dock Features</div>
                         <div className="settings-group-card">
                             <div className="settings-row">
@@ -308,13 +337,6 @@ const SettingsApp = () => {
                                 <Toggle
                                     enabled={settings.dock.autoHide}
                                     onToggle={(val) => updateSetting("dock", "autoHide", val)}
-                                />
-                            </div>
-                            <div className="settings-row">
-                                <span>Magnification Animation</span>
-                                <Toggle
-                                    enabled={settings.dock.magnification}
-                                    onToggle={(val) => updateSetting("dock", "magnification", val)}
                                 />
                             </div>
                             <div className="settings-row">
