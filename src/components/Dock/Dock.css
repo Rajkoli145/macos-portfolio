@@ -3,7 +3,6 @@
   display: flex;
   pointer-events: none;
   z-index: 1000;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .dock-wrapper.bottom {
@@ -33,20 +32,32 @@
   padding-right: 8px;
 }
 
-.dock-wrapper.bottom.auto-hide {
-  transform: translateY(calc(100% + 10px));
+/* Sensor strip that triggers revelation */
+.dock-sensor {
+  position: absolute;
+  z-index: 1;
+  pointer-events: auto;
 }
 
-.dock-wrapper.left.auto-hide {
-  transform: translateX(calc(-100% - 10px));
+.dock-wrapper.bottom .dock-sensor {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 15px;
 }
 
-.dock-wrapper.right.auto-hide {
-  transform: translateX(calc(100% + 10px));
+.dock-wrapper.left .dock-sensor {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 15px;
 }
 
-.dock-wrapper.auto-hide.revealed {
-  transform: none !important;
+.dock-wrapper.right .dock-sensor {
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 15px;
 }
 
 .dock-separator {
@@ -107,7 +118,26 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 
   pointer-events: auto;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  z-index: 2;
+}
+
+/* Hide transitions on the dock element */
+.dock-wrapper.bottom.auto-hide .dock {
+  transform: translateY(calc(100% + 20px));
+}
+
+.dock-wrapper.left.auto-hide .dock {
+  transform: translateX(calc(-100% - 20px));
+}
+
+.dock-wrapper.right.auto-hide .dock {
+  transform: translateX(calc(100% + 20px));
+}
+
+.dock-wrapper.auto-hide.revealed .dock {
+  transform: none !important;
 }
 
 .dock-wrapper.bottom .dock {

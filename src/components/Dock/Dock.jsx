@@ -138,16 +138,15 @@ function Dock({ onOpenApp, openWindows = [] }) {
   return (
     <div
       className={`dock-wrapper ${settings.dock.position} ${settings.dock.autoHide ? 'auto-hide' : ''} ${isRevealed ? 'revealed' : ''}`}
-      onMouseEnter={() => setIsRevealed(true)}
-      onMouseLeave={() => {
-        setIsRevealed(false);
-        handleMouseLeave();
-      }}
     >
+      <div className="dock-sensor" onMouseEnter={() => setIsRevealed(true)} />
       <div
         className="dock"
         onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+        onMouseLeave={() => {
+          setIsRevealed(false);
+          handleMouseLeave();
+        }}
         onDrop={handleDrop}
       >
         {dockItems.map((item, index) => {
