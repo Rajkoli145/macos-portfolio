@@ -120,7 +120,7 @@ function Desktop() {
             onResize={updateWindowSize}
             dockX={getDockX(window.id)}
           >
-            {window.Component && <window.Component />}
+            {window.Component && <window.Component onOpenApp={handleOpenApp} />}
           </Window>
         ))}
       </div>

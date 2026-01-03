@@ -128,7 +128,7 @@ const Toggle = ({ enabled, onToggle }) => (
     </button>
 );
 
-const SettingsApp = () => {
+const SettingsApp = ({ onOpenApp }) => {
     const [activeSection, setActiveSection] = useState("general");
     const [searchQuery, setSearchQuery] = useState("");
     const { settings, updateSetting } = useSettings();
@@ -177,9 +177,9 @@ const SettingsApp = () => {
 
                         <div className="settings-group-label">Professional Info</div>
                         <div className="settings-list-box">
-                            {renderListItem("Skills & Tech Stack", Code)}
-                            {renderListItem("Experience", Briefcase)}
-                            {renderListItem("View Featured Projects", Folder)}
+                            {renderListItem("Skills & Tech Stack", Code, () => onOpenApp?.("finder", "Finder"))}
+                            {renderListItem("Experience", Briefcase, () => onOpenApp?.("finder", "Finder"))}
+                            {renderListItem("View Featured Projects", Folder, () => onOpenApp?.("safari", "Safari"))}
                         </div>
 
                         <div className="settings-group-label">Resume</div>
@@ -497,6 +497,176 @@ const SettingsApp = () => {
                         </div>
                     </div>
                 );
+            case "terminal":
+                return (
+                    <div className="settings-content">
+                        {renderHeader("Terminal", TerminalIcon, "Customize your command line experience.")}
+
+                        <div className="settings-group-label">DISPLAY</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <span>Font Size</span>
+                                <div className="segmented-control">
+                                    {["small", "medium", "large"].map(size => (
+                                        <button
+                                            key={size}
+                                            className={`segment ${settings.terminal.fontSize === size ? "active" : ""}`}
+                                            onClick={() => updateSetting("terminal", "fontSize", size)}
+                                        >
+                                            {size.charAt(0).toUpperCase() + size.slice(1)}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="settings-group-label">BEHAVIOR</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <span>Typing Animation Speed</span>
+                                <div className="mac-range-container">
+                                    <input
+                                        type="range"
+                                        min="5"
+                                        max="100"
+                                        step="5"
+                                        value={settings.terminal.typingSpeed}
+                                        onChange={(e) => updateSetting("terminal", "typingSpeed", parseInt(e.target.value))}
+                                        className="mac-range"
+                                        style={{
+                                            background: `linear-gradient(to right, #007aff 0%, #007aff ${(settings.terminal.typingSpeed - 5) / (100 - 5) * 100}%, rgba(255,255,255,0.1) ${(settings.terminal.typingSpeed - 5) / (100 - 5) * 100}%, rgba(255,255,255,0.1) 100%)`
+                                        }}
+                                    />
+                                    <div className="range-hints">
+                                        <span>Fast</span>
+                                        <span>Slow</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="settings-row">
+                                <span>Clear history on close</span>
+                                <Toggle
+                                    enabled={settings.terminal.clearOnClose}
+                                    onToggle={(val) => updateSetting("terminal", "clearOnClose", val)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="settings-group-label">PROMPT STYLE</div>
+                        <div className="settings-group-card">
+                            <select
+                                className="mac-select-full"
+                                value={settings.terminal.promptStyle}
+                                onChange={(e) => updateSetting("terminal", "promptStyle", e.target.value)}
+                            >
+                                <option value="classic">Classic (💻 rajkoli@MacBook)</option>
+                                <option value="minimal">Minimal (rajkoli ➜)</option>
+                                <option value="powerline">Powerline (⚡ Portfolio)</option>
+                            </select>
+                        </div>
+                    </div>
+                );
+            case "finder":
+                return (
+                    <div className="settings-content">
+                        {renderHeader("Finder", Folder, "Manage file view and sidebar preferences.")}
+                        <div className="settings-group-label">VIEW OPTIONS</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <span>Default View Mode</span>
+                                <div className="segmented-control">
+                                    {["grid", "list"].map(mode => (
+                                        <button
+                                            key={mode}
+                                            className={`segment ${settings.finder.viewMode === mode ? "active" : ""}`}
+                                            onClick={() => updateSetting("finder", "viewMode", mode)}
+                                        >
+                                            {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="settings-row">
+                                <span>Show file extensions</span>
+                                <Toggle
+                                    enabled={settings.finder.showExtensions}
+                                    onToggle={(val) => updateSetting("finder", "showExtensions", val)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                );
+            case "notes":
+                return (
+                    <div className="settings-content">
+                        {renderHeader("Notes", FileText, "Configure your writing environment.")}
+                        <div className="settings-group-label">EDITOR</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <span>Show word count</span>
+                                <Toggle
+                                    enabled={settings.notes.showWordCount}
+                                    onToggle={(val) => updateSetting("notes", "showWordCount", val)}
+                                />
+                            </div>
+                            <div className="settings-row">
+                                <span>Auto-save notes</span>
+                                <Toggle
+                                    enabled={settings.notes.autoSave}
+                                    onToggle={(val) => updateSetting("notes", "autoSave", val)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                );
+            case "mail":
+                return (
+                    <div className="settings-content">
+                        {renderHeader("Mail", Mail, "Email delivery and notification settings.")}
+                        <div className="settings-group-label">ACCOUNT</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <span>Registered Email</span>
+                                <span className="settings-value-text">2024.rajk@isu.ac.in</span>
+                            </div>
+                            <div className="settings-row">
+                                <span>Auto-reply to recruiters</span>
+                                <Toggle
+                                    enabled={settings.mail.autoReply}
+                                    onToggle={(val) => updateSetting("mail", "autoReply", val)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                );
+            case "about":
+                return (
+                    <div className="settings-content">
+                        {renderHeader("About This System", Info, "Hardware and software specifications.")}
+                        <div className="about-hero">
+                            <div className="macbook-icon">💻</div>
+                            <div className="about-main-info">
+                                <h2 className="system-name">Raj's MacBook Air 2</h2>
+                                <p className="os-version">macOS Sequoia 15.1</p>
+                            </div>
+                        </div>
+
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <span>Processor</span>
+                                <span className="settings-value-text">Apple M3 Pro (Simulated)</span>
+                            </div>
+                            <div className="settings-row">
+                                <span>Memory</span>
+                                <span className="settings-value-text">16 GB Unified Memory</span>
+                            </div>
+                            <div className="settings-row">
+                                <span>Graphics</span>
+                                <span className="settings-value-text">Apple GPU 12-Core</span>
+                            </div>
+                        </div>
+                    </div>
+                );
             case "about_portfolio":
                 return (
                     <div className="settings-content">
@@ -533,7 +703,12 @@ const SettingsApp = () => {
                                     <span>View Source Code</span>
                                 </div>
                                 <div className="item-actions">
-                                    <button className="mac-btn">GitHub Repo</button>
+                                    <button
+                                        className="mac-btn"
+                                        onClick={() => window.open("https://github.com/Rajkoli145/macos-portfolio", "_blank")}
+                                    >
+                                        GitHub Repo
+                                    </button>
                                 </div>
                             </div>
                         </div>

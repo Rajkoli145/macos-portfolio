@@ -39,6 +39,14 @@ function TerminalApp() {
         help: "Available commands: whoami, skills, projects, contact, help, clear"
     };
 
+    useEffect(() => {
+        return () => {
+            if (settings.terminal.clearOnClose) {
+                setHistory([]);
+            }
+        }
+    }, [settings.terminal.clearOnClose]);
+
     const scrollToBottom = () => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;

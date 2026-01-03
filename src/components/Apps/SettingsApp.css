@@ -987,3 +987,66 @@
     gap: 4px;
     padding: 8px 0;
 }
+/* New UI Controls */
+.segmented-control {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 2px;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.segment {
+    background: transparent;
+    border: none;
+    color: #888;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.segment.active {
+    background: #626262;
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.mac-select-full {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 13px;
+    outline: none;
+}
+
+/* About Section */
+.about-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 0;
+    text-align: center;
+}
+
+.macbook-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.system-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.os-version {
+    font-size: 13px;
+    color: #888;
+    margin: 4px 0 0 0;
+}
