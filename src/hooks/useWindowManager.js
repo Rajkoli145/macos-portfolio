@@ -31,7 +31,7 @@ export const useWindowManager = () => {
 
             const newWindow = {
                 id: appId,
-                name: appName,
+                title: appName,
                 Component: Component,
                 zIndex: newZ,
                 position: { x: 100 + prev.length * 30, y: 50 + prev.length * 30 },

@@ -1,12 +1,32 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./TerminalApp.css";
 import { useSettings } from "../../context/SettingsContext";
+
+const TypewriterEffect = ({ text, onComplete, speed = 20 }) => {
+    const [displayedText, setDisplayedText] = useState("");
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        if (currentIndex < text.length) {
+            const timeout = setTimeout(() => {
+                setDisplayedText(prev => prev + text[currentIndex]);
+                setCurrentIndex(prev => prev + 1);
+            }, speed);
+
+            return () => clearTimeout(timeout);
+        } else if (onComplete) {
+            onComplete();
+        }
+    }, [currentIndex, text, speed, onComplete]);
+
+    return <span>{displayedText}</span>;
+};
 
 function TerminalApp() {
     const { settings } = useSettings();
     const [input, setInput] = useState("");
     const [history, setHistory] = useState([
-        { cmd: null, output: "Welcome to Raj's Portfolio Terminal. Type 'help' for available commands." }
+        { cmd: null, output: "Welcome to Raj's Portfolio Terminal. Type 'help' for available commands.", animate: true }
     ]);
     const scrollRef = useRef(null);
     const inputRef = useRef(null);
@@ -19,10 +39,14 @@ function TerminalApp() {
         help: "Available commands: whoami, skills, projects, contact, help, clear"
     };
 
-    useEffect(() => {
+    const scrollToBottom = () => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
     }, [history]);
 
     const handleKeyDown = (e) => {
@@ -33,7 +57,7 @@ function TerminalApp() {
                 setHistory([]);
             } else {
                 const output = trimmedInput === "" ? null : (commands[trimmedInput] || `command not found: ${trimmedInput}`);
-                setHistory(prev => [...prev, { cmd: input || " ", output }]);
+                setHistory(prev => [...prev, { cmd: input || " ", output, animate: true }]);
             }
 
             setInput("");
@@ -60,6 +84,7 @@ function TerminalApp() {
         if (style === 'minimal') {
             return (
                 <div className="terminal-prompt-wrapper minimal">
+                    <span className="prompt-user">rajkoli</span>
                     <span className="prompt-symbol purple">➜</span>
                 </div>
             );
@@ -68,8 +93,8 @@ function TerminalApp() {
         if (style === 'powerline') {
             return (
                 <div className="terminal-prompt-wrapper powerline">
-                    <span className="pl-segment user">raj</span>
-                    <span className="pl-segment path">portfolio</span>
+                    <span className="pl-segment user">rajkoli</span>
+                    <span className="pl-segment path">~</span>
                     <span className="pl-segment symbol">⚡</span>
                 </div>
             );
@@ -78,7 +103,9 @@ function TerminalApp() {
         // Classic
         return (
             <div className="terminal-prompt-wrapper classic">
-                <span className="prompt-user">raj@portfolio</span>
+                <span className="prompt-emoji">💻</span>
+                <span className="prompt-user">rajkoli@Rajs-MacBook-Air-2</span>
+                <span className="prompt-arrow">➜</span>
                 <span className="prompt-path">~</span>
                 <span className="prompt-symbol">$</span>
             </div>
@@ -96,7 +123,19 @@ function TerminalApp() {
                                 <span className="prompt-text">{entry.cmd}</span>
                             </div>
                         )}
-                        {entry.output && <pre className="terminal-output">{entry.output}</pre>}
+                        {entry.output && (
+                            <div className="terminal-output">
+                                {entry.animate ? (
+                                    <TypewriterEffect
+                                        text={entry.output}
+                                        onComplete={scrollToBottom}
+                                        speed={settings.terminal.typingSpeed || 20}
+                                    />
+                                ) : (
+                                    entry.output
+                                )}
+                            </div>
+                        )}
                     </div>
                 ))}
 

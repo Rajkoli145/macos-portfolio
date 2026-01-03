@@ -38,7 +38,7 @@ export const SettingsProvider = ({ children }) => {
             },
             terminal: {
                 fontSize: "medium",
-                promptStyle: "minimal",
+                promptStyle: "classic",
                 typingSpeed: 50,
                 clearOnClose: true,
             },

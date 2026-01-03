@@ -54,6 +54,10 @@
 }
 
 /* Minimal Prompt */
+.terminal-prompt-wrapper.minimal {
+  gap: 6px;
+}
+
 .terminal-prompt-wrapper.minimal .prompt-symbol.purple {
   color: #c084fc;
   font-weight: 700;
@@ -91,21 +95,30 @@
 }
 
 /* Base Terminal Colors */
+.prompt-emoji {
+  font-size: 14px;
+  margin-right: 4px;
+}
+
 .prompt-user {
-  color: #3b82f6;
-  /* Blue-500 */
-  font-weight: 700;
+  color: #e4e4e6;
+  font-weight: 500;
+}
+
+.prompt-arrow {
+  color: #34c759;
+  font-weight: 600;
+  margin: 0 4px;
 }
 
 .prompt-path {
-  color: #10b981;
-  /* Emerald-500 */
-  font-weight: 700;
+  color: #58a6ff;
+  font-weight: 500;
 }
 
 .prompt-symbol {
-  color: #a8a29e;
-  /* Stone-400 */
+  color: #e4e4e6;
+  margin-left: 2px;
 }
 
 /* Input Area */
