@@ -267,7 +267,7 @@ const SettingsApp = () => {
                     <div className="settings-content">
                         {renderHeader("Desktop & Dock", Compass, "Manage settings for your Dock and desktop environment.")}
 
-                        <div className="settings-group-label">Dock</div>
+                        <div className="settings-group-label">DOCK</div>
                         <div className="settings-group-card">
                             <div className="slider-group-row">
                                 <div className="slider-column">
@@ -305,7 +305,7 @@ const SettingsApp = () => {
                                             }}
                                         />
                                         <div className="range-hints magnification-hints">
-                                            <span className="hint-off">Off</span>
+                                            <span>Off</span>
                                             <span>Small</span>
                                             <span>Large</span>
                                         </div>
@@ -314,7 +314,7 @@ const SettingsApp = () => {
                             </div>
                         </div>
 
-                        <div className="settings-group-label">Position on screen</div>
+                        <div className="settings-group-label">POSITION ON SCREEN</div>
                         <div className="settings-group-card">
                             <div className="settings-row">
                                 <span>Position</span>
