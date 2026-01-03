@@ -485,22 +485,24 @@ const SettingsApp = () => {
             <aside className="settings-sidebar">
                 <div className="sidebar-top">
                     <div className="sidebar-search">
-                        <Search size={14} className="search-icon" />
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
+                        <div className="search-wrapper">
+                            <Search size={13} className="search-icon-inside" />
+                            <input
+                                type="text"
+                                placeholder="Search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
                     </div>
 
                     <div className="sidebar-profile">
                         <div className="profile-icon">
-                            <User size={28} />
+                            <User size={24} />
                         </div>
                         <div className="profile-info">
-                            <span className="title">Raj Koli</span>
-                            <span className="subtitle">Frontend Developer</span>
+                            <div className="title">Raj Koli</div>
+                            <div className="subtitle">Frontend Developer</div>
                         </div>
                     </div>
                 </div>
