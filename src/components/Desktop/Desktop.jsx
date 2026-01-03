@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import MenuBar from "../MenuBar/MenuBar";
 import Dock from "../Dock/Dock";
 import Window from "../Window/Window";
@@ -13,8 +14,18 @@ import { useWindowManager } from "../../hooks/useWindowManager";
 import "./Desktop.css";
 
 // Wallpaper Assets
-import defaultWallpaper from "../../assets/mac-wallpaper.jpg";
-import peakWallpaper from "../../assets/macos-sierra-mountain-peak-sunset-evening-stock-5k-5120x3684-3987.jpg";
+import sequoiaLight from "../../assets/wallpapers/macos-sequoia-light.jpg";
+import sequoiaDark from "../../assets/wallpapers/macos-sequoia-dark.jpg";
+import tahoeLight from "../../assets/wallpapers/macos-tahoe-light.jpg";
+import tahoeDark from "../../assets/wallpapers/macos-tahoe-dark.jpg";
+import bigSurLight from "../../assets/wallpapers/macos-big-sur-light.jpg";
+import bigSurDark from "../../assets/wallpapers/macos-big-sur-dark.jpg";
+
+const WALLPAPER_MAP = {
+  sequoia: { light: sequoiaLight, dark: sequoiaDark, dynamic: true },
+  tahoe: { light: tahoeLight, dark: tahoeDark, dynamic: true },
+  "big-sur": { light: bigSurLight, dark: bigSurDark, dynamic: true },
+};
 
 const APP_COMPONENTS = {
   finder: FinderApp,
@@ -26,10 +37,21 @@ const APP_COMPONENTS = {
   vscode: VSCodeApp
 };
 
-const APP_DOCK_ORDER = ['finder', 'terminal', 'notes', 'safari', 'mail', 'vscode', 'settings', 'trash'];
-
 function Desktop() {
   const { settings } = useSettings();
+
+  // Initialize with current settings to avoid flash/fade on first load
+  const getWp = (wpId, theme) => {
+    const wpConfig = WALLPAPER_MAP[wpId] || WALLPAPER_MAP.sequoia;
+    return theme === "dark" ? wpConfig.dark : wpConfig.light;
+  };
+
+  const [currentWallpaper, setCurrentWallpaper] = useState(() =>
+    getWp(settings.desktop.wallpaper, settings.appearance.theme)
+  );
+  const [prevWallpaper, setPrevWallpaper] = useState("");
+  const [isFading, setIsFading] = useState(false);
+
   const {
     openWindows,
     openApp,
@@ -41,21 +63,23 @@ function Desktop() {
     updateWindowSize
   } = useWindowManager();
 
-  const getWallpaperStyle = () => {
-    switch (settings.desktop.wallpaper) {
-      case "peak": return { backgroundImage: `url(${peakWallpaper})` };
-      case "ocean": return { background: "linear-gradient(135deg, #00c6fb 0%, #005bea 100%)" };
-      case "minimal": return { background: "#121212" };
-      case "default":
-      default: return { backgroundImage: `url(${defaultWallpaper})` };
+  useEffect(() => {
+    const nextWp = getWp(settings.desktop.wallpaper, settings.appearance.theme);
+
+    if (nextWp !== currentWallpaper) {
+      setPrevWallpaper(currentWallpaper);
+      setCurrentWallpaper(nextWp);
+      setIsFading(true);
+      const timer = setTimeout(() => setIsFading(false), 800);
+      return () => clearTimeout(timer);
     }
-  };
+  }, [settings.desktop.wallpaper, settings.appearance.theme, currentWallpaper]);
 
   const getDesktopAreaStyle = () => {
     const pos = settings.dock.position;
     if (pos === 'left') return { paddingLeft: '100px', paddingBottom: '40px' };
     if (pos === 'right') return { paddingRight: '100px', paddingBottom: '40px' };
-    return { paddingBottom: '100px' }; // Default bottom
+    return { paddingBottom: '100px' };
   };
 
   const handleOpenApp = (appId, appName) => {
@@ -66,14 +90,21 @@ function Desktop() {
   };
 
   const getDockX = (appId) => {
-    // Basic centering logic, Dock itself handles detailed layout
-    // This prop helps the Genie effect know where to minimize to
-    // For now we default to center as capturing exact dock item position is complex without refs
     return '50vw';
   };
 
   return (
-    <div className="desktop" style={getWallpaperStyle()}>
+    <div className="desktop">
+      {/* Dynamic Wallpaper Layers */}
+      <div
+        className="wallpaper-layer wallpaper-prev"
+        style={{ backgroundImage: `url(${prevWallpaper})` }}
+      />
+      <div
+        className={`wallpaper-layer wallpaper-current ${isFading ? 'fading' : ''}`}
+        style={{ backgroundImage: `url(${currentWallpaper})` }}
+      />
+
       <MenuBar onOpenApp={handleOpenApp} />
 
       <div className="desktop-area" style={getDesktopAreaStyle()}>

@@ -15,7 +15,7 @@ export const SettingsProvider = ({ children }) => {
                 reduceMotion: false,
             },
             desktop: {
-                wallpaper: "default",
+                wallpaper: "sequoia",
                 showIcons: true,
                 clockFormat: "12h",
             },

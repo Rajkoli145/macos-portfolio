@@ -46,6 +46,20 @@ import {
     CheckCircle2
 } from "lucide-react";
 
+// Wallpaper Assets for Thumbnails
+import sequoiaLight from "../../assets/wallpapers/macos-sequoia-light.jpg";
+import sequoiaDark from "../../assets/wallpapers/macos-sequoia-dark.jpg";
+import tahoeLight from "../../assets/wallpapers/macos-tahoe-light.jpg";
+import tahoeDark from "../../assets/wallpapers/macos-tahoe-dark.jpg";
+import bigSurLight from "../../assets/wallpapers/macos-big-sur-light.jpg";
+import bigSurDark from "../../assets/wallpapers/macos-big-sur-dark.jpg";
+
+const THUMB_MAP = {
+    sequoia: { light: sequoiaLight, dark: sequoiaDark },
+    tahoe: { light: tahoeLight, dark: tahoeDark },
+    "big-sur": { light: bigSurLight, dark: bigSurDark },
+};
+
 /** constants outside to avoid re-creation but within the same file scope **/
 const SIDEBAR_GROUPS = [
     {
@@ -54,6 +68,7 @@ const SIDEBAR_GROUPS = [
             { id: "general", label: "General", icon: SettingsIcon, color: "#8e8e93" },
             { id: "appearance", label: "Appearance", icon: Palette, color: "#34c759" },
             { id: "dock", label: "Desktop & Dock", icon: Navigation, color: "#5856d6" },
+            { id: "wallpaper", label: "Wallpaper", icon: WallpaperIcon, color: "#2997ff" },
         ]
     },
     {
@@ -243,7 +258,6 @@ const SettingsApp = () => {
                                 ))}
                             </div>
                         </div>
-
                         <div className="settings-group-card">
                             <div className="settings-row">
                                 <span>Window Transparency</span>
@@ -259,6 +273,11 @@ const SettingsApp = () => {
                                     onToggle={(val) => updateSetting("appearance", "reduceMotion", val)}
                                 />
                             </div>
+                        </div>
+
+                        <div className="settings-group-label">OTHER SETTINGS</div>
+                        <div className="settings-group-card">
+                            {renderListItem("Wallpaper Settings...", WallpaperIcon, () => setActiveSection("wallpaper"))}
                         </div>
                     </div>
                 );
@@ -353,15 +372,49 @@ const SettingsApp = () => {
                 return (
                     <div className="settings-content">
                         {renderHeader("Wallpaper", WallpaperIcon, "Choose a desktop picture or solid color.")}
+
+                        <div className="settings-group-label">DYNAMIC WALLPAPERS</div>
+                        <p className="settings-info-caption">Automatically changes with appearance</p>
+
                         <div className="wallpaper-grid-large">
-                            {["default", "peak", "ocean", "minimal"].map(wp => (
+                            {[
+                                { id: "sequoia", label: "Sequoia", type: "dynamic" },
+                                { id: "tahoe", label: "Tahoe", type: "dynamic" }
+                            ].map(wp => (
                                 <div
-                                    key={wp}
-                                    className={`wallpaper-card ${wp} ${settings.desktop.wallpaper === wp ? "active" : ""}`}
-                                    onClick={() => updateSetting("desktop", "wallpaper", wp)}
+                                    key={wp.id}
+                                    className={`wallpaper-card ${wp.id} ${settings.desktop.wallpaper === wp.id ? "active" : ""}`}
+                                    onClick={() => updateSetting("desktop", "wallpaper", wp.id)}
                                 >
-                                    <div className="wp-thumb" />
-                                    <span>{wp.charAt(0).toUpperCase() + wp.slice(1)}</span>
+                                    <div className="wp-thumb-wrapper">
+                                        <div
+                                            className="wp-thumb"
+                                            style={{ backgroundImage: `url(${settings.appearance.theme === 'dark' ? THUMB_MAP[wp.id].dark : THUMB_MAP[wp.id].light})` }}
+                                        />
+                                        {wp.type === "dynamic" && <div className="dynamic-badge">Dynamic</div>}
+                                    </div>
+                                    <span>{wp.label}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="settings-group-label" style={{ marginTop: '24px' }}>STATIC WALLPAPERS</div>
+                        <div className="wallpaper-grid-large">
+                            {[
+                                { id: "big-sur", label: "Big Sur" }
+                            ].map(wp => (
+                                <div
+                                    key={wp.id}
+                                    className={`wallpaper-card ${wp.id} ${settings.desktop.wallpaper === wp.id ? "active" : ""}`}
+                                    onClick={() => updateSetting("desktop", "wallpaper", wp.id)}
+                                >
+                                    <div className="wp-thumb-wrapper">
+                                        <div
+                                            className="wp-thumb"
+                                            style={{ backgroundImage: `url(${settings.appearance.theme === 'dark' ? THUMB_MAP[wp.id].dark : THUMB_MAP[wp.id].light})` }}
+                                        />
+                                    </div>
+                                    <span>{wp.label}</span>
                                 </div>
                             ))}
                         </div>
