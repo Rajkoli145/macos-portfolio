@@ -82,7 +82,7 @@ function Dock({ onOpenApp, openWindows = [] }) {
   const handleAppClick = (appId, appName) => {
     if (settings.dock.appAnimation) {
       setBouncingApp(appId);
-      setTimeout(() => setBouncingApp(null), 1000); // 1s bounce
+      setTimeout(() => setBouncingApp(null), 900); // 0.9s bounce
     }
 
     if (onOpenApp) {
@@ -188,7 +188,7 @@ function Dock({ onOpenApp, openWindows = [] }) {
           return (
             <div
               key={app.id}
-              className={`dock-item-wrapper ${isDragging ? 'dragging' : ''} ${isPinned ? 'pinned' : ''} ${bouncingApp === app.id ? 'bouncing' : ''}`}
+              className={`dock-item-wrapper ${isDragging ? 'dragging' : ''} ${isPinned ? 'pinned' : ''}`}
               draggable={!isPinned}
               onDragStart={(e) => handleDragStart(e, index)}
               onDragOver={(e) => handleDragOver(e, index)}
@@ -200,25 +200,27 @@ function Dock({ onOpenApp, openWindows = [] }) {
               }}
               onClick={() => handleAppClick(app.id, app.name)}
             >
-              <div
-                className="dock-icon"
-                style={{
-                  width: `${baseSize}px`,
-                  height: `${baseSize}px`,
-                  transform: `scale(${scale}) translate(${translateX}px, ${translateY}px)`,
-                  transformOrigin: settings.dock.position === 'bottom' ? 'bottom center' :
-                    settings.dock.position === 'left' ? 'center left' : 'center right'
-                }}
-                onMouseEnter={() => setActiveApp(app.name)}
-                onMouseLeave={() => setActiveApp(null)}
-              >
-                {activeApp === app.name && !isDragging && (
-                  <div className="dock-tooltip">
-                    {app.name}
-                  </div>
-                )}
-                <img src={app.icon} alt={app.name} className="dock-icon-image" draggable="false" />
-                {isOpen && <div className="dock-active-indicator" />}
+              <div className={`dock-item-bounce ${bouncingApp === app.id ? 'bouncing' : ''}`}>
+                <div
+                  className="dock-icon"
+                  style={{
+                    width: `${baseSize}px`,
+                    height: `${baseSize}px`,
+                    transform: `scale(${scale}) translate(${translateX}px, ${translateY}px)`,
+                    transformOrigin: settings.dock.position === 'bottom' ? 'bottom center' :
+                      settings.dock.position === 'left' ? 'center left' : 'center right'
+                  }}
+                  onMouseEnter={() => setActiveApp(app.name)}
+                  onMouseLeave={() => setActiveApp(null)}
+                >
+                  {activeApp === app.name && !isDragging && (
+                    <div className="dock-tooltip">
+                      {app.name}
+                    </div>
+                  )}
+                  <img src={app.icon} alt={app.name} className="dock-icon-image" draggable="false" />
+                  {isOpen && <div className="dock-active-indicator" />}
+                </div>
               </div>
             </div>
           );

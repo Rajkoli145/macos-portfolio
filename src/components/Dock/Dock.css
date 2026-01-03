@@ -347,11 +347,19 @@
 
   0%,
   100% {
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
+  }
+
+  30% {
+    transform: translateY(-30px);
   }
 
   50% {
-    transform: scale(1) translateY(-40px);
+    transform: translateY(0);
+  }
+
+  75% {
+    transform: translateY(-10px);
   }
 }
 
@@ -359,11 +367,19 @@
 
   0%,
   100% {
-    transform: scale(1) translateX(0);
+    transform: translateX(0);
+  }
+
+  30% {
+    transform: translateX(30px);
   }
 
   50% {
-    transform: scale(1) translateX(40px);
+    transform: translateX(0);
+  }
+
+  75% {
+    transform: translateX(10px);
   }
 }
 
@@ -371,22 +387,30 @@
 
   0%,
   100% {
-    transform: scale(1) translateX(0);
+    transform: translateX(0);
+  }
+
+  30% {
+    transform: translateX(-30px);
   }
 
   50% {
-    transform: scale(1) translateX(-40px);
+    transform: translateX(0);
+  }
+
+  75% {
+    transform: translateX(-10px);
   }
 }
 
-.dock-item-wrapper.bouncing .dock-icon {
-  animation: bounce 0.6s cubic-bezier(0.28, 0.84, 0.42, 1);
+.dock-item-bounce.bouncing {
+  animation: bounce 0.9s ease-in-out;
 }
 
-.dock-wrapper.left .dock-item-wrapper.bouncing .dock-icon {
-  animation: bounce-left 0.6s cubic-bezier(0.28, 0.84, 0.42, 1);
+.dock-wrapper.left .dock-item-bounce.bouncing {
+  animation: bounce-left 0.9s ease-in-out;
 }
 
-.dock-wrapper.right .dock-item-wrapper.bouncing .dock-icon {
-  animation: bounce-right 0.6s cubic-bezier(0.28, 0.84, 0.42, 1);
+.dock-wrapper.right .dock-item-bounce.bouncing {
+  animation: bounce-right 0.9s ease-in-out;
 }
