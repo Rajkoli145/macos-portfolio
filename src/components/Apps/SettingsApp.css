@@ -1447,3 +1447,54 @@
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.25);
 }
+
+/* About Portfolio Specific Styles */
+.about-portfolio-view .about-hero {
+    padding-top: 54px;
+}
+
+.rajkoli-brand-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #007aff 0%, #0056b3 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0, 122, 255, 0.4);
+    margin-bottom: 20px;
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.brand-initial {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.integrity-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.integrity-status {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #34c759;
+}
+
+.integrity-desc {
+    font-size: 11px;
+    color: #888;
+    margin: 0;
+}
+
+.about-portfolio-view .settings-list-item {
+    cursor: pointer;
+}
+
+.about-portfolio-view .settings-list-item:hover {
+    background: rgba(0, 122, 255, 0.1);
+}

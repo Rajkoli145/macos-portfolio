@@ -89,6 +89,7 @@ const SIDEBAR_GROUPS = [
         id: "info-section",
         items: [
             { id: "about", label: "About System", icon: Info, color: "#8e8e93" },
+            { id: "about-portfolio", label: "About Portfolio", icon: BadgeCheck, color: "#007aff" },
         ]
     }
 ];
@@ -683,6 +684,68 @@ const SettingsApp = ({ onOpenApp }) => {
                                     <span className="os-name">macOS Tahoe</span>
                                 </div>
                                 <span className="row-value">Version 26.2</span>
+                            </div>
+                        </div>
+                    </div>
+                );
+            case "about-portfolio":
+                return (
+                    <div className="settings-content about-portfolio-view">
+                        {renderHeader("About Portfolio", BadgeCheck, "Technical details and developer information.")}
+
+                        <div className="about-hero">
+                            <div className="rajkoli-brand-icon">
+                                <span className="brand-initial">R</span>
+                            </div>
+                            <div className="about-main-info">
+                                <h2 className="system-name">Rajkoli145</h2>
+                                <p className="os-version">Professional macOS Portfolio v1.0.0</p>
+                            </div>
+                        </div>
+
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <span className="row-label">Developer</span>
+                                <span className="row-value">Raj Koli (Rajkoli145)</span>
+                            </div>
+                            <div className="settings-row">
+                                <span className="row-label">Tech Stack</span>
+                                <span className="row-value">React, Vite, Lucide, Framer Motion</span>
+                            </div>
+                            <div className="settings-row">
+                                <span className="row-label">Last Updated</span>
+                                <span className="row-value">January 2026</span>
+                            </div>
+                        </div>
+
+                        <div className="settings-group-label">Connect with Me</div>
+                        <div className="settings-list-box">
+                            <div className="settings-list-item" onClick={() => window.open('https://github.com/Rajkoli145', '_blank')}>
+                                <div className="item-left">
+                                    <div className="item-icon" style={{ background: '#24292e' }}><Share2 size={16} /></div>
+                                    <span>GitHub (@Rajkoli145)</span>
+                                </div>
+                                <Share2 size={14} className="chevron" />
+                            </div>
+                            <div className="settings-list-item" onClick={() => window.open('https://linkedin.com/in/rajkoli', '_blank')}>
+                                <div className="item-left">
+                                    <div className="item-icon" style={{ background: '#0077b5' }}><Mail size={16} /></div>
+                                    <span>LinkedIn</span>
+                                </div>
+                                <Share2 size={14} className="chevron" />
+                            </div>
+                        </div>
+
+                        <div className="settings-group-label">System Integrity</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row" style={{ padding: '12px 16px' }}>
+                                <div className="item-left">
+                                    <CheckCircle2 size={20} color="#34c759" />
+                                    <div className="integrity-info">
+                                        <span className="integrity-status">Verified Developer</span>
+                                        <p className="integrity-desc">This portfolio is officially maintained by Rajkoli145.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
