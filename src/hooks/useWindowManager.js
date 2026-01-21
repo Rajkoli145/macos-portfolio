@@ -3,6 +3,12 @@ import { useState, useCallback } from "react";
 export const useWindowManager = () => {
     const [openWindows, setOpenWindows] = useState([]);
     const [topZIndex, setTopZIndex] = useState(100);
+    const [bouncingAppId, setBouncingAppId] = useState(null);
+
+    const triggerBounce = useCallback((appId) => {
+        setBouncingAppId(appId);
+        setTimeout(() => setBouncingAppId(null), 1000);
+    }, []);
 
     const focusWindow = useCallback((appId) => {
         setTopZIndex((prev) => {
@@ -16,7 +22,8 @@ export const useWindowManager = () => {
         });
     }, []);
 
-    const openApp = useCallback((appId, appName, Component) => {
+    const openApp = useCallback((appId, appName, Component, appProps = {}) => {
+        triggerBounce(appId);
         setOpenWindows((prev) => {
             // If already open, just focus/restore it
             const existing = prev.find((w) => w.id === appId);
@@ -33,6 +40,7 @@ export const useWindowManager = () => {
                 id: appId,
                 title: appName,
                 Component: Component,
+                appProps: appProps,
                 zIndex: newZ,
                 position: { x: 100 + prev.length * 30, y: 50 + prev.length * 30 },
                 size: { width: 1100, height: 700 },
@@ -86,6 +94,8 @@ export const useWindowManager = () => {
         minimizeWindow,
         toggleMaximize,
         updateWindowPosition,
-        updateWindowSize
+        updateWindowSize,
+        bouncingAppId,
+        triggerBounce
     };
 };

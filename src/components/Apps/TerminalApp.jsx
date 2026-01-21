@@ -26,7 +26,7 @@ function TerminalApp() {
     const { settings } = useSettings();
     const [input, setInput] = useState("");
     const [history, setHistory] = useState([
-        { cmd: null, output: "Welcome to Raj's Portfolio Terminal. Type 'help' for available commands.", animate: true }
+        { cmd: null, output: "Welcome to Raj's Portfolio Terminal. Type 'help' for available commands.", animate: false }
     ]);
     const scrollRef = useRef(null);
     const inputRef = useRef(null);
@@ -35,14 +35,17 @@ function TerminalApp() {
         whoami: "Raj Koli — Full-Stack Developer specializing in high-performance web applications and premium user experiences.",
         skills: "Frontend: React, Next.js, Framer Motion, Tailwind\nBackend:  Node.js, Express, PostgreSQL, MongoDB\nTools:    Git, Docker, Figma, Vercel CI/CD",
         projects: "• MacOS Portfolio (v2.0)\n• Eco-Tracker Sustainability Dashboard\n• Crypto-Dash Real-time Analytics",
-        contact: "Email:    2024.rajk@isu.ac.in\nGitHub:   github.com/rajkoli\nLinkedIn: linkedin.com/in/rajkoli",
+        contact: "Email:    2024.rajk@isu.ac.in\nGitHub:   github.com/Rajkoli145\nLinkedIn: linkedin.com/in/raj-koli-626008318",
         help: "Available commands: whoami, skills, projects, contact, help, clear"
     };
 
     useEffect(() => {
         return () => {
             if (settings.terminal.clearOnClose) {
-                setHistory([]);
+                // Reset to welcome message instead of completely clearing
+                setHistory([
+                    { cmd: null, output: "Welcome to Raj's Portfolio Terminal. Type 'help' for available commands.", animate: false }
+                ]);
             }
         }
     }, [settings.terminal.clearOnClose]);
@@ -65,7 +68,7 @@ function TerminalApp() {
                 setHistory([]);
             } else {
                 const output = trimmedInput === "" ? null : (commands[trimmedInput] || `command not found: ${trimmedInput}`);
-                setHistory(prev => [...prev, { cmd: input || " ", output, animate: true }]);
+                setHistory(prev => [...prev, { cmd: input || " ", output, animate: false }]);
             }
 
             setInput("");
@@ -140,7 +143,7 @@ function TerminalApp() {
                                         speed={settings.terminal.typingSpeed || 20}
                                     />
                                 ) : (
-                                    entry.output
+                                    <pre className="output-text">{entry.output}</pre>
                                 )}
                             </div>
                         )}

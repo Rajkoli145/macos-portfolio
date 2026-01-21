@@ -1,5 +1,6 @@
-.vscode-container {
+.vscode-wrapper {
     display: flex;
+    flex-direction: column;
     height: 100%;
     background: #1e1e1e;
     color: #cccccc;
@@ -8,7 +9,125 @@
     user-select: none;
 }
 
-/* Activity Bar (Very Narrow Left Strip) */
+/* Custom Title Bar */
+.vscode-title-bar {
+    height: 35px;
+    background: #252526;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.title-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.window-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.dot.red {
+    background: #ff5f56;
+}
+
+.dot.yellow {
+    background: #ffbd2e;
+}
+
+.dot.green {
+    background: #27c93f;
+}
+
+/* Hover Icons for VS Code Window Controls */
+.window-dots:hover .dot::after {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 7px;
+    color: rgba(0, 0, 0, 0.75);
+    font-weight: 900;
+}
+
+.window-dots:hover .dot.red::after {
+    content: "\2715";
+    font-size: 8px;
+}
+
+.window-dots:hover .dot.yellow::after {
+    content: "\2212";
+    font-size: 9px;
+    transform: translateY(-0.5px);
+}
+
+.window-dots:hover .dot.green::after {
+    content: "";
+    background-color: rgba(0, 0, 0, 0.75);
+    mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 155 155" xmlns="http://www.w3.org/2000/svg"><path d="M114.242 38.8833C114.797 38.8817 115.247 39.3317 115.245 39.8862L115.092 93.5891C115.09 94.4786 114.014 94.9223 113.385 94.2933L59.8351 40.7432C59.2061 40.1142 59.6499 39.0387 60.5394 39.0361L114.242 38.8833Z" /><path d="M39.8862 115.245C39.3317 115.247 38.8818 114.797 38.8833 114.242L39.0361 60.5394C39.0387 59.6499 40.1142 59.2061 40.7432 59.8351L94.2934 113.385C94.9223 114.014 94.4786 115.09 93.5891 115.092L39.8862 115.245Z" /></svg>');
+    mask-size: 8px 8px;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 155 155" xmlns="http://www.w3.org/2000/svg"><path d="M114.242 38.8833C114.797 38.8817 115.247 39.3317 115.245 39.8862L115.092 93.5891C115.09 94.4786 114.014 94.9223 113.385 94.2933L59.8351 40.7432C59.2061 40.1142 59.6499 39.0387 60.5394 39.0361L114.242 38.8833Z" /><path d="M39.8862 115.245C39.3317 115.247 38.8818 114.797 38.8833 114.242L39.0361 60.5394C39.0387 59.6499 40.1142 59.2061 40.7432 59.8351L94.2934 113.385C94.9223 114.014 94.4786 115.09 93.5891 115.092L39.8862 115.245Z" /></svg>');
+    -webkit-mask-size: 8px 8px;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+}
+
+.nav-controls {
+    display: flex;
+    gap: 10px;
+    color: #cccccc;
+}
+
+.title-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.search-box {
+    background: #3c3c3c;
+    border: 1px solid #454545;
+    border-radius: 6px;
+    height: 24px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 10px;
+    font-size: 11px;
+    color: #bbbbbb;
+    cursor: text;
+    position: relative;
+}
+
+.title-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: #bbbbbb;
+}
+
+.vscode-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Activity Bar */
 .vscode-activity-bar {
     width: 48px;
     background: #333333;
@@ -20,10 +139,13 @@
 }
 
 .activity-icon {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     color: #858585;
     cursor: pointer;
     transition: color 0.1s;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .activity-icon:hover,
@@ -33,7 +155,6 @@
 
 .activity-icon.active {
     border-left: 2px solid #ffffff;
-    padding-left: 4px;
 }
 
 /* Sidebar / Explorer */
@@ -52,6 +173,7 @@
     font-weight: 400;
     color: #bbbbbb;
     letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .section-title {
@@ -92,18 +214,459 @@
     color: #ffffff;
 }
 
-.folder {
-    font-weight: 600;
+.chat-trigger {
+    position: absolute;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #bbbbbb;
+    transition: all 0.2s;
+}
+
+.chat-trigger:hover,
+.chat-trigger.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.title-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
     color: #bbbbbb;
 }
 
-.folder svg {
+.vscode-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Activity Bar */
+.vscode-activity-bar {
+    width: 48px;
+    background: #333333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+}
+
+.activity-icon {
+    margin-bottom: 16px;
+    color: #858585;
+    cursor: pointer;
+    transition: color 0.1s;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.activity-icon:hover,
+.activity-icon.active {
+    color: #ffffff;
+}
+
+.activity-icon.active {
+    border-left: 2px solid #ffffff;
+}
+
+/* Sidebar / Explorer */
+.vscode-sidebar {
+    width: 200px;
+    background: #252526;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    height: 35px;
+    padding: 10px 20px;
+    font-size: 11px;
+    font-weight: 400;
+    color: #bbbbbb;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+}
+
+.explorer-tree {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 4px;
+}
+
+.explorer-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    font-size: 13px;
+    color: #cccccc;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.explorer-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.explorer-item.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Source Control View */
+.scm-section {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.commit-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.commit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.commit-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.commit-icon {
+    margin-top: 2px;
     color: #858585;
 }
 
-.file svg {
-    color: #519aba;
-    /* Default icon color */
+.commit-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.commit-message {
+    font-size: 13px;
+    color: #cccccc;
+    line-height: 1.4;
+}
+
+.commit-meta {
+    font-size: 11px;
+    color: #858585;
+}
+
+/* Extensions View */
+.extension-search {
+    padding: 10px;
+}
+
+.extension-search input {
+    width: 100%;
+    background: #3c3c3c;
+    border: 1px solid #454545;
+    color: #cccccc;
+    padding: 4px 8px;
+    font-size: 11px;
+    outline: none;
+    border-radius: 2px;
+}
+
+.extension-search input:focus {
+    border-color: #007aff;
+}
+
+.extensions-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.extension-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background 0.1s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.extension-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.extension-icon {
+    font-size: 24px;
+    padding-top: 2px;
+}
+
+.extension-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.extension-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ext-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.ext-version {
+    font-size: 10px;
+    color: #858585;
+}
+
+.ext-description {
+    font-size: 11px;
+    color: #858585;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ext-tags {
+    margin-top: 4px;
+    display: flex;
+    gap: 4px;
+}
+
+.ext-stats {
+    display: flex;
+    gap: 12px;
+    font-size: 10px;
+    color: #858585;
+    margin-top: 4px;
+}
+
+.no-extensions {
+    padding: 20px;
+    text-align: center;
+    font-size: 11px;
+    color: #858585;
+}
+
+/* Timeline View */
+.timeline-section {
+    padding-bottom: 20px;
+}
+
+.timeline-list {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px;
+    position: relative;
+}
+
+.timeline-list::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 15px;
+    bottom: 30px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.timeline-item {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+    position: relative;
+}
+
+.timeline-dot {
+    width: 10px;
+    height: 10px;
+    background: #007aff;
+    border-radius: 50%;
+    margin-top: 3px;
+    z-index: 1;
+}
+
+.timeline-dot.outline {
+    background: #1e1e1e;
+    border: 2px solid #858585;
+}
+
+.timeline-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.time-label {
+    font-size: 10px;
+    color: #858585;
+}
+
+.time-desc {
+    font-size: 12px;
+    color: #cccccc;
+    line-height: 1.3;
+}
+
+.tag {
+    font-size: 9px;
+    background: #3c3c3c;
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #bbbbbb;
+    text-transform: uppercase;
+}
+
+/* Search View */
+.search-input-container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.search-input-container input {
+    width: 100%;
+    background: #3c3c3c;
+    border: 1px solid #454545;
+    color: #cccccc;
+    padding: 4px 8px;
+    font-size: 13px;
+    outline: none;
+    border-radius: 2px;
+}
+
+.search-options {
+    display: flex;
+    gap: 12px;
+    color: #858585;
+    font-size: 11px;
+    padding-left: 5px;
+}
+
+.search-options span {
+    cursor: pointer;
+    transition: color 0.1s;
+}
+
+.search-options span:hover {
+    color: #ffffff;
+}
+
+.search-results-placeholder {
+    padding: 20px;
+    font-size: 12px;
+    color: #858585;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Debug View */
+.debug-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.debug-welcome {
+    padding: 30px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+}
+
+.debug-welcome-icon {
+    color: #858585;
+}
+
+.debug-welcome h3 {
+    font-size: 14px;
+    color: #cccccc;
+    margin: 0;
+}
+
+.debug-welcome p {
+    font-size: 12px;
+    color: #858585;
+    line-height: 1.4;
+}
+
+.debug-btn {
+    width: 100%;
+    padding: 6px;
+    font-size: 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.debug-btn.primary {
+    background: #007aff;
+    color: white;
+}
+
+.debug-btn.primary:hover {
+    background: #0062cc;
+}
+
+.debug-placeholder-text {
+    padding: 10px 20px;
+    font-size: 11px;
+    color: #858585;
+    font-style: italic;
+}
+
+/* Sidebar Chat Placeholder */
+.sidebar-chat-placeholder {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chat-placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    color: #858585;
+    font-size: 12px;
 }
 
 /* Main Editor Area */
@@ -114,7 +677,6 @@
     background: #1e1e1e;
 }
 
-/* Tabs */
 .editor-tabs {
     height: 35px;
     background: #252526;
@@ -166,24 +728,106 @@
     opacity: 0.6;
 }
 
-.close-tab:hover {
-    opacity: 1 !important;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+/* Editor Empty State */
+.editor-empty {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #1e1e1e;
 }
 
-/* Editor View */
+.vscode-logo-watermark {
+    opacity: 0.03;
+    position: absolute;
+    pointer-events: none;
+}
+
+.shortcuts-list {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    font-size: 13px;
+    color: #858585;
+}
+
+.shortcut-label {
+    font-weight: 300;
+}
+
+.shortcut-keys {
+    display: flex;
+    gap: 4px;
+}
+
+.key {
+    background: #333333;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    color: #cccccc;
+    min-width: 20px;
+    text-align: center;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Status Bar */
+.editor-status-bar {
+    height: 22px;
+    background: #1e1e1e;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: #bbbbbb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 11px;
+}
+
+.remote {
+    background: #16825d;
+    height: 100%;
+    padding: 0 8px !important;
+    color: white !important;
+}
+
+.status-left,
+.status-right {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    cursor: pointer;
+    height: 100%;
+}
+
+.status-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Syntax Highlighting */
 .editor-view {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
     font-family: "SF Mono", "Monaco", "Consolas", monospace;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.code-renderer {
-    counter-reset: line;
 }
 
 .editor-line {
@@ -195,67 +839,338 @@
     min-width: 30px;
     text-align: right;
     color: #858585;
-    user-select: none;
 }
 
 .line-content {
     white-space: pre;
 }
 
-/* Syntax Highlighting (Dark+ Mimic) */
 .hl-keyword {
     color: #569cd6;
 }
 
-/* Blue */
 .hl-type {
     color: #4ec9b0;
 }
 
-/* Teal */
 .hl-string {
     color: #ce9178;
 }
 
-/* Orange/Red */
 .hl-comment {
     color: #6a9955;
     font-style: italic;
 }
 
-/* Green */
-.hl-number {
-    color: #b5cea8;
+/* AI Chat Sidebar */
+.vscode-chat-sidebar {
+    width: 300px;
+    background: #252526;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
 }
 
-/* Light Green */
-.hl-component {
-    color: #dcdcaa;
+.chat-header {
+    height: 35px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 11px;
+    color: #bbbbbb;
 }
 
-/* Soft Yellow */
-.hl-header {
-    color: #569cd6;
-    font-weight: bold;
-    font-size: 1.2em;
+.chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chat-welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    margin-top: 50px;
+}
+
+.welcome-icon {
+    color: #ffffff;
+    opacity: 0.8;
+}
+
+.chat-welcome h3 {
+    font-size: 18px;
+    color: #ffffff;
+    margin: 0;
+}
+
+.chat-welcome p {
+    font-size: 13px;
+    color: #858585;
+    line-height: 1.5;
+}
+
+.chat-suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
     margin-top: 10px;
-    margin-bottom: 5px;
 }
 
-.hl-bullet {
-    color: #4ec9b0;
-    margin-left: 10px;
-}
-
-.hl-text {
+.chat-suggestions button {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     color: #cccccc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.chat-suggestions button:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.message-content {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #cccccc;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.chat-message.user .message-content {
+    background: rgba(0, 122, 255, 0.15);
+    color: #ffffff;
+}
+
+.chat-message.loading {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    color: #858585;
+    font-size: 12px;
+}
+
+.spinner {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.chat-input-container {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chat-input-wrapper {
+    background: #3c3c3c;
+    border: 1px solid #454545;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-input-wrapper textarea {
+    background: none;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 13px;
+    resize: none;
+    width: 100%;
+}
+
+.chat-input-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.send-btn {
+    background: none;
+    border: none;
+    color: #858585;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.send-btn:hover:not(:disabled) {
+    color: #ffffff;
+}
+
+.send-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+
+/* Main Editor Area */
+.vscode-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+}
+
+.editor-tabs {
+    height: 35px;
+    background: #252526;
+    display: flex;
+    overflow-x: auto;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    min-width: 120px;
+    max-width: 200px;
+    background: #2d2d2d;
+    border-right: 1px solid #1e1e1e;
+    font-size: 13px;
+    color: #969696;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab:hover {
+    color: #cccccc;
+}
+
+.tab.active {
+    background: #1e1e1e;
+    color: #ffffff;
+}
+
+.tab.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #007aff;
+}
+
+.close-tab {
+    margin-left: auto;
+    font-size: 16px;
+    opacity: 0;
+}
+
+.tab:hover .close-tab {
+    opacity: 0.6;
+}
+
+/* Editor Empty State */
+.editor-empty {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #1e1e1e;
+}
+
+.vscode-logo-watermark {
+    opacity: 0.03;
+    position: absolute;
+    pointer-events: none;
+}
+
+.shortcuts-list {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    font-size: 13px;
+    color: #858585;
+}
+
+.shortcut-label {
+    font-weight: 300;
+}
+
+.shortcut-keys {
+    display: flex;
+    gap: 4px;
+}
+
+.key {
+    background: #333333;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    color: #cccccc;
+    min-width: 20px;
+    text-align: center;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* Status Bar */
 .editor-status-bar {
     height: 22px;
-    background: #007acc;
-    color: #ffffff;
+    background: #1e1e1e;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: #bbbbbb;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -263,43 +1178,89 @@
     font-size: 11px;
 }
 
+.remote {
+    background: #16825d;
+    height: 100%;
+    padding: 0 8px !important;
+    color: white !important;
+}
+
 .status-left,
 .status-right {
     display: flex;
-    gap: 12px;
+    align-items: center;
+    height: 100%;
 }
 
 .status-item {
     display: flex;
     align-items: center;
     gap: 4px;
+    padding: 0 8px;
     cursor: pointer;
+    height: 100%;
 }
 
 .status-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.editor-empty {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.vscode-logo-watermark {
-    color: #ffffff;
-}
-
-/* Custom Scrollbar for VS Code feel */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.05);
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.1);
+/* Syntax Highlighting */
+.editor-view {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    font-family: "SF Mono", "Monaco", "Consolas", monospace;
+}
+
+.editor-line {
+    display: flex;
+    gap: 20px;
+}
+
+.line-number {
+    min-width: 30px;
+    text-align: right;
+    color: #858585;
+}
+
+.line-content {
+    white-space: pre;
+}
+
+.hl-keyword {
+    color: #569cd6;
+}
+
+.hl-type {
+    color: #4ec9b0;
+}
+
+.hl-string {
+    color: #ce9178;
+}
+
+.hl-comment {
+    color: #6a9955;
+    font-style: italic;
+}
+
+.hl-number {
+    color: #b5cea8;
+}
+
+.hl-component {
+    color: #dcdcaa;
+}
+
+.hl-header {
+    color: #569cd6;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.hl-bullet {
+    color: #4ec9b0;
+    margin-left: 10px;
 }

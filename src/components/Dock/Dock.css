@@ -342,75 +342,52 @@
   }
 }
 
-/* Launch Bounce Animation */
-@keyframes bounce {
+/* --- SMOOTH MACOS DOCK BOUNCE --- */
+/* Optimized for fluid, hardware-accelerated motion */
+@keyframes apple-dock-bounce {
 
   0%,
   100% {
     transform: translateY(0);
   }
 
-  30% {
-    transform: translateY(-30px);
+  25% {
+    transform: translateY(-38px);
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
   }
 
   50% {
     transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
   }
 
   75% {
-    transform: translateY(-10px);
+    transform: translateY(-12px);
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
   }
 }
 
-@keyframes bounce-left {
-
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-
-  30% {
-    transform: translateX(30px);
-  }
-
-  50% {
-    transform: translateX(0);
-  }
-
-  75% {
-    transform: translateX(10px);
-  }
-}
-
-@keyframes bounce-right {
-
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-
-  30% {
-    transform: translateX(-30px);
-  }
-
-  50% {
-    transform: translateX(0);
-  }
-
-  75% {
-    transform: translateX(-10px);
-  }
+.dock-item-bounce {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  /* Force GPU layer for ultra-smoothness */
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(0);
 }
 
 .dock-item-bounce.bouncing {
-  animation: bounce 0.9s ease-in-out;
+  animation: apple-dock-bounce 1s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  will-change: transform;
 }
 
-.dock-wrapper.left .dock-item-bounce.bouncing {
-  animation: bounce-left 0.9s ease-in-out;
-}
-
+/* Maintain vertical bounce on all dock positions */
+.dock-wrapper.left .dock-item-bounce.bouncing,
 .dock-wrapper.right .dock-item-bounce.bouncing {
-  animation: bounce-right 0.9s ease-in-out;
+  animation: apple-dock-bounce 1s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
 }
+
+/* --- END SMOOTH BOUNCE --- */

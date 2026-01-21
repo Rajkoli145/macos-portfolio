@@ -26,6 +26,7 @@
 
 .wallpaper-current.fading {
   opacity: 0;
+  transition: none;
 }
 
 .wallpaper-prev {

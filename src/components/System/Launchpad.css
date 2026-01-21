@@ -1,0 +1,246 @@
+.launchpad-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.launchpad-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.launchpad-content-card {
+    width: 90%;
+    max-width: 1000px;
+    height: 80%;
+    max-height: 700px;
+    background: rgba(20, 20, 20, 0.75);
+    backdrop-filter: blur(45px) saturate(210%);
+    -webkit-backdrop-filter: blur(45px) saturate(210%);
+    border-radius: 20px;
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.92);
+    transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1), opacity 0.4s;
+}
+
+.launchpad-overlay.visible .launchpad-content-card {
+    transform: scale(1);
+}
+
+/* Header */
+.launchpad-tahoe-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 150px;
+}
+
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.header-title {
+    color: white;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+}
+
+.app-store-icon {
+    width: 24px;
+    height: 24px;
+    background: #007aff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.launchpad-search {
+    position: relative;
+    width: 280px;
+}
+
+.launchpad-search .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}
+
+.launchpad-search input {
+    width: 100%;
+    height: 32px;
+    background: rgba(40, 40, 40, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0 12px 0 32px;
+    color: white;
+    font-size: 13.5px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.launchpad-search input:focus {
+    background: rgba(50, 50, 50, 0.8);
+    border-color: rgba(0, 122, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 150px;
+}
+
+.more-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.more-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Category Pills */
+.launchpad-categories {
+    padding: 14px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.categories-scroll-wrapper {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.categories-scroll-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.category-pill {
+    white-space: nowrap;
+    padding: 5px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-pill:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.category-pill.active {
+    background: rgba(45, 45, 45, 0.8);
+    color: white;
+    border: 2px solid #007aff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid Scroll */
+.launchpad-grid-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 40px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.launchpad-grid-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.launchpad-grid-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.launchpad-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 40px 20px;
+    justify-items: center;
+}
+
+.launchpad-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    width: 110px;
+    transition: transform 0.15s;
+}
+
+.launchpad-app:active {
+    transform: scale(0.92);
+}
+
+.app-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+}
+
+.app-name {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13.5px;
+    font-weight: 500;
+    text-align: center;
+    word-break: break-word;
+}

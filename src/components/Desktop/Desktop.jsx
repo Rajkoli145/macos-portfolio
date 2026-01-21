@@ -9,6 +9,8 @@ import SafariApp from "../Apps/SafariApp";
 import MailApp from "../Apps/MailApp";
 import VSCodeApp from "../Apps/VSCodeApp";
 import SettingsApp from "../Apps/SettingsApp";
+import PreviewApp from "../Apps/PreviewApp";
+import Launchpad from "../System/Launchpad";
 import { useSettings } from "../../context/SettingsContext";
 import { useWindowManager } from "../../hooks/useWindowManager";
 import "./Desktop.css";
@@ -20,6 +22,16 @@ import tahoeLight from "../../assets/wallpapers/macos-tahoe-light.jpg";
 import tahoeDark from "../../assets/wallpapers/macos-tahoe-dark.jpg";
 import bigSurLight from "../../assets/wallpapers/macos-big-sur-light.jpg";
 import bigSurDark from "../../assets/wallpapers/macos-big-sur-dark.jpg";
+
+// App Icons
+import finderIcon from "../../assets/finder.png";
+import terminalIcon from "../../assets/terminal.png";
+import notesIcon from "../../assets/notes.png";
+import safariIcon from "../../assets/safari.png";
+import mailIcon from "../../assets/mail.png";
+import vscodeIcon from "../../assets/vscode.png";
+import settingsIcon from "../../assets/settings.png";
+import launchpadIcon from "../../assets/launchpad.png";
 
 const WALLPAPER_MAP = {
   sequoia: { light: sequoiaLight, dark: sequoiaDark, dynamic: true },
@@ -34,10 +46,21 @@ const APP_COMPONENTS = {
   safari: SafariApp,
   settings: SettingsApp,
   mail: MailApp,
-  vscode: VSCodeApp
+  vscode: VSCodeApp,
+  preview: PreviewApp
 };
 
-function Desktop() {
+const LAUNCHPAD_APPS = [
+  { id: "finder", name: "Finder", icon: finderIcon },
+  { id: "terminal", name: "Terminal", icon: terminalIcon },
+  { id: "notes", name: "Notes", icon: notesIcon },
+  { id: "safari", name: "Safari", icon: safariIcon },
+  { id: "mail", name: "Mail", icon: mailIcon },
+  { id: "vscode", name: "VS Code", icon: vscodeIcon },
+  { id: "settings", name: "Settings", icon: settingsIcon },
+];
+
+function Desktop({ onShowShortcuts, triggerDialog }) {
   const { settings } = useSettings();
 
   // Initialize with current settings to avoid flash/fade on first load
@@ -51,6 +74,7 @@ function Desktop() {
   );
   const [prevWallpaper, setPrevWallpaper] = useState("");
   const [isFading, setIsFading] = useState(false);
+  const [isLaunchpadOpen, setIsLaunchpadOpen] = useState(false);
 
   const {
     openWindows,
@@ -60,7 +84,8 @@ function Desktop() {
     minimizeWindow,
     toggleMaximize,
     updateWindowPosition,
-    updateWindowSize
+    updateWindowSize,
+    bouncingAppId
   } = useWindowManager();
 
   useEffect(() => {
@@ -70,7 +95,7 @@ function Desktop() {
       setPrevWallpaper(currentWallpaper);
       setCurrentWallpaper(nextWp);
       setIsFading(true);
-      const timer = setTimeout(() => setIsFading(false), 800);
+      const timer = setTimeout(() => setIsFading(false), 50);
       return () => clearTimeout(timer);
     }
   }, [settings.desktop.wallpaper, settings.appearance.theme, currentWallpaper]);
@@ -82,10 +107,14 @@ function Desktop() {
     return { paddingBottom: '100px' };
   };
 
-  const handleOpenApp = (appId, appName) => {
+  const handleOpenApp = (appId, appName, appProps = {}) => {
+    if (appId === 'launchpad') {
+      setIsLaunchpadOpen(prev => !prev);
+      return;
+    }
     const AppComponent = APP_COMPONENTS[appId];
     if (AppComponent) {
-      openApp(appId, appName, AppComponent);
+      openApp(appId, appName, AppComponent, appProps);
     }
   };
 
@@ -105,7 +134,11 @@ function Desktop() {
         style={{ backgroundImage: `url(${currentWallpaper})` }}
       />
 
-      <MenuBar onOpenApp={handleOpenApp} />
+      <MenuBar
+        onOpenApp={handleOpenApp}
+        onShowShortcuts={onShowShortcuts}
+        triggerDialog={triggerDialog}
+      />
 
       <div className="desktop-area" style={getDesktopAreaStyle()}>
         {openWindows.map((window) => (
@@ -119,13 +152,29 @@ function Desktop() {
             onDrag={updateWindowPosition}
             onResize={updateWindowSize}
             dockX={getDockX(window.id)}
+            hideTitleBar={window.id === 'vscode'}
           >
-            {window.Component && <window.Component onOpenApp={handleOpenApp} />}
+            {window.Component && (
+              <window.Component
+                {...window.appProps}
+                onOpenApp={handleOpenApp}
+                onClose={() => closeWindow(window.id)}
+                onMinimize={() => minimizeWindow(window.id)}
+                onMaximize={() => toggleMaximize(window.id)}
+              />
+            )}
           </Window>
         ))}
       </div>
 
-      <Dock onOpenApp={handleOpenApp} openWindows={openWindows} />
+      <Dock onOpenApp={handleOpenApp} openWindows={openWindows} bouncingAppId={bouncingAppId} />
+
+      <Launchpad
+        show={isLaunchpadOpen}
+        onClose={() => setIsLaunchpadOpen(false)}
+        onOpenApp={handleOpenApp}
+        apps={LAUNCHPAD_APPS}
+      />
     </div>
   );
 }

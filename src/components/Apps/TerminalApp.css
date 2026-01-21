@@ -183,6 +183,16 @@
   line-height: 1.6;
 }
 
+.output-text {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 @keyframes terminal-blink {
 
   from,

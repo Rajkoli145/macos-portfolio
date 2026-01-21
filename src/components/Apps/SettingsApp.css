@@ -65,6 +65,7 @@
     align-items: center;
     gap: 12px;
     cursor: pointer;
+    margin-bottom: 12px;
 }
 
 .sidebar-profile:hover {
@@ -81,6 +82,7 @@
     justify-content: center;
     color: #fff;
     border: 0.5px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
 }
 
 .profile-info {
@@ -103,6 +105,53 @@
     margin-top: 1px;
 }
 
+.profile-chevron {
+    margin-left: auto;
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-profile.active .profile-chevron {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.profile-avatar-emoji {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.profile-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile-edit-btn {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.1);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.profile-edit-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.sidebar-profile.active {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-profile.active .profile-edit-btn {
+    background: rgba(255, 255, 255, 0.15);
+}
+
 .sidebar-scrollable {
     flex: 1;
     overflow-y: auto;
@@ -113,6 +162,127 @@
     display: flex;
     flex-direction: column;
     padding: 0 8px;
+}
+
+.about-hero,
+.about-portfolio-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px 0 32px 0;
+}
+
+.macbook-icon-container,
+.portfolio-hero-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.macbook-icon-container {
+    width: 140px;
+    height: 100px;
+    color: #4a9eff;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+}
+
+.portfolio-hero-icon {
+    width: 80px;
+    height: 80px;
+    background: #2a2a2e;
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.about-main-info h2,
+.about-portfolio-hero h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.about-main-info .os-version,
+.about-portfolio-hero .hero-subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-top: 6px;
+}
+
+.about-portfolio-view .row-label {
+    font-size: 13px;
+    color: #eee;
+}
+
+.about-portfolio-view .row-value {
+    font-size: 13px;
+    color: #888;
+}
+
+.item-icon-small {
+    width: 28px;
+    height: 28px;
+    background: #3a3a3c;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.os-icon-thumb {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+}
+
+.os-icon-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.os-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.mac-pill-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    color: #eee;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mac-pill-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.settings-list-item.no-hover:hover {
+    background: none;
+}
+
+.action-card {
+    margin-top: 24px;
 }
 
 .sidebar-item {
@@ -487,10 +657,48 @@
     background-position: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.wp-thumb.split {
+    display: flex;
+}
+
+.thumb-half {
+    width: 50%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.dynamic-icon-overlay {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    z-index: 2;
+}
+
+.split-circle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #fff 50%, #1e1e1e 50%);
+    border: 0.5px solid rgba(0, 0, 0, 0.3);
 }
 
 .wallpaper-card.active .wp-thumb {
-    border: 3px solid #007aff;
+    border: 3.5px solid #007aff;
 }
 
 .dynamic-badge {
@@ -730,6 +938,69 @@
     color: #eee;
     line-height: 1.5;
     padding: 8px 0;
+}
+
+/* Profile Section Specifics */
+.settings-row-input {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
+}
+
+.settings-row-input:last-child {
+    border-bottom: none;
+}
+
+.settings-row-input label {
+    width: 140px;
+    font-size: 13px;
+    color: #eee;
+}
+
+.settings-row-input input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    outline: none;
+    padding: 2px 0;
+}
+
+.settings-row-input input::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.emoji-picker-mini {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.emoji-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.emoji-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.emoji-btn.active {
+    background: rgba(0, 122, 255, 0.2);
+    border-color: #007aff;
+    box-shadow: 0 0 0 1px #007aff;
 }
 
 /* UI Controls Styling */
@@ -987,6 +1258,7 @@
     gap: 4px;
     padding: 8px 0;
 }
+
 /* New UI Controls */
 .segmented-control {
     display: flex;
@@ -1049,4 +1321,129 @@
     font-size: 13px;
     color: #888;
     margin: 4px 0 0 0;
+}
+
+/* Profile Picture Upload */
+.profile-picture-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.current-avatar-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+    margin: 0 auto;
+}
+
+.current-avatar-preview:hover {
+    border-color: #007aff;
+    transform: scale(1.02);
+}
+
+.current-avatar-preview:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.custom-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.avatar-emoji-large {
+    font-size: 48px;
+    line-height: 1;
+}
+
+.avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 50%;
+}
+
+.avatar-overlay span {
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.avatar-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+/* Profile Header with Large Icon */
+.profile-header-icon-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.large-profile-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #4d4d4d 0%, #3a3a3a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+    color: #fff;
+}
+
+.large-profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.large-profile-emoji {
+    font-size: 48px;
+    line-height: 1;
+}
+
+.profile-header-edit-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.profile-header-edit-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
 }

@@ -16,7 +16,8 @@ function Window({
   onMaximize,
   onDrag,
   onResize,
-  dockX
+  dockX,
+  hideTitleBar = false
 }) {
   const windowRef = useRef(null);
   const [isResizing, setIsResizing] = useState(false);
@@ -35,6 +36,9 @@ function Window({
   const handleDragStart = (e) => {
     if (propsRef.current.isMaximized) return;
     if (e.target.closest('.window-controls')) return;
+
+    // If title bar is hidden, only allow drag from elements with 'drag-handle' class
+    if (hideTitleBar && !e.target.closest('.drag-handle')) return;
 
     setIsDragging(true);
     dragData.current = {
@@ -116,9 +120,12 @@ function Window({
 
   return (
     <div
-      className={`window ${id}-window ${isMaximized ? "maximized" : ""} ${isMinimized ? "minimized" : ""} ${isResizing ? "resizing" : ""}`}
+      className={`window ${id}-window ${isMaximized ? "maximized" : ""} ${isMinimized ? "minimized" : ""} ${isResizing ? "resizing" : ""} ${hideTitleBar ? "no-titlebar" : ""}`}
       ref={windowRef}
-      onMouseDown={() => onFocus(id)}
+      onMouseDown={(e) => {
+        onFocus(id);
+        if (hideTitleBar) handleDragStart(e);
+      }}
       style={{
         zIndex: zIndex,
         width: isMaximized ? '100%' : `${size.width}px`,
@@ -127,14 +134,16 @@ function Window({
         '--dock-x': dockX
       }}
     >
-      <div className="window-titlebar" onMouseDown={handleDragStart}>
-        <div className="window-controls">
-          <span className="control close" onClick={(e) => { e.stopPropagation(); onClose(id); }} />
-          <span className="control minimize" onClick={(e) => { e.stopPropagation(); onMinimize(id); }} />
-          <span className="control maximize" onClick={(e) => { e.stopPropagation(); onMaximize(id); }} />
+      {!hideTitleBar && (
+        <div className="window-titlebar" onMouseDown={handleDragStart}>
+          <div className="window-controls">
+            <span className="control close" onClick={(e) => { e.stopPropagation(); onClose(id); }} />
+            <span className="control minimize" onClick={(e) => { e.stopPropagation(); onMinimize(id); }} />
+            <span className="control maximize" onClick={(e) => { e.stopPropagation(); onMaximize(id); }} />
+          </div>
+          <div className="window-title">{title}</div>
         </div>
-        <div className="window-title">{title}</div>
-      </div>
+      )}
 
       <div className="window-content">
         {children}

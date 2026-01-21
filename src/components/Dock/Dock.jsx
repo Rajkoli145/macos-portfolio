@@ -11,8 +11,9 @@ import safariIcon from "../../assets/safari.png";
 import mailIcon from "../../assets/mail.png";
 import vscodeIcon from "../../assets/vscode.png";
 import settingsIcon from "../../assets/settings.png";
+import launchpadIcon from "../../assets/launchpad.png";
 
-function Dock({ onOpenApp, openWindows = [] }) {
+function Dock({ onOpenApp, openWindows = [], bouncingAppId }) {
   const { settings } = useSettings();
   const [mouseX, setMouseX] = useState(null);
   const [activeApp, setActiveApp] = useState(null);
@@ -21,6 +22,7 @@ function Dock({ onOpenApp, openWindows = [] }) {
   const [bouncingApp, setBouncingApp] = useState(null);
   const [apps, setApps] = useState([
     { id: "finder", name: "Finder", icon: finderIcon },
+    { id: "launchpad", name: "Launchpad", icon: launchpadIcon },
     { id: "terminal", name: "Terminal", icon: terminalIcon },
     { id: "notes", name: "Notes", icon: notesIcon },
     { id: "safari", name: "Safari", icon: safariIcon },
@@ -80,7 +82,7 @@ function Dock({ onOpenApp, openWindows = [] }) {
   };
 
   const handleAppClick = (appId, appName) => {
-    if (settings.dock.appAnimation) {
+    if (settings.dock.appAnimation && appId !== 'launchpad') {
       setBouncingApp(appId);
       setTimeout(() => setBouncingApp(null), 900); // 0.9s bounce
     }
@@ -200,7 +202,7 @@ function Dock({ onOpenApp, openWindows = [] }) {
               }}
               onClick={() => handleAppClick(app.id, app.name)}
             >
-              <div className={`dock-item-bounce ${bouncingApp === app.id ? 'bouncing' : ''}`}>
+              <div className={`dock-item-bounce ${(bouncingApp === app.id || bouncingAppId === app.id) ? 'bouncing' : ''}`}>
                 <div
                   className="dock-icon"
                   style={{

@@ -21,31 +21,24 @@
     visibility 0.4s;
 }
 
-/* App-specific overrides */
+/* App-specific overrides - Simplified for Utility Focus */
 .window.finder-window {
-  background: transparent;
-  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.5);
+  background: #1e1e1e;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
 }
 
 .window.finder-window .window-titlebar {
-  background: transparent;
-  border-bottom: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 240px;
-  /* Match finder sidebar width */
-  z-index: 10;
-  height: 64px;
+  background: #2d2d2d;
+  /* Match sidebar */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .window.finder-window .window-title {
-  display: none;
-  /* Hide default title for Finder */
+  display: block;
 }
 
 .window.finder-window .window-content {
-  height: 100%;
+  height: calc(100% - 36px);
 }
 
 /* Disable transitions while resizing for smoothness */
@@ -103,6 +96,45 @@
 
 .control.maximize {
   background: #27c93f;
+}
+
+/* Hover Icons for Traffic Lights */
+.window-controls:hover .control::after {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 7px;
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 900;
+  opacity: 1;
+}
+
+.window-controls:hover .control.close::after {
+  content: "\2715";
+  /* Bold Multiplication X */
+  font-size: 8px;
+}
+
+.window-controls:hover .control.minimize::after {
+  content: "\2212";
+  /* Bold Minus Sign */
+  font-size: 9px;
+  transform: translateY(-0.5px);
+}
+
+.window-controls:hover .control.maximize::after {
+  content: "";
+  background-color: rgba(0, 0, 0, 0.75);
+  mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 155 155" xmlns="http://www.w3.org/2000/svg"><path d="M114.242 38.8833C114.797 38.8817 115.247 39.3317 115.245 39.8862L115.092 93.5891C115.09 94.4786 114.014 94.9223 113.385 94.2933L59.8351 40.7432C59.2061 40.1142 59.6499 39.0387 60.5394 39.0361L114.242 38.8833Z" /><path d="M39.8862 115.245C39.3317 115.247 38.8818 114.797 38.8833 114.242L39.0361 60.5394C39.0387 59.6499 40.1142 59.2061 40.7432 59.8351L94.2934 113.385C94.9223 114.014 94.4786 115.09 93.5891 115.092L39.8862 115.245Z" /></svg>');
+  mask-size: 8px 8px;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 155 155" xmlns="http://www.w3.org/2000/svg"><path d="M114.242 38.8833C114.797 38.8817 115.247 39.3317 115.245 39.8862L115.092 93.5891C115.09 94.4786 114.014 94.9223 113.385 94.2933L59.8351 40.7432C59.2061 40.1142 59.6499 39.0387 60.5394 39.0361L114.242 38.8833Z" /><path d="M39.8862 115.245C39.3317 115.247 38.8818 114.797 38.8833 114.242L39.0361 60.5394C39.0387 59.6499 40.1142 59.2061 40.7432 59.8351L94.2934 113.385C94.9223 114.014 94.4786 115.09 93.5891 115.092L39.8862 115.245Z" /></svg>');
+  -webkit-mask-size: 8px 8px;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
 }
 
 .window-title {

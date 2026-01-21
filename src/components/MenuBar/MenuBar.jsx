@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useSettings } from "../../context/SettingsContext";
 import "./MenuBar.css";
 import siriIcon from "../../assets/siri.png";
 import finderIcon from "../../assets/finder.png";
@@ -9,7 +10,8 @@ import mailIcon from "../../assets/mail.png";
 import vscodeIcon from "../../assets/vscode.png";
 import settingsIcon from "../../assets/settings.png";
 
-function MenuBar({ onOpenApp }) {
+function MenuBar({ onOpenApp, onShowShortcuts, triggerDialog }) {
+  const { setSystemStatus } = useSettings();
   const [date, setDate] = useState(new Date());
   const [activeMenu, setActiveMenu] = useState(null);
   const [batteryLevel, setBatteryLevel] = useState(100);
@@ -106,21 +108,66 @@ function MenuBar({ onOpenApp }) {
 
     // Contact/Resume special cases
     if (action === 'resume') {
-      window.open('/resume.pdf', '_blank');
+      if (onOpenApp) onOpenApp('preview', 'Preview - Resume');
       return;
     }
 
     // Clipboard actions
     if (action === 'copy-email') {
-      navigator.clipboard.writeText('hello@rajkoli.me');
+      navigator.clipboard.writeText('2024.rajk@isu.ac.in');
       return;
     }
     if (action === 'copy-github') {
-      navigator.clipboard.writeText('https://github.com/rajkoli');
+      navigator.clipboard.writeText('https://github.com/Rajkoli145');
       return;
     }
     if (action === 'copy-linkedin') {
-      navigator.clipboard.writeText('https://linkedin.com/in/rajkoli');
+      navigator.clipboard.writeText('https://www.linkedin.com/in/raj-koli-626008318/');
+      return;
+    }
+
+    if (action === 'sleep') {
+      setSystemStatus('sleep');
+      return;
+    }
+
+    if (action === 'restart' || action === 'shutdown') {
+      const isRestart = action === 'restart';
+      triggerDialog({
+        type: action,
+        title: isRestart ? 'Restart System?' : 'Shut Down System?',
+        message: `Are you sure you want to ${isRestart ? 'restart' : 'shut down'} your Mac? Unsaved changes may be lost.`,
+        confirmLabel: isRestart ? 'Restart' : 'Shut Down',
+        onConfirm: () => {
+          setSystemStatus(action);
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        }
+      });
+      return;
+    }
+
+    if (action === 'shortcuts') {
+      if (onShowShortcuts) onShowShortcuts();
+      return;
+    }
+
+    if (action === 'lock') {
+      setSystemStatus('locked');
+      return;
+    }
+
+    if (action === 'logout') {
+      triggerDialog({
+        type: 'logout',
+        title: 'Log Out Raj?',
+        message: 'Are you sure you want to log out of your current session?',
+        confirmLabel: 'Log Out',
+        onConfirm: () => {
+          setSystemStatus('locked');
+        }
+      });
       return;
     }
 
@@ -130,8 +177,11 @@ function MenuBar({ onOpenApp }) {
       skills: { id: 'terminal', name: 'Terminal' },
       notes: { id: 'notes', name: 'Notes' },
       experience: { id: 'finder', name: 'Finder' },
-      contact: { id: 'mail', name: 'Mail' }
+      contact: { id: 'mail', name: 'Mail' },
+      resume: { id: 'resume', name: 'Resume' } // Added resume here as well for consistency if needed
     };
+
+
 
     const app = appMap[action];
     if (app && onOpenApp) {
@@ -157,6 +207,7 @@ function MenuBar({ onOpenApp }) {
     { name: 'Settings', appId: 'settings', type: 'App', icon: settingsIcon },
     { name: 'Projects', appId: 'safari', type: 'Section', icon: safariIcon },
     { name: 'Skills', appId: 'terminal', type: 'Section', icon: terminalIcon },
+    { name: 'Resume', appId: 'preview', type: 'File', icon: notesIcon },
   ].filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const topHit = searchQuery && searchableItems.length > 0 ? searchableItems[0] : null;
@@ -226,8 +277,8 @@ function MenuBar({ onOpenApp }) {
           onMouseEnter={() => handleMenuHover('apple')}
           ref={appleMenuRef}
         >
-          <svg viewBox="0 0 170 170" width="16" height="16" fill="currentColor">
-            <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.7 3.17-5.22 2.13-9.51 3.24-12.86 3.35-5.14.12-10.03-2.01-14.7-6.35-3.17-2.63-7.07-7.27-11.69-13.92-9.06-12.98-13.55-27.97-13.55-45 0-11.45 2.13-21.3 6.39-29.5 4.26-8.2 10.13-14.54 17.61-19.01 7.47-4.47 15.66-6.71 24.57-6.71 4.58 0 9.8 1.15 15.66 3.44 5.86 2.3 10.13 3.44 12.83 3.44 2.12 0 6.6-1.32 13.44-3.95 6.84-2.63 12.6-3.83 17.32-3.6 11.23.23 19.96 4.3 26.21 12.21-10.82 6.53-16.22 15.54-16.22 27.02 0 9.07 3.19 16.71 9.57 22.92 3.18 3.18 6.94 5.61 11.28 7.28-.77 2.22-1.54 4.1-2.31 5.64zM104.28 34.15c0-8.25 2.87-15.62 8.6-22.11 6.39-7.23 14.28-11.22 22.93-12.04.11 1.07.17 2.01.17 2.83 0 7.74-3.13 15.34-9.39 22.8-5.91 7.03-13.73 11.23-22.31 11.32-.12-1-.18-1.92-.18-2.8z" />
+          <svg viewBox="0 0 512 512" width="16" height="16" fill="currentColor">
+            <path d="M388.53 251.48a100.86 100.86 0 0 1 48.67-84.66c-24.5-35.33-62-40.42-75.33-40.83-32-.42-62.33 21.67-78.58 21.67-16.33 0-41.58-18.17-68.58-17.67-35.58.5-68.5 20.67-86.75 52.33C91.53 243.08 119.28 350.23 154.53 401.31c17.25 25 37.83 53.17 64.92 52.17 26.17-1 36.08-16.84 67.75-16.84 31.67 0 40.58 16.84 68.25 16.33 28.17-.5 45.67-25.33 62.83-50.33 19.83-28.83 28-56.83 28.42-58.33-.58-.25-54.75-21.08-54.75-83.33zM320.61 106c14.42-17.5 24.08-41.67 21.42-66-20.83.83-46.08 13.83-61.08 31.33-13.42 15.58-25.17 40.42-22 64.08 23.17 1.75 47.25-11.91 61.66-29.41z" />
           </svg>
           {activeMenu === 'apple' && (
             <div className="dropdown-menu">
@@ -255,6 +306,40 @@ function MenuBar({ onOpenApp }) {
                   <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                   <span>Contact</span>
                 </div>
+              </div>
+              <div className="dropdown-divider" />
+              <div className="dropdown-item" onClick={() => handleMenuItemClick('sleep')}>
+                <div className="item-left">
+                  <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+                  <span>Sleep</span>
+                </div>
+              </div>
+              <div className="dropdown-item" onClick={() => handleMenuItemClick('restart')}>
+                <div className="item-left">
+                  <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /></svg>
+                  <span>Restart...</span>
+                </div>
+              </div>
+              <div className="dropdown-item" onClick={() => handleMenuItemClick('shutdown')}>
+                <div className="item-left">
+                  <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0" /><line x1="12" y1="2" x2="12" y2="12" /></svg>
+                  <span>Shut Down...</span>
+                </div>
+              </div>
+              <div className="dropdown-divider" />
+              <div className="dropdown-item" onClick={() => handleMenuItemClick('lock')}>
+                <div className="item-left">
+                  <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                  <span>Lock Screen</span>
+                </div>
+                <div className="item-right">⌘L</div>
+              </div>
+              <div className="dropdown-item" onClick={() => handleMenuItemClick('logout')}>
+                <div className="item-left">
+                  <svg className="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+                  <span>Log Out Raj...</span>
+                </div>
+                <div className="item-right">⇧⌘Q</div>
               </div>
             </div>
           )}

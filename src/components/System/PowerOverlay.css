@@ -1,0 +1,48 @@
+.power-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    z-index: 10001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+.power-overlay.fade-out {
+    opacity: 0;
+}
+
+.power-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12vh;
+    width: 100%;
+}
+
+.apple-logo-boot {
+    width: 100px;
+    height: 100px;
+}
+
+.boot-progress-container {
+    width: 200px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.boot-progress-bar {
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}

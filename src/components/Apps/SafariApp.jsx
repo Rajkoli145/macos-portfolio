@@ -17,35 +17,43 @@ import {
     Clock
 } from "lucide-react";
 
-function SafariApp() {
+function SafariApp({ onOpenApp }) {
     const [openingLink, setOpeningLink] = useState(null);
 
     const profiles = [
-        { id: 'github', label: 'GitHub', icon: Github, url: 'https://github.com/rajkoli' },
-        { id: 'linkedin', label: 'LinkedIn', icon: Linkedin, url: 'https://linkedin.com/in/rajkoli' },
-        { id: 'resume', label: 'Resume', icon: FileText, url: '#' },
-        { id: 'portfolio', label: 'Portfolio', icon: RotateCw, url: '#' },
+        { id: 'github', label: 'GitHub', icon: Github, url: 'https://github.com/Rajkoli145' },
+        { id: 'linkedin', label: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/raj-koli-626008318/' },
+        { id: 'resume', label: 'Resume', icon: FileText, url: 'preview' },
+        { id: 'portfolio', label: 'Portfolio', icon: RotateCw, url: 'https://rajkoli.vercel.app/' },
     ];
 
     const projects = [
         {
-            title: "Eco-Tracker",
-            desc: "Sustainability tracking dashboard with real-time data visualization.",
-            link: "https://github.com/rajkoli/eco-tracker"
-        },
-        {
-            title: "Crypto-Dash",
-            desc: "Advanced cryptocurrency analytics platform for serious traders.",
-            link: "https://github.com/rajkoli/crypto-dash"
-        },
-        {
-            title: "MacOS Portfolio",
+            title: "macOS Portfolio",
             desc: "A premium, interactive desktop experience built with React.",
-            link: "https://github.com/rajkoli/macos-portfolio"
+            link: "https://github.com/Rajkoli145/macos-portfolio"
+        },
+        {
+            title: "FreelancerFlow",
+            desc: "Freelancer management platform with project tracking.",
+            link: "https://github.com/Rajkoli145/FreelancerFlow"
+        },
+        {
+            title: "Student-Teacher Booking",
+            desc: "Appointment scheduling system for educational institutions.",
+            link: "https://github.com/Rajkoli145/Student-teacher-booking"
         }
     ];
 
     const handleExternalLink = (url, label) => {
+        if (url === 'preview') {
+            if (onOpenApp) onOpenApp('preview', 'Preview - Resume');
+            return;
+        }
+        if (url === 'mail') {
+            if (onOpenApp) onOpenApp('mail', 'Mail');
+            return;
+        }
         setOpeningLink(label);
         setTimeout(() => {
             window.open(url, '_blank', 'noopener,noreferrer');
@@ -128,7 +136,7 @@ function SafariApp() {
                                 <h2 className="section-heading">Contact</h2>
                                 <div
                                     className="contact-card"
-                                    onClick={() => handleExternalLink("mailto:2024.rajk@isu.ac.in", "Email")}
+                                    onClick={() => handleExternalLink("mail", "Email")}
                                 >
                                     <Mail size={18} />
                                     <span>2024.rajk@isu.ac.in</span>

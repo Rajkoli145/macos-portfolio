@@ -88,7 +88,7 @@ const SIDEBAR_GROUPS = [
     {
         id: "info-section",
         items: [
-            { id: "about_portfolio", label: "About Portfolio", icon: Info, color: "#8e8e93" },
+            { id: "about", label: "About System", icon: Info, color: "#8e8e93" },
         ]
     }
 ];
@@ -190,8 +190,23 @@ const SettingsApp = ({ onOpenApp }) => {
                                     <span>Download Latest Resume</span>
                                 </div>
                                 <div className="item-actions">
-                                    <button className="mac-btn primary">View</button>
-                                    <button className="mac-btn">Download</button>
+                                    <button
+                                        className="mac-btn primary"
+                                        onClick={() => onOpenApp?.('preview', 'Preview - Resume')}
+                                    >
+                                        View
+                                    </button>
+                                    <button
+                                        className="mac-btn"
+                                        onClick={() => {
+                                            const link = document.createElement('a');
+                                            link.href = '/resume.pdf';
+                                            link.download = 'Raj_Resume.pdf';
+                                            link.click();
+                                        }}
+                                    >
+                                        Download
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -379,7 +394,8 @@ const SettingsApp = ({ onOpenApp }) => {
                         <div className="wallpaper-grid-large">
                             {[
                                 { id: "sequoia", label: "Sequoia", type: "dynamic" },
-                                { id: "tahoe", label: "Tahoe", type: "dynamic" }
+                                { id: "tahoe", label: "Tahoe", type: "dynamic" },
+                                { id: "big-sur", label: "Big Sur", type: "dynamic" }
                             ].map(wp => (
                                 <div
                                     key={wp.id}
@@ -387,32 +403,14 @@ const SettingsApp = ({ onOpenApp }) => {
                                     onClick={() => updateSetting("desktop", "wallpaper", wp.id)}
                                 >
                                     <div className="wp-thumb-wrapper">
-                                        <div
-                                            className="wp-thumb"
-                                            style={{ backgroundImage: `url(${settings.appearance.theme === 'dark' ? THUMB_MAP[wp.id].dark : THUMB_MAP[wp.id].light})` }}
-                                        />
-                                        {wp.type === "dynamic" && <div className="dynamic-badge">Dynamic</div>}
-                                    </div>
-                                    <span>{wp.label}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="settings-group-label" style={{ marginTop: '24px' }}>STATIC WALLPAPERS</div>
-                        <div className="wallpaper-grid-large">
-                            {[
-                                { id: "big-sur", label: "Big Sur" }
-                            ].map(wp => (
-                                <div
-                                    key={wp.id}
-                                    className={`wallpaper-card ${wp.id} ${settings.desktop.wallpaper === wp.id ? "active" : ""}`}
-                                    onClick={() => updateSetting("desktop", "wallpaper", wp.id)}
-                                >
-                                    <div className="wp-thumb-wrapper">
-                                        <div
-                                            className="wp-thumb"
-                                            style={{ backgroundImage: `url(${settings.appearance.theme === 'dark' ? THUMB_MAP[wp.id].dark : THUMB_MAP[wp.id].light})` }}
-                                        />
+                                        <div className="wp-thumb split">
+                                            <div className="thumb-half light" style={{ backgroundImage: `url(${THUMB_MAP[wp.id].light})` }} />
+                                            <div className="thumb-half dark" style={{ backgroundImage: `url(${THUMB_MAP[wp.id].dark})` }} />
+                                            <div className="dynamic-icon-overlay">
+                                                <div className="split-circle" />
+                                            </div>
+                                        </div>
+                                        <div className="dynamic-badge">Dynamic</div>
                                     </div>
                                     <span>{wp.label}</span>
                                 </div>
@@ -641,75 +639,153 @@ const SettingsApp = ({ onOpenApp }) => {
                 );
             case "about":
                 return (
-                    <div className="settings-content">
-                        {renderHeader("About This System", Info, "Hardware and software specifications.")}
+                    <div className="settings-content about-system-view">
                         <div className="about-hero">
-                            <div className="macbook-icon">💻</div>
+                            <div className="macbook-icon-container">
+                                <Monitor size={64} strokeWidth={1} />
+                            </div>
                             <div className="about-main-info">
-                                <h2 className="system-name">Raj's MacBook Air 2</h2>
-                                <p className="os-version">macOS Sequoia 15.1</p>
+                                <h2 className="system-name">MacBook Air</h2>
+                                <p className="os-version">M2, 2022</p>
                             </div>
                         </div>
 
                         <div className="settings-group-card">
                             <div className="settings-row">
-                                <span>Processor</span>
-                                <span className="settings-value-text">Apple M3 Pro (Simulated)</span>
+                                <span className="row-label">Name</span>
+                                <span className="row-value">Raj's MacBook Air (3)</span>
                             </div>
                             <div className="settings-row">
-                                <span>Memory</span>
-                                <span className="settings-value-text">16 GB Unified Memory</span>
+                                <span className="row-label">Chip</span>
+                                <span className="row-value">Apple M2</span>
                             </div>
                             <div className="settings-row">
-                                <span>Graphics</span>
-                                <span className="settings-value-text">Apple GPU 12-Core</span>
+                                <span className="row-label">Memory</span>
+                                <span className="row-value">8 GB</span>
+                            </div>
+                            <div className="settings-row">
+                                <span className="row-label">Serial number</span>
+                                <span className="row-value">D04WHGLQ2X</span>
+                            </div>
+                            <div className="settings-row" style={{ padding: '8px 16px' }}>
+                                <span className="row-label">Coverage Expired</span>
+                                <button className="mac-pill-btn">Details...</button>
+                            </div>
+                        </div>
+
+                        <div className="settings-group-label">macOS</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row" style={{ padding: '12px 16px' }}>
+                                <div className="item-left">
+                                    <div className="os-icon-thumb">
+                                        <img src={tahoeDark} alt="macOS Tahoe" />
+                                    </div>
+                                    <span className="os-name">macOS Tahoe</span>
+                                </div>
+                                <span className="row-value">Version 26.2</span>
                             </div>
                         </div>
                     </div>
                 );
-            case "about_portfolio":
+
+            case "profile":
                 return (
                     <div className="settings-content">
-                        {renderHeader("About Portfolio", Info, "Technical details and credits for this project.")}
-                        <div className="settings-group-card">
-                            <div className="settings-row">
-                                <span>Portfolio Version</span>
-                                <span className="settings-value-text">2.1.0</span>
+                        {/* Custom Profile Header */}
+                        <div className="render-header-container">
+                            <div className="profile-header-icon-wrapper">
+                                <div className="large-profile-icon">
+                                    {settings?.user?.customAvatar ? (
+                                        <img src={settings.user.customAvatar} alt="Profile" className="large-profile-img" />
+                                    ) : settings?.user?.avatar ? (
+                                        <span className="large-profile-emoji">{settings.user.avatar}</span>
+                                    ) : (
+                                        <User size={48} />
+                                    )}
+                                </div>
+                                <button
+                                    className="profile-header-edit-btn"
+                                    onClick={() => document.getElementById('profile-avatar-upload').click()}
+                                >
+                                    Edit
+                                </button>
+                                <input
+                                    id="profile-avatar-upload"
+                                    type="file"
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    onChange={(e) => {
+                                        const file = e.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onloadend = () => {
+                                                updateSetting("user", "customAvatar", reader.result);
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    }}
+                                />
                             </div>
-                            <div className="settings-row">
-                                <span>Last Updated</span>
-                                <span className="settings-value-text">Jan 2026</span>
+                            <div className="header-text-content">
+                                <h1>Apple ID & Profile</h1>
+                                <p className="header-subtitle">Manage your personal information and profile appearance.</p>
                             </div>
                         </div>
+
+                        <div className="settings-group-label">Personal Information</div>
                         <div className="settings-group-card">
-                            <label>Tech Stack</label>
-                            <div className="settings-row">
-                                <span>Core</span>
-                                <span className="settings-value-text">React, Vite</span>
+                            <div className="settings-row-input">
+                                <label>Full Name</label>
+                                <input
+                                    type="text"
+                                    value={settings?.user?.name || ""}
+                                    onChange={(e) => updateSetting("user", "name", e.target.value)}
+                                    placeholder="Enter your name"
+                                />
                             </div>
-                            <div className="settings-row">
-                                <span>Styling</span>
-                                <span className="settings-value-text">Vanilla CSS, Lucide</span>
+                            <div className="settings-row-input">
+                                <label>Professional Title</label>
+                                <input
+                                    type="text"
+                                    value={settings?.user?.title || ""}
+                                    onChange={(e) => updateSetting("user", "title", e.target.value)}
+                                    placeholder="e.g. Frontend Developer"
+                                />
                             </div>
-                            <div className="settings-row">
-                                <span>Deployment</span>
-                                <span className="settings-value-text">Vercel</span>
+                            <div className="settings-row-input">
+                                <label>Email Address</label>
+                                <input
+                                    type="email"
+                                    value={settings?.user?.email || ""}
+                                    onChange={(e) => updateSetting("user", "email", e.target.value)}
+                                    placeholder="Enter your email"
+                                />
                             </div>
                         </div>
+
+                        <div className="settings-group-label">Profile Picture</div>
                         <div className="settings-group-card">
-                            <div className="settings-list-item">
-                                <div className="item-left">
-                                    <div className="item-icon"><Code size={16} /></div>
-                                    <span>View Source Code</span>
+                            <div className="settings-row-input">
+                                <label>Avatar Emoji</label>
+                                <div className="emoji-picker-mini">
+                                    {["💀", "👨‍💻", "🚀", "🎨", "🌟", "👻", "🤖", "🧠"].map(emoji => (
+                                        <button
+                                            key={emoji}
+                                            className={`emoji-btn ${settings?.user?.avatar === emoji ? 'active' : ''}`}
+                                            onClick={() => updateSetting("user", "avatar", emoji)}
+                                        >
+                                            {emoji}
+                                        </button>
+                                    ))}
                                 </div>
-                                <div className="item-actions">
-                                    <button
-                                        className="mac-btn"
-                                        onClick={() => window.open("https://github.com/Rajkoli145/macos-portfolio", "_blank")}
-                                    >
-                                        GitHub Repo
-                                    </button>
-                                </div>
+                            </div>
+                        </div>
+
+                        <div className="settings-group-label">Account Security</div>
+                        <div className="settings-group-card">
+                            <div className="settings-row">
+                                <span>Require password after sleep</span>
+                                <Toggle enabled={true} onToggle={() => { }} />
                             </div>
                         </div>
                     </div>
@@ -746,14 +822,24 @@ const SettingsApp = ({ onOpenApp }) => {
                         </div>
                     </div>
 
-                    <div className="sidebar-profile">
+                    <div
+                        className={`sidebar-profile ${activeSection === 'profile' ? 'active' : ''}`}
+                        onClick={() => setActiveSection('profile')}
+                    >
                         <div className="profile-icon">
-                            <User size={24} />
+                            {settings?.user?.customAvatar ? (
+                                <img src={settings.user.customAvatar} alt="Profile" className="profile-icon-img" />
+                            ) : settings?.user?.avatar ? (
+                                <span className="profile-avatar-emoji">{settings.user.avatar}</span>
+                            ) : (
+                                <User size={24} />
+                            )}
                         </div>
                         <div className="profile-info">
-                            <div className="title">Raj Koli</div>
-                            <div className="subtitle">Frontend Developer</div>
+                            <div className="title">{settings?.user?.name || "Raj Koli"}</div>
+                            <div className="subtitle">{settings?.user?.title || "Frontend Developer"}</div>
                         </div>
+                        <ChevronRight size={14} className="profile-chevron" />
                     </div>
                 </div>
 
