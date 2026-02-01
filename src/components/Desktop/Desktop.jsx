@@ -88,6 +88,20 @@ function Desktop({ onShowShortcuts, triggerDialog }) {
     bouncingAppId
   } = useWindowManager();
 
+  const { systemStatus } = useSettings();
+  const [hasAutoOpened, setHasAutoOpened] = useState(false);
+
+  useEffect(() => {
+    if (systemStatus === 'running' && !hasAutoOpened) {
+      // Small delay to let the desktop settle
+      const timer = setTimeout(() => {
+        handleOpenApp('finder', 'Finder', { initialTab: 'about' });
+        setHasAutoOpened(true);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [systemStatus, hasAutoOpened]);
+
   useEffect(() => {
     const nextWp = getWp(settings.desktop.wallpaper, settings.appearance.theme);
 

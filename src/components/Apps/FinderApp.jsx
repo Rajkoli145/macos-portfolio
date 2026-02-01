@@ -50,8 +50,8 @@ import aboutMeIcon from "../../assets/finder-icons/about-me.svg";
 import resumeIcon from "../../assets/finder-icons/resume.svg";
 import contactIcon from "../../assets/finder-icons/contact.svg";
 
-function FinderApp({ onOpenApp }) {
-  const [activeTab, setActiveTab] = useState("applications");
+function FinderApp({ onOpenApp, initialTab }) {
+  const [activeTab, setActiveTab] = useState(initialTab || "applications");
   const [viewMode, setViewMode] = useState("grid"); // grid, list, columns
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
@@ -500,7 +500,7 @@ function FinderApp({ onOpenApp }) {
   const filteredData = getFilteredData();
 
   return (
-    <div className="finder-app">
+    <div className={`finder-app ${activeTab === 'about' ? 'about-active' : ''}`}>
       <aside className="finder-sidebar">
         {sidebarGroups.map((group, gIdx) => (
           <div key={gIdx} className="sidebar-group">
@@ -582,7 +582,89 @@ function FinderApp({ onOpenApp }) {
         </header>
 
         <main className="finder-view-content" onClick={() => setSelectedItem(null)}>
-          {viewMode === "grid" ? (
+          {activeTab === 'about' && navigationStack.length === 0 ? (
+            <div className="about-me-bento">
+              <div className="bento-grid">
+                {/* Profile Hero Card */}
+                <div className="bento-card profile-hero-card">
+                  <div className="profile-header">
+                    <div className="profile-avatar-wrapper">
+                      <img src={meImg} alt="Raj Koli" className="profile-avatar-img" />
+                      <div className="avatar-shimmer"></div>
+                    </div>
+                    <div className="profile-info">
+                      <h1 className="profile-name">Raj Koli</h1>
+                      <div className="profile-tags">
+                        <span className="profile-tag-pill">Full-Stack Developer</span>
+                        <span className="profile-tag-pill">UI/UX Enthusiast</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="hero-status">
+                    <Zap size={14} className="status-icon pulse" />
+                    <span>Building high-fidelity interactive web systems</span>
+                  </div>
+                </div>
+
+                {/* Bio Card */}
+                <div className="bento-card bio-card">
+                  <h3 className="card-title">Bio</h3>
+                  <p className="card-text">
+                    I'm a passionate developer focus on creating seamless digital experiences.
+                    Specialized in React, Node.js, and modern UI design. I love turning complex
+                    problems into beautiful, functional code.
+                  </p>
+                </div>
+
+                {/* Location Card */}
+                <div className="bento-card location-card">
+                  <div className="card-icon-bg">
+                    <MapPin size={24} />
+                  </div>
+                  <div className="card-content">
+                    <span className="card-label">Location</span>
+                    <span className="card-value">Mumbai, India</span>
+                  </div>
+                </div>
+
+                {/* Availability Card */}
+                <div className="bento-card availability-card">
+                  <div className="card-icon-bg">
+                    <Briefcase size={24} />
+                  </div>
+                  <div className="card-content">
+                    <span className="card-label">Availability</span>
+                    <span className="card-value">Open for Freelance</span>
+                  </div>
+                </div>
+
+                {/* Coffee Card (Fun) */}
+                <div className="bento-card fun-card">
+                  <div className="card-icon-bg coffee">
+                    <Coffee size={24} />
+                  </div>
+                  <div className="card-content">
+                    <span className="card-label">Energy Source</span>
+                    <span className="card-value">Coffee & Code</span>
+                  </div>
+                </div>
+
+                {/* Contact Quick Link Cards */}
+                <div className="bento-card contact-card github" onClick={() => window.open('https://github.com/Rajkoli145', '_blank')}>
+                  <Github size={20} />
+                  <span>GitHub</span>
+                </div>
+                <div className="bento-card contact-card linkedin" onClick={() => window.open('https://www.linkedin.com/in/raj-koli-626008318/', '_blank')}>
+                  <Linkedin size={20} />
+                  <span>LinkedIn</span>
+                </div>
+                <div className="bento-card contact-card mail" onClick={() => onOpenApp('mail', 'Mail')}>
+                  <Mail size={20} />
+                  <span>Email</span>
+                </div>
+              </div>
+            </div>
+          ) : viewMode === "grid" ? (
             <div className="icon-view-grid">
               {filteredData.map((item) => (
                 <div
@@ -811,7 +893,6 @@ function FinderApp({ onOpenApp }) {
           )}
         </main>
       </div>
-
     </div>
   );
 }
