@@ -840,7 +840,8 @@
   left: -150%;
   width: 40%;
   height: 150%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.15);
+  /* Lowered from 0.25 */
   border-radius: 50%;
   filter: blur(15px);
   transform: rotate(45deg);
@@ -890,9 +891,12 @@
   letter-spacing: -0.5px;
   background: linear-gradient(45deg,
       #fff 30%,
-      rgba(255, 255, 255, 0.5) 45%,
-      #fff 50%,
-      rgba(255, 255, 255, 0.5) 55%,
+      rgba(255, 255, 255, 0.4) 45%,
+      /* Lowered from 0.5 */
+      rgba(255, 255, 255, 0.8) 50%,
+      /* Lowered from #fff */
+      rgba(255, 255, 255, 0.4) 55%,
+      /* Lowered from 0.5 */
       #fff 70%);
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -934,9 +938,12 @@
   font-size: 14px;
   background: linear-gradient(45deg,
       rgba(255, 255, 255, 0.6) 30%,
-      rgba(255, 255, 255, 0.9) 45%,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(255, 255, 255, 0.9) 55%,
+      rgba(255, 255, 255, 0.75) 45%,
+      /* Lowered from 0.9 */
+      rgba(255, 255, 255, 0.85) 50%,
+      /* Lowered from 1 */
+      rgba(255, 255, 255, 0.75) 55%,
+      /* Lowered from 0.9 */
       rgba(255, 255, 255, 0.6) 70%);
   background-size: 200% auto;
   -webkit-background-clip: text;
