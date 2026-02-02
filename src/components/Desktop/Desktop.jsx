@@ -114,7 +114,11 @@ function Desktop({ onShowShortcuts, triggerDialog }) {
     }
   }, [settings.desktop.wallpaper, settings.appearance.theme, currentWallpaper]);
 
+  const isAnyMaximized = openWindows.some(win => win.isMaximized && !win.isMinimized);
+
   const getDesktopAreaStyle = () => {
+    if (isAnyMaximized) return { padding: '0', paddingTop: '0' };
+
     const pos = settings.dock.position;
     if (pos === 'left') return { paddingLeft: '100px', paddingBottom: '40px' };
     if (pos === 'right') return { paddingRight: '100px', paddingBottom: '40px' };
@@ -137,7 +141,7 @@ function Desktop({ onShowShortcuts, triggerDialog }) {
   };
 
   return (
-    <div className="desktop">
+    <div className={`desktop ${isAnyMaximized ? 'is-any-maximized' : ''}`}>
       {/* Dynamic Wallpaper Layers */}
       <div
         className="wallpaper-layer wallpaper-prev"
@@ -152,6 +156,7 @@ function Desktop({ onShowShortcuts, triggerDialog }) {
         onOpenApp={handleOpenApp}
         onShowShortcuts={onShowShortcuts}
         triggerDialog={triggerDialog}
+        isMaximized={isAnyMaximized}
       />
 
       <div className="desktop-area" style={getDesktopAreaStyle()}>
@@ -181,7 +186,7 @@ function Desktop({ onShowShortcuts, triggerDialog }) {
         ))}
       </div>
 
-      <Dock onOpenApp={handleOpenApp} openWindows={openWindows} bouncingAppId={bouncingAppId} />
+      <Dock onOpenApp={handleOpenApp} openWindows={openWindows} bouncingAppId={bouncingAppId} isMaximized={isAnyMaximized} />
 
       <Launchpad
         show={isLaunchpadOpen}

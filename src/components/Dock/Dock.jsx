@@ -13,7 +13,7 @@ import vscodeIcon from "../../assets/vscode.png";
 import settingsIcon from "../../assets/settings.png";
 import launchpadIcon from "../../assets/launchpad.png";
 
-function Dock({ onOpenApp, openWindows = [], bouncingAppId }) {
+function Dock({ onOpenApp, openWindows = [], bouncingAppId, isMaximized }) {
   const { settings } = useSettings();
   const [mouseX, setMouseX] = useState(null);
   const [activeApp, setActiveApp] = useState(null);
@@ -140,9 +140,26 @@ function Dock({ onOpenApp, openWindows = [], bouncingAppId }) {
 
   return (
     <div
-      className={`dock-wrapper ${settings.dock.position} ${settings.dock.autoHide ? 'auto-hide' : ''} ${isRevealed ? 'revealed' : ''}`}
+      className={`dock-wrapper ${settings.dock.position} ${(settings.dock.autoHide || isMaximized) ? 'auto-hide' : ''} ${isRevealed ? 'revealed' : ''}`}
     >
-      <div className="dock-sensor" onMouseEnter={() => setIsRevealed(true)} />
+      <div
+        className="dock-sensor"
+        onMouseEnter={() => {
+          if (settings.dock.autoHide || isMaximized) {
+            setIsRevealed(true);
+          }
+        }}
+        style={isMaximized ? {
+          position: 'fixed',
+          left: settings.dock.position === 'left' ? 0 : 'auto',
+          right: settings.dock.position === 'right' ? 0 : 'auto',
+          bottom: settings.dock.position === 'bottom' ? 0 : 'auto',
+          top: settings.dock.position !== 'bottom' ? '150px' : 'auto', // Avoid top corner
+          height: settings.dock.position !== 'bottom' ? 'calc(100% - 300px)' : '2px',
+          width: settings.dock.position !== 'bottom' ? '2px' : 'calc(100% - 300px)',
+          zIndex: 10000
+        } : {}}
+      />
       <div
         className="dock"
         onMouseMove={handleMouseMove}

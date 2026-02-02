@@ -14,17 +14,19 @@ import {
     FileText,
     Mail,
     MapPin,
-    Clock
+    Clock,
+    Globe
 } from "lucide-react";
+import resumeIcon from "../../assets/finder-icons/resume.svg";
 
 function SafariApp({ onOpenApp }) {
     const [openingLink, setOpeningLink] = useState(null);
 
     const profiles = [
-        { id: 'github', label: 'GitHub', icon: Github, url: 'https://github.com/Rajkoli145' },
-        { id: 'linkedin', label: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/raj-koli-626008318/' },
-        { id: 'resume', label: 'Resume', icon: FileText, url: 'preview' },
-        { id: 'portfolio', label: 'Portfolio', icon: RotateCw, url: 'https://rajkoli.vercel.app/' },
+        { id: 'github', label: 'GitHub', icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg", url: 'https://github.com/Rajkoli145' },
+        { id: 'linkedin', label: 'LinkedIn', icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg", url: 'https://www.linkedin.com/in/raj-koli-626008318/' },
+        { id: 'resume', label: 'Resume', icon: resumeIcon, url: 'preview' },
+        { id: 'portfolio', label: 'Portfolio', icon: Globe, url: 'https://rajkoli.vercel.app/' },
     ];
 
     const projects = [
@@ -42,6 +44,26 @@ function SafariApp({ onOpenApp }) {
             title: "Student-Teacher Booking",
             desc: "Appointment scheduling system for educational institutions.",
             link: "https://github.com/Rajkoli145/Student-teacher-booking"
+        },
+        {
+            title: "Decathlon Clone",
+            desc: "A feature-rich e-commerce clone of the Decathlon website.",
+            link: "https://github.com/Rajkoli145/Decathlon-Clone"
+        },
+        {
+            title: "Netflix Clone",
+            desc: "A pixel-perfect Netflix UI clone with dynamic content.",
+            link: "https://github.com/Rajkoli145/Netflix-clone"
+        },
+        {
+            title: "New Chatting App",
+            desc: "A real-time communication platform for modern teams.",
+            link: "https://github.com/Rajkoli145/New-chatting-App"
+        },
+        {
+            title: "Restaurant App",
+            desc: "A digital menu and ordering system for dining establishments.",
+            link: "https://github.com/Rajkoli145/Restaurant"
         }
     ];
 
@@ -94,11 +116,16 @@ function SafariApp({ onOpenApp }) {
                             {profiles.map(profile => (
                                 <div
                                     key={profile.id}
+                                    data-id={profile.id}
                                     className="favorite-item"
                                     onClick={() => handleExternalLink(profile.url, profile.label)}
                                 >
                                     <div className="favorite-icon-box">
-                                        <profile.icon size={24} />
+                                        {typeof profile.icon === 'string' ? (
+                                            <img src={profile.icon} alt={profile.label} className="favorite-img-icon" />
+                                        ) : (
+                                            <profile.icon size={28} />
+                                        )}
                                     </div>
                                     <span className="favorite-label">{profile.label}</span>
                                 </div>
@@ -106,66 +133,25 @@ function SafariApp({ onOpenApp }) {
                         </div>
                     </section>
 
-                    {/* About & Contact Grid */}
-                    <div className="content-columns">
-                        <div className="column-left">
-                            <section className="about-safari-section">
-                                <h2 className="section-heading">About This Developer</h2>
-                                <div className="about-details">
-                                    <h3 className="dev-name">Raj Koli</h3>
-                                    <p className="dev-role">Full-Stack Developer</p>
-                                    <p className="dev-philosophy">Building tools that empower, interfaces that inspire.</p>
-                                    <div className="status-grid">
-                                        <div className="status-item">
-                                            <MapPin size={14} />
-                                            <span>Mumbai, India</span>
-                                        </div>
-                                        <div className="status-item">
-                                            <Clock size={14} />
-                                            <span>IST (UTC+5:30)</span>
-                                        </div>
-                                        <div className="status-item available">
-                                            <div className="pulse-dot"></div>
-                                            <span>Open for new projects</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-
-                            <section className="contact-safari-section">
-                                <h2 className="section-heading">Contact</h2>
+                    {/* Selected Work Section */}
+                    <section className="work-safari-section">
+                        <h2 className="section-heading">Selected Work</h2>
+                        <div className="projects-grid">
+                            {projects.map((proj, i) => (
                                 <div
-                                    className="contact-card"
-                                    onClick={() => handleExternalLink("mail", "Email")}
+                                    key={i}
+                                    className="project-card"
+                                    onClick={() => handleExternalLink(proj.link, proj.title)}
                                 >
-                                    <Mail size={18} />
-                                    <span>2024.rajk@isu.ac.in</span>
-                                    <ExternalLink size={14} className="ext-icon" />
+                                    <div className="proj-info">
+                                        <span className="proj-title">{proj.title}</span>
+                                        <p className="proj-desc">{proj.desc}</p>
+                                    </div>
+                                    <ExternalLink size={16} className="proj-ext" />
                                 </div>
-                            </section>
+                            ))}
                         </div>
-
-                        <div className="column-right">
-                            <section className="work-safari-section">
-                                <h2 className="section-heading">Selected Work</h2>
-                                <div className="projects-vertical">
-                                    {projects.map((proj, i) => (
-                                        <div
-                                            key={i}
-                                            className="project-row"
-                                            onClick={() => handleExternalLink(proj.link, proj.title)}
-                                        >
-                                            <div className="proj-info">
-                                                <span className="proj-title">{proj.title}</span>
-                                                <p className="proj-desc">{proj.desc}</p>
-                                            </div>
-                                            <ExternalLink size={16} className="proj-ext" />
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-                        </div>
-                    </div>
+                    </section>
 
                     {/* Opening Link Feedback Overlay */}
                     {openingLink && (

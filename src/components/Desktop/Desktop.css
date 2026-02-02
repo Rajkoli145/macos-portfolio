@@ -40,4 +40,9 @@
   padding-bottom: 100px;
   /* Space for fixed dock */
   overflow: auto;
+  transition: padding 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.is-any-maximized .desktop-area {
+  padding: 0 !important;
 }

@@ -616,33 +616,28 @@ function FinderApp({ onOpenApp, initialTab }) {
                   </p>
                 </div>
 
-                {/* Location Card */}
-                <div className="bento-card location-card">
-                  <div className="card-icon-bg">
-                    <MapPin size={24} />
-                  </div>
+                <div className="bento-card location-card minimal-card">
+                  <img
+                    src="https://www.gstatic.com/images/branding/product/2x/maps_96dp.png"
+                    alt="Google Maps"
+                    className="bento-brand-icon"
+                  />
                   <div className="card-content">
                     <span className="card-label">Location</span>
                     <span className="card-value">Mumbai, India</span>
                   </div>
                 </div>
 
-                {/* Availability Card */}
-                <div className="bento-card availability-card">
-                  <div className="card-icon-bg">
-                    <Briefcase size={24} />
-                  </div>
+                <div className="bento-card availability-card minimal-card">
+                  <Briefcase size={28} className="bento-generic-icon" color="#007aff" />
                   <div className="card-content">
                     <span className="card-label">Availability</span>
                     <span className="card-value">Open for Freelance</span>
                   </div>
                 </div>
 
-                {/* Coffee Card (Fun) */}
-                <div className="bento-card fun-card">
-                  <div className="card-icon-bg coffee">
-                    <Coffee size={24} />
-                  </div>
+                <div className="bento-card fun-card minimal-card">
+                  <Coffee size={28} className="bento-generic-icon" color="#ff9500" />
                   <div className="card-content">
                     <span className="card-label">Energy Source</span>
                     <span className="card-value">Coffee & Code</span>
@@ -650,16 +645,28 @@ function FinderApp({ onOpenApp, initialTab }) {
                 </div>
 
                 {/* Contact Quick Link Cards */}
-                <div className="bento-card contact-card github" onClick={() => window.open('https://github.com/Rajkoli145', '_blank')}>
-                  <Github size={20} />
+                <div className="bento-card contact-card minimal-card github" onClick={() => window.open('https://github.com/Rajkoli145', '_blank')}>
+                  <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                    alt="GitHub"
+                    className="bento-contact-icon"
+                  />
                   <span>GitHub</span>
                 </div>
-                <div className="bento-card contact-card linkedin" onClick={() => window.open('https://www.linkedin.com/in/raj-koli-626008318/', '_blank')}>
-                  <Linkedin size={20} />
+                <div className="bento-card contact-card minimal-card linkedin" onClick={() => window.open('https://www.linkedin.com/in/raj-koli-626008318/', '_blank')}>
+                  <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg"
+                    alt="LinkedIn"
+                    className="bento-contact-icon"
+                  />
                   <span>LinkedIn</span>
                 </div>
-                <div className="bento-card contact-card mail" onClick={() => onOpenApp('mail', 'Mail')}>
-                  <Mail size={20} />
+                <div className="bento-card contact-card minimal-card mail" onClick={() => onOpenApp('mail', 'Mail')}>
+                  <img
+                    src={mailIcon}
+                    alt="Mail"
+                    className="bento-contact-icon"
+                  />
                   <span>Email</span>
                 </div>
               </div>

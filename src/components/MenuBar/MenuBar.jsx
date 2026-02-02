@@ -10,7 +10,7 @@ import mailIcon from "../../assets/mail.png";
 import vscodeIcon from "../../assets/vscode.png";
 import settingsIcon from "../../assets/settings.png";
 
-function MenuBar({ onOpenApp, onShowShortcuts, triggerDialog }) {
+function MenuBar({ onOpenApp, onShowShortcuts, triggerDialog, isMaximized }) {
   const { setSystemStatus } = useSettings();
   const [date, setDate] = useState(new Date());
   const [activeMenu, setActiveMenu] = useState(null);
@@ -20,6 +20,8 @@ function MenuBar({ onOpenApp, onShowShortcuts, triggerDialog }) {
   const [language, setLanguage] = useState("English");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(false);
 
   const appleMenuRef = useRef(null);
   const finderMenuRef = useRef(null);
@@ -72,6 +74,7 @@ function MenuBar({ onOpenApp, onShowShortcuts, triggerDialog }) {
 
       if (!isClickInside) {
         setActiveMenu(null);
+        setIsMenuOpen(false);
         if (event.target.closest('.spotlight-search') === null) {
           setIsSearchOpen(false);
         }
@@ -95,15 +98,24 @@ function MenuBar({ onOpenApp, onShowShortcuts, triggerDialog }) {
   };
 
   const handleMenuToggle = (menuName) => {
-    setActiveMenu(activeMenu === menuName ? null : menuName);
+    if (activeMenu === menuName) {
+      setActiveMenu(null);
+      setIsMenuOpen(false);
+    } else {
+      setActiveMenu(menuName);
+      setIsMenuOpen(true);
+    }
   };
 
   const handleMenuHover = (menuName) => {
-    setActiveMenu(menuName);
+    if (isMenuOpen) {
+      setActiveMenu(menuName);
+    }
   };
 
   const handleMenuItemClick = (action) => {
     setActiveMenu(null);
+    setIsMenuOpen(false);
     if (!action) return;
 
     // Contact/Resume special cases
@@ -213,7 +225,25 @@ function MenuBar({ onOpenApp, onShowShortcuts, triggerDialog }) {
   const topHit = searchQuery && searchableItems.length > 0 ? searchableItems[0] : null;
 
   return (
-    <div className="menu-bar">
+    <div
+      className={`menu-bar ${isMaximized ? 'auto-hide' : ''} ${isRevealed ? 'revealed' : ''}`}
+      onMouseLeave={() => setIsRevealed(false)}
+    >
+      {isMaximized && (
+        <div
+          className="menu-bar-sensor"
+          onMouseEnter={() => setIsRevealed(true)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: '25%',
+            right: '25%',
+            height: '2px',
+            zIndex: 10000,
+            background: 'transparent'
+          }}
+        />
+      )}
       {isSearchOpen && (
         <div className="spotlight-overlay" onClick={() => setIsSearchOpen(false)}>
           <div className="spotlight-search" onClick={e => e.stopPropagation()} ref={searchRef}>

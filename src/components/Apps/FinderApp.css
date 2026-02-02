@@ -742,6 +742,20 @@
   flex-direction: column;
 }
 
+.bento-card.minimal-card {
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 12px;
+  box-shadow: none;
+}
+
+.bento-card.minimal-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
 .bento-card:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.15);
@@ -987,21 +1001,20 @@
   padding: 16px;
 }
 
-.card-icon-bg {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
+.location-card.minimal-card,
+.availability-card.minimal-card,
+.fun-card.minimal-card {
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  background: rgba(0, 122, 255, 0.1);
-  color: #007aff;
-  flex-shrink: 0;
 }
 
-.card-icon-bg.coffee {
-  background: rgba(255, 149, 0, 0.1);
-  color: #ff9500;
+.bento-brand-icon,
+.bento-generic-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .card-content {
@@ -1035,21 +1048,24 @@
   cursor: pointer;
 }
 
-.contact-card.github {
-  background: rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.1);
+.bento-contact-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
-.contact-card.linkedin {
-  background: rgba(10, 102, 194, 0.1);
-  border-color: rgba(10, 102, 194, 0.3);
-  color: #0a66c2;
-}
-
+.contact-card.github,
+.contact-card.linkedin,
 .contact-card.mail {
-  background: rgba(255, 59, 48, 0.1);
-  border-color: rgba(255, 59, 48, 0.3);
-  color: #ff3b30;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.contact-card.minimal-card {
+  background: transparent !important;
+  border: none !important;
+  padding: 8px;
 }
 
 .contact-card span {
