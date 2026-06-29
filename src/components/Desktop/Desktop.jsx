@@ -136,10 +136,6 @@ function Desktop({ onShowShortcuts, triggerDialog }) {
     }
   };
 
-  const getDockX = (appId) => {
-    return '50vw';
-  };
-
   return (
     <div className={`desktop ${isAnyMaximized ? 'is-any-maximized' : ''}`}>
       {/* Dynamic Wallpaper Layers */}
@@ -170,7 +166,7 @@ function Desktop({ onShowShortcuts, triggerDialog }) {
             onMaximize={toggleMaximize}
             onDrag={updateWindowPosition}
             onResize={updateWindowSize}
-            dockX={getDockX(window.id)}
+            dockX="50vw"
             hideTitleBar={window.id === 'vscode'}
           >
             {window.Component && (

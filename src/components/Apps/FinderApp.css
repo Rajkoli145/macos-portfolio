@@ -743,17 +743,19 @@
 }
 
 .bento-card.minimal-card {
-  background: transparent;
-  border: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  padding: 12px;
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
 .bento-card.minimal-card:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.14);
   transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .bento-card:hover {
@@ -799,21 +801,6 @@
   box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05);
 }
 
-/* Midnight Nebula Theme */
-.profile-hero-card::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 32px;
-  transform: translateY(-50%);
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 51, 102, 0.4), transparent 75%);
-  z-index: -2;
-  pointer-events: none;
-  filter: blur(8px);
-}
 
 .profile-header {
   display: flex;
@@ -827,13 +814,9 @@
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  padding: 3px;
-  background: linear-gradient(135deg, #ffffff, #000000, rgb(0, 0, 0));
-  background-size: 200% auto;
-  animation: nebulaBorder 8s linear infinite;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  background: #000;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -843,24 +826,11 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  object-position: center top;
 }
 
-/* Moving Shimmer (Ping-Pong 45deg) */
 .avatar-shimmer {
-  position: absolute;
-  top: -25%;
-  left: -150%;
-  width: 40%;
-  height: 150%;
-  background: rgba(255, 255, 255, 0.15);
-  /* Lowered from 0.25 */
-  border-radius: 50%;
-  filter: blur(15px);
-  transform: rotate(45deg);
-  animation: shimmer 4s infinite ease-in-out alternate;
-  pointer-events: none;
-  z-index: 2;
+  display: none;
 }
 
 @keyframes shimmer {
@@ -1057,16 +1027,15 @@
 .contact-card.github,
 .contact-card.linkedin,
 .contact-card.mail {
-  background: rgba(255, 255, 255, 0.02);
-  border-color: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.contact-card.minimal-card {
-  background: transparent !important;
-  border: none !important;
-  padding: 8px;
-}
+.contact-card.github:hover { background: rgba(255, 255, 255, 0.09); border-color: rgba(255,255,255,0.2); }
+.contact-card.linkedin:hover { background: rgba(10, 102, 194, 0.2); border-color: rgba(10, 102, 194, 0.4); }
+.contact-card.mail:hover { background: rgba(0, 122, 255, 0.2); border-color: rgba(0, 122, 255, 0.4); }
 
 .contact-card span {
   font-size: 13px;

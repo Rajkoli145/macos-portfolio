@@ -39,12 +39,6 @@ function AppContent() {
         setSystemStatus('locked');
       }
 
-      // Command/Meta + Space to search (Spotlight placeholder)
-      if ((e.metaKey || e.ctrlKey) && e.code === 'Space') {
-        e.preventDefault();
-        // Since Spotlight is integrated into MenuBar, we would need a way to trigger it.
-        // For now, let's focus on the Lock shortcut which works globally.
-      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
