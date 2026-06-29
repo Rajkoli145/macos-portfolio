@@ -99,8 +99,8 @@
 
 .dock {
   display: flex;
-  gap: 8px;
-  padding: 10px 16px;
+  gap: 10px;
+  padding: 10px 18px;
   overflow: visible;
 
   /* Tahoe 26 liquid glass pill */
