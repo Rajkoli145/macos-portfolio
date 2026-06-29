@@ -1,4 +1,169 @@
 :root {
-  --bg-dark: #0d1117;
-  --text-main: #e6edf3;
+  /* ============================================
+     TAHOE 26 — LIQUID GLASS DESIGN SYSTEM
+     ============================================ */
+
+  /* --- Blur levels --- */
+  --glass-blur-thin:    20px;
+  --glass-blur-regular: 40px;
+  --glass-blur-thick:   72px;
+  --glass-blur-ultra:   100px;
+
+  /* --- Glass tint (white-on-dark wallpaper) --- */
+  --glass-tint-subtle:  rgba(255, 255, 255, 0.05);
+  --glass-tint-light:   rgba(255, 255, 255, 0.08);
+  --glass-tint-medium:  rgba(255, 255, 255, 0.12);
+  --glass-tint-heavy:   rgba(255, 255, 255, 0.18);
+
+  /* --- Glass borders --- */
+  --glass-border-subtle: rgba(255, 255, 255, 0.08);
+  --glass-border:        rgba(255, 255, 255, 0.14);
+  --glass-border-bright: rgba(255, 255, 255, 0.22);
+
+  /* --- Specular / edge highlights (light catching top rim of glass) --- */
+  --glass-specular-sm:  inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  --glass-specular-md:  inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  --glass-specular-lg:  inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  --glass-specular-bottom: inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+
+  /* --- Inner glow (combined top + bottom specular) --- */
+  --glass-inner-glow-sm: inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(255,255,255,0.06);
+  --glass-inner-glow-md: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(255,255,255,0.08);
+  --glass-inner-glow-lg: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(255,255,255,0.1);
+
+  /* --- Drop shadows (multi-layer for real depth) --- */
+  --glass-shadow-xs: 0 1px 3px rgba(0,0,0,0.2);
+  --glass-shadow-sm: 0 2px 8px rgba(0,0,0,0.25),
+                     0 0 0 0.5px rgba(255,255,255,0.08);
+  --glass-shadow-md: 0 4px 16px rgba(0,0,0,0.35),
+                     0 8px 32px rgba(0,0,0,0.2),
+                     0 0 0 0.5px rgba(255,255,255,0.1);
+  --glass-shadow-lg: 0 8px 32px rgba(0,0,0,0.4),
+                     0 20px 60px rgba(0,0,0,0.3),
+                     0 0 0 0.5px rgba(255,255,255,0.12);
+  --glass-shadow-window: 0 2px 4px rgba(0,0,0,0.2),
+                          0 8px 24px rgba(0,0,0,0.35),
+                          0 24px 64px rgba(0,0,0,0.45),
+                          0 0 0 0.5px rgba(255,255,255,0.1);
+
+  /* --- Border radius scale --- */
+  --radius-xs:   6px;
+  --radius-sm:   10px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+  --radius-2xl:  36px;
+  --radius-full: 9999px;
+
+  /* --- Type scale --- */
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-lg:   17px;
+  --text-xl:   22px;
+  --text-2xl:  28px;
+  --text-3xl:  36px;
+  --text-4xl:  48px;
+
+  /* --- Font weights (Tahoe: heavy headers, light body) --- */
+  --weight-thin:     300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-heavy:    800;
+
+  /* --- Text colors --- */
+  --text-primary:    rgba(255, 255, 255, 0.95);
+  --text-secondary:  rgba(255, 255, 255, 0.65);
+  --text-tertiary:   rgba(255, 255, 255, 0.4);
+  --text-quaternary: rgba(255, 255, 255, 0.22);
+
+  /* --- System accent (macOS blue default) --- */
+  --accent:       #0a84ff;
+  --accent-dim:   rgba(10, 132, 255, 0.2);
+  --accent-glow:  0 0 20px rgba(10, 132, 255, 0.5);
+
+  /* --- Spring easing (no harsh cubic-bezier) --- */
+  --ease-spring-fast:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring-medium: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring-slow:   cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out:           cubic-bezier(0.2, 0, 0, 1);
+
+  --dur-fast:   0.15s;
+  --dur-medium: 0.3s;
+  --dur-slow:   0.5s;
+
+  /* --- Spacing scale --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* --- Legacy (keep for existing code that references these) --- */
+  --bg-dark:   #0d1117;
+  --text-main: rgba(255, 255, 255, 0.95);
+}
+
+/* ============================================
+   LIQUID GLASS UTILITY CLASSES
+   Use these on any element to apply
+   Tahoe 26 glass material.
+   ============================================ */
+
+/* Thin glass — toolbars, sidebars, pills */
+.glass-thin {
+  background: var(--glass-tint-light);
+  backdrop-filter: blur(var(--glass-blur-thin)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-thin)) saturate(180%);
+  border: 0.5px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-sm), var(--glass-inner-glow-sm);
+}
+
+/* Regular glass — cards, panels */
+.glass-regular {
+  background: var(--glass-tint-medium);
+  backdrop-filter: blur(var(--glass-blur-regular)) saturate(200%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-regular)) saturate(200%);
+  border: 0.5px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-md), var(--glass-inner-glow-md);
+}
+
+/* Thick glass — windows, modals */
+.glass-thick {
+  background: var(--glass-tint-medium);
+  backdrop-filter: blur(var(--glass-blur-thick)) saturate(220%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-thick)) saturate(220%);
+  border: 0.5px solid var(--glass-border-bright);
+  box-shadow: var(--glass-shadow-lg), var(--glass-inner-glow-lg);
+}
+
+/* Ultra glass — lock screen, full-screen overlays */
+.glass-ultra {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(var(--glass-blur-ultra)) saturate(250%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-ultra)) saturate(250%);
+  border: 0.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: var(--glass-shadow-window), var(--glass-inner-glow-lg);
+}
+
+/* Sidebar glass — frosted with cool blue tint */
+.glass-sidebar {
+  background: rgba(22, 24, 38, 0.72);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border-right: 0.5px solid rgba(255, 255, 255, 0.09);
+  box-shadow: var(--glass-inner-glow-sm);
+}
+
+/* Dark panel — app content backgrounds */
+.glass-panel {
+  background: rgba(14, 14, 20, 0.88);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
 }

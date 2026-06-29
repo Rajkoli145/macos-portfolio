@@ -1,36 +1,47 @@
 .window {
   min-width: 400px;
   min-height: 300px;
-  background: #1e1e1e;
-  /* Deep dark background */
-  border-radius: 12px;
-  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
+  border-radius: var(--radius-xl, 14px);
   overflow: hidden;
   position: absolute;
   top: 0;
   left: 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 
-  /* Genie Effect Transitions */
+  /* Liquid glass window material */
+  background: rgba(18, 18, 26, 0.82);
+  backdrop-filter: blur(var(--glass-blur-thick)) saturate(200%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-thick)) saturate(200%);
+
+  /* Tahoe multi-layer shadow + thin rim */
+  box-shadow: var(--glass-shadow-window, 0 2px 4px rgba(0,0,0,0.2),
+              0 8px 24px rgba(0,0,0,0.35),
+              0 24px 64px rgba(0,0,0,0.45)),
+              inset 0 1px 0 rgba(255,255,255,0.18),
+              inset 0 -1px 0 rgba(255,255,255,0.04);
+
+  /* Hairline top edge — glass rim catching light */
+  border-top: 0.5px solid rgba(255, 255, 255, 0.28);
+  border-left: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-right: 0.5px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+
   transition:
-    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-    width 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-    height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-    opacity 0.3s ease,
+    transform var(--dur-medium, 0.3s) var(--ease-spring-fast, cubic-bezier(0.16, 1, 0.3, 1)),
+    width var(--dur-medium, 0.3s) var(--ease-spring-fast, cubic-bezier(0.16, 1, 0.3, 1)),
+    height var(--dur-medium, 0.3s) var(--ease-spring-fast, cubic-bezier(0.16, 1, 0.3, 1)),
+    opacity 0.25s ease,
     border-radius 0.2s ease,
-    visibility 0.4s;
+    visibility 0.3s;
 }
 
-/* App-specific overrides - Simplified for Utility Focus */
+/* Finder window */
 .window.finder-window {
-  background: #1e1e1e;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  background: rgba(16, 16, 24, 0.88);
 }
 
 .window.finder-window .window-titlebar {
-  background: #2d2d2d;
-  /* Match sidebar */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
 .window.finder-window .window-title {
@@ -41,7 +52,7 @@
   height: calc(100% - 36px);
 }
 
-/* Disable transitions while resizing for smoothness */
+/* Disable transitions while resizing */
 .window.resizing {
   transition: none !important;
 }
@@ -50,6 +61,7 @@
   width: 100% !important;
   height: 100% !important;
   border-radius: 0;
+  border: none;
   transform: none !important;
 }
 
@@ -60,11 +72,11 @@
   pointer-events: none;
 }
 
+/* Title bar */
 .window-titlebar {
   height: 36px;
   background: rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -73,6 +85,7 @@
   user-select: none;
 }
 
+/* Traffic lights */
 .window-controls {
   display: flex;
   gap: 8px;
@@ -84,21 +97,24 @@
   height: 12px;
   border-radius: 50%;
   cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.15s ease;
 }
 
-.control.close {
-  background: #ff5f56;
+.control::after {
+  content: '';
+  display: none;
 }
 
-.control.minimize {
-  background: #ffbd2e;
-}
+.control.close    { background: #ff5f56; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.2); }
+.control.minimize { background: #ffbd2e; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.2); }
+.control.maximize { background: #27c93f; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.2); }
 
-.control.maximize {
-  background: #27c93f;
-}
+.control:hover { filter: brightness(1.12); }
 
-/* Hover Icons for Traffic Lights */
 .window-controls:hover .control::after {
   display: flex;
   align-items: center;
@@ -111,19 +127,8 @@
   opacity: 1;
 }
 
-.window-controls:hover .control.close::after {
-  content: "\2715";
-  /* Bold Multiplication X */
-  font-size: 8px;
-}
-
-.window-controls:hover .control.minimize::after {
-  content: "\2212";
-  /* Bold Minus Sign */
-  font-size: 9px;
-  transform: translateY(-0.5px);
-}
-
+.window-controls:hover .control.close::after    { content: "\2715"; font-size: 8px; }
+.window-controls:hover .control.minimize::after { content: "\2212"; font-size: 9px; transform: translateY(-0.5px); }
 .window-controls:hover .control.maximize::after {
   content: "";
   background-color: rgba(0, 0, 0, 0.75);
@@ -137,51 +142,38 @@
   -webkit-mask-position: center;
 }
 
+/* Window title */
 .window-title {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 13px;
-  font-weight: 500;
-  opacity: 0.8;
+  font-size: var(--text-sm, 13px);
+  font-weight: var(--weight-semibold, 600);
+  color: var(--text-secondary, rgba(255,255,255,0.65));
+  letter-spacing: -0.1px;
   pointer-events: none;
 }
 
+/* Content area */
 .window-content {
   padding: 0;
-  font-size: 14px;
+  font-size: var(--text-base, 15px);
   height: calc(100% - 36px);
   overflow: auto;
 }
 
-/* Resize Handles */
+/* Resize handles */
 .resizer {
   position: absolute;
   background: transparent;
   z-index: 100;
 }
 
-.resizer.r {
-  top: 0;
-  right: 0;
-  width: 8px;
-  height: 100%;
-  cursor: e-resize;
-}
-
-.resizer.b {
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 8px;
-  cursor: s-resize;
-}
-
+.resizer.r  { top: 0; right: 0; width: 8px; height: 100%; cursor: e-resize; }
+.resizer.b  { bottom: 0; left: 0; width: 100%; height: 8px; cursor: s-resize; }
 .resizer.rb {
-  bottom: 0;
-  right: 0;
-  width: 20px;
-  height: 20px;
+  bottom: 0; right: 0;
+  width: 20px; height: 20px;
   cursor: se-resize;
   display: flex;
   align-items: flex-end;
@@ -193,5 +185,5 @@
   width: 12px;
   height: 12px;
   pointer-events: none;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.3);
 }

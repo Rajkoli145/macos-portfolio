@@ -1,6 +1,8 @@
 .terminal-app {
   height: 100%;
-  background: #1c1c1e;
+  background: rgba(14, 14, 18, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   color: #e4e4e6;
   font-family: "SF Mono", "Fira Code", "Menlo", "Monaco", "Consolas", monospace;
   padding: 32px;
